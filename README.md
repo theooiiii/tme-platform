@@ -88,6 +88,50 @@ Para bancos existentes, aplique também:
 mysql -u root -p < database/migrations/2026_05_23_enrollments_progress_module.sql
 ```
 
+## Atividades, entregas e notas
+
+Professores, administradores e supervisores gerenciam atividades em `/admin/atividades`.
+Alunos e professores matriculados acompanham tarefas em `/atividades` e notas em `/boletim`.
+
+Recursos disponiveis:
+
+- CRUD de atividades vinculadas a curso, modulo e aula, com base futura para turma/disciplina.
+- Campos: titulo, descricao, tipo, pontuacao maxima, prazo, status, instrucoes e anexo opcional.
+- Tipos: `texto`, `arquivo`, `quiz`, `tarefa_pratica` e `projeto`.
+- Entrega textual e/ou arquivo pelo aluno matriculado.
+- Bloqueio de envio apos prazo quando a atividade nao permite atraso.
+- Entregas atrasadas marcadas automaticamente quando permitido.
+- Status de entrega: `pendente`, `enviada`, `atrasada`, `corrigida` e `devolvida`.
+- Correcao por professor/admin/supervisor com nota, feedback e status.
+- Boletim simples por curso.
+- Logs para criacao, envio, encerramento e correcao.
+- Uploads em `public/uploads/activity-attachments` e `public/uploads/activity-submissions`.
+
+## Biblioteca digital
+
+A biblioteca publica/interna fica em `/biblioteca` e a gestao em `/admin/biblioteca`.
+Ela e separada dos materiais de aulas, mas usa os mesmos padroes visuais, CSRF, PDO e logs.
+
+Recursos disponiveis:
+
+- CRUD administrativo de itens da biblioteca para administrador, supervisor e professor.
+- Envio de materiais por aluno/professor em `/biblioteca/enviar`, sempre entrando como `pendente`.
+- Campos: titulo, descricao, categoria, disciplina, tipo, visibilidade, autor, arquivo/link, capa e status.
+- Tipos: PDF, livro, apostila, artigo, video, link, apresentacao, imagem e arquivo.
+- Visibilidade: publica, somente logados, curso especifico e privada/admin.
+- Busca por titulo, categoria, disciplina e tipo.
+- Favoritos por usuario em `/biblioteca/favoritos`.
+- Historico simples de acesso/leitura em `library_access_logs`.
+- Moderacao por administrador/supervisor com aprovacao, recusa e arquivamento.
+- Logs para criacao, aprovacao, recusa, visualizacao e favorito.
+- Uploads em `public/uploads/library` e `public/uploads/library-covers`.
+
+Para bancos existentes, aplique tambem:
+
+```bash
+mysql -u root -p < database/migrations/2026_05_23_activities_library_module.sql
+```
+
 ## Estrutura
 
 ```text
