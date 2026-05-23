@@ -26,7 +26,7 @@
                         <span style="width: <?= e((float) $enrollment['progress_percent']) ?>%;"></span>
                     </div>
                     <p><?= e(number_format((float) $enrollment['progress_percent'], 0)) ?>% concluído</p>
-                    <a class="button" href="<?= e(url('/aluno/meus-cursos/' . $enrollment['id'])) ?>">Continuar curso</a>
+                    <a class="button" href="<?= e(url('/meus-cursos/' . $enrollment['id'])) ?>">Continuar curso</a>
                 </div>
             <?php else: ?>
                 <form action="<?= e(url('/aluno/cursos/' . $course['id'] . '/matricular')) ?>" method="post" class="actions-row">

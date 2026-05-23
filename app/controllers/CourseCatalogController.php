@@ -60,7 +60,7 @@ class CourseCatalogController extends Controller
 
         if ($existing) {
             flash('info', 'Você já possui matrícula neste curso.');
-            $this->redirect('/aluno/meus-cursos/' . $existing['id']);
+            $this->redirect('/meus-cursos/' . $existing['id']);
         }
 
         try {
@@ -71,7 +71,7 @@ class CourseCatalogController extends Controller
             ]);
 
             flash('success', 'Matrícula realizada. Bom estudo!');
-            $this->redirect('/aluno/meus-cursos/' . $enrollmentId);
+            $this->redirect('/meus-cursos/' . $enrollmentId);
         } catch (PDOException $exception) {
             flash('error', 'Não foi possível criar a matrícula. Verifique se você já está matriculado.');
             $this->redirect('/aluno/cursos/' . $course['id']);
@@ -105,7 +105,7 @@ class CourseCatalogController extends Controller
     {
         if (! verify_csrf_token($_POST['_csrf'] ?? null)) {
             flash('error', 'Sua sessão expirou. Tente novamente.');
-            $this->redirect('/aluno/meus-cursos/' . $enrollmentId);
+            $this->redirect('/meus-cursos/' . $enrollmentId);
         }
 
         $user = current_user();
@@ -131,7 +131,7 @@ class CourseCatalogController extends Controller
             flash('error', $exception->getMessage());
         }
 
-        $this->redirect('/aluno/meus-cursos/' . $enrollmentId);
+        $this->redirect('/meus-cursos/' . $enrollmentId);
     }
 
     private function findStudentEnrollmentOrRedirect(int $id, int $userId): array
@@ -140,7 +140,7 @@ class CourseCatalogController extends Controller
 
         if (! $enrollment) {
             flash('error', 'Matrícula não encontrada.');
-            $this->redirect('/aluno/meus-cursos');
+            $this->redirect('/meus-cursos');
         }
 
         return $enrollment;
