@@ -7,6 +7,7 @@
         <?php else: ?>
             <div class="course-cover placeholder">TME</div>
         <?php endif; ?>
+
         <div class="dashboard-heading">
             <span class="eyebrow"><?= e($course['category']) ?></span>
             <h1><?= e($course['title']) ?></h1>
@@ -17,6 +18,23 @@
                 <span>R$ <?= e(number_format((float) $course['price'], 2, ',', '.')) ?></span>
                 <span><?= e($course['teacher_name'] ?? 'Equipe TME') ?></span>
             </div>
+
+            <?php if ($enrollment): ?>
+                <div class="enrollment-callout">
+                    <strong>Matrícula <?= e($enrollment['status']) ?></strong>
+                    <div class="progress-track" aria-label="Progresso do curso">
+                        <span style="width: <?= e((float) $enrollment['progress_percent']) ?>%;"></span>
+                    </div>
+                    <p><?= e(number_format((float) $enrollment['progress_percent'], 0)) ?>% concluído</p>
+                    <a class="button" href="<?= e(url('/aluno/meus-cursos/' . $enrollment['id'])) ?>">Continuar curso</a>
+                </div>
+            <?php else: ?>
+                <form action="<?= e(url('/aluno/cursos/' . $course['id'] . '/matricular')) ?>" method="post" class="actions-row">
+                    <?= csrf_field() ?>
+                    <button class="button large" type="submit">Matricular-se</button>
+                    <a class="button ghost large" href="<?= e(url('/aluno/cursos')) ?>">Voltar ao catálogo</a>
+                </form>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -42,23 +60,11 @@
                             <?php if (! empty($lesson['description'])): ?>
                                 <p><?= e($lesson['description']) ?></p>
                             <?php endif; ?>
-                            <?php if (! empty($lesson['video_url'])): ?>
-                                <a href="<?= e($lesson['video_url']) ?>" target="_blank" rel="noopener">Abrir link da aula</a>
-                            <?php endif; ?>
                             <?php if (! empty($lesson['materials'])): ?>
                                 <div class="material-list">
                                     <?php foreach ($lesson['materials'] as $material): ?>
                                         <?php if ($material['status'] !== 'ativo'): continue; endif; ?>
-                                        <span>
-                                            <?= e($material['material_type']) ?>:
-                                            <?php if (! empty($material['external_url'])): ?>
-                                                <a href="<?= e($material['external_url']) ?>" target="_blank" rel="noopener"><?= e($material['title']) ?></a>
-                                            <?php elseif (! empty($material['file_path'])): ?>
-                                                <a href="<?= e(url('/' . $material['file_path'])) ?>" target="_blank" rel="noopener"><?= e($material['title']) ?></a>
-                                            <?php else: ?>
-                                                <?= e($material['title']) ?>
-                                            <?php endif; ?>
-                                        </span>
+                                        <span><?= e($material['material_type']) ?>: <?= e($material['title']) ?></span>
                                     <?php endforeach; ?>
                                 </div>
                             <?php endif; ?>
