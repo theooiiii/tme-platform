@@ -1,0 +1,18 @@
+Options -Indexes
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteRule ^(app|config|database|storage|modules|ai)(/|$) - [F,L]
+    RewriteRule ^$ public/ [L]
+
+    RewriteCond %{REQUEST_URI} !/assets/
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)$ public/$1 [L]
+</IfModule>

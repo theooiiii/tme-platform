@@ -1,0 +1,25 @@
+[data-theme="dark"] {
+    --bg: #101214;
+    --surface: #171a1f;
+    --surface-soft: #22262d;
+    --text: #f4f7fb;
+    --muted: #aab3c0;
+    --border: #343a45;
+    --accent-contrast: #ffffff;
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+    color-scheme: dark;
+}
+
+[data-theme="dark"] .brand-mark {
+    background: #f4f7fb;
+    color: #101214;
+}
+
+[data-theme="dark"] .hero {
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--surface) 78%, var(--accent) 22%), var(--bg) 56%, #171a1f);
+}
+
+[data-theme="dark"] .button.ghost {
+    color: var(--text);
+}

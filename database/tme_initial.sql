@@ -1,0 +1,631 @@
+CREATE DATABASE IF NOT EXISTS tme_platform
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE tme_platform;
+
+CREATE TABLE IF NOT EXISTS roles (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(40) NOT NULL UNIQUE,
+    name VARCHAR(80) NOT NULL,
+    description VARCHAR(255) NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS permissions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(80) NOT NULL UNIQUE,
+    name VARCHAR(120) NOT NULL,
+    description VARCHAR(255) NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS role_permissions (
+    role_id INT UNSIGNED NOT NULL,
+    permission_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (role_id, permission_id),
+    CONSTRAINT fk_role_permissions_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+    CONSTRAINT fk_role_permissions_permission FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS institutions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    source ENUM('manual', 'inep', 'emec') NOT NULL DEFAULT 'manual',
+    external_code VARCHAR(80) NULL,
+    name VARCHAR(180) NOT NULL,
+    legal_name VARCHAR(220) NULL,
+    institution_type ENUM('escola', 'ensino_superior', 'curso_livre', 'outra') NOT NULL DEFAULT 'outra',
+    state CHAR(2) NULL,
+    city VARCHAR(120) NULL,
+    address VARCHAR(255) NULL,
+    verification_status ENUM('nao_verificada', 'verificada', 'arquivada') NOT NULL DEFAULT 'nao_verificada',
+    imported_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY institutions_source_code_unique (source, external_code),
+    KEY institutions_name_index (name),
+    KEY institutions_location_index (state, city)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    role_id INT UNSIGNED NOT NULL,
+    institution_id BIGINT UNSIGNED NULL,
+    full_name VARCHAR(160) NOT NULL,
+    email VARCHAR(160) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    birth_date DATE NOT NULL,
+    state CHAR(2) NOT NULL,
+    city VARCHAR(120) NOT NULL,
+    is_independent TINYINT(1) NOT NULL DEFAULT 0,
+    interest_area VARCHAR(160) NOT NULL,
+    platform_goal VARCHAR(255) NOT NULL,
+    terms_accepted_at TIMESTAMP NULL,
+    status ENUM('pendente', 'aprovado', 'recusado', 'inativo') NOT NULL DEFAULT 'pendente',
+    approved_by BIGINT UNSIGNED NULL,
+    approved_at TIMESTAMP NULL,
+    rejection_reason VARCHAR(255) NULL,
+    last_login_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY users_status_index (status),
+    KEY users_role_index (role_id),
+    KEY users_institution_index (institution_id),
+    CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES roles(id),
+    CONSTRAINT fk_users_institution FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE SET NULL,
+    CONSTRAINT fk_users_approved_by FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS user_settings (
+    user_id BIGINT UNSIGNED PRIMARY KEY,
+    theme ENUM('light', 'dark') NOT NULL DEFAULT 'light',
+    primary_color CHAR(7) NOT NULL DEFAULT '#1f6feb',
+    notifications_enabled TINYINT(1) NOT NULL DEFAULT 1,
+    density ENUM('comfortable', 'compact') NOT NULL DEFAULT 'comfortable',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user_settings_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS courses (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    institution_id BIGINT UNSIGNED NULL,
+    creator_id BIGINT UNSIGNED NULL,
+    responsible_teacher_id BIGINT UNSIGNED NULL,
+    title VARCHAR(180) NOT NULL,
+    slug VARCHAR(200) NOT NULL UNIQUE,
+    description TEXT NULL,
+    category VARCHAR(120) NOT NULL DEFAULT 'Geral',
+    level ENUM('iniciante', 'intermediario', 'avancado', 'livre') NOT NULL DEFAULT 'livre',
+    workload_hours SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+    visibility ENUM('publico', 'privado', 'institucional') NOT NULL DEFAULT 'privado',
+    status ENUM('rascunho', 'publicado', 'arquivado') NOT NULL DEFAULT 'rascunho',
+    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    image_path VARCHAR(255) NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY courses_status_index (status),
+    KEY courses_category_index (category),
+    KEY courses_teacher_index (responsible_teacher_id),
+    CONSTRAINT fk_courses_institution FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE SET NULL,
+    CONSTRAINT fk_courses_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_courses_responsible_teacher FOREIGN KEY (responsible_teacher_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS course_modules (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    course_id BIGINT UNSIGNED NOT NULL,
+    title VARCHAR(180) NOT NULL,
+    description TEXT NULL,
+    position SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_course_modules_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS lessons (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    course_id BIGINT UNSIGNED NOT NULL,
+    module_id BIGINT UNSIGNED NULL,
+    title VARCHAR(180) NOT NULL,
+    description TEXT NULL,
+    lesson_type ENUM('video', 'texto', 'ao_vivo', 'arquivo', 'link') NOT NULL DEFAULT 'video',
+    content LONGTEXT NULL,
+    video_url VARCHAR(255) NULL,
+    duration_minutes SMALLINT UNSIGNED NULL,
+    position SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+    status ENUM('rascunho', 'publicada', 'arquivada') NOT NULL DEFAULT 'rascunho',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_lessons_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    CONSTRAINT fk_lessons_module FOREIGN KEY (module_id) REFERENCES course_modules(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS materials (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    course_id BIGINT UNSIGNED NULL,
+    module_id BIGINT UNSIGNED NULL,
+    lesson_id BIGINT UNSIGNED NULL,
+    owner_id BIGINT UNSIGNED NULL,
+    title VARCHAR(180) NOT NULL,
+    description TEXT NULL,
+    material_type ENUM('pdf', 'imagem', 'link', 'arquivo', 'livro', 'apostila', 'video') NOT NULL DEFAULT 'arquivo',
+    visibility ENUM('publico', 'privado', 'institucional') NOT NULL DEFAULT 'privado',
+    file_path VARCHAR(255) NULL,
+    external_url VARCHAR(255) NULL,
+    status ENUM('ativo', 'inativo') NOT NULL DEFAULT 'ativo',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_materials_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL,
+    CONSTRAINT fk_materials_module FOREIGN KEY (module_id) REFERENCES course_modules(id) ON DELETE SET NULL,
+    CONSTRAINT fk_materials_lesson FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE SET NULL,
+    CONSTRAINT fk_materials_owner FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS classes (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    institution_id BIGINT UNSIGNED NULL,
+    name VARCHAR(140) NOT NULL,
+    code VARCHAR(60) NULL UNIQUE,
+    description TEXT NULL,
+    academic_year SMALLINT UNSIGNED NULL,
+    starts_at DATE NULL,
+    ends_at DATE NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_classes_institution FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS subjects (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    class_id BIGINT UNSIGNED NULL,
+    teacher_id BIGINT UNSIGNED NULL,
+    name VARCHAR(140) NOT NULL,
+    description TEXT NULL,
+    workload_hours SMALLINT UNSIGNED NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_subjects_class FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL,
+    CONSTRAINT fk_subjects_teacher FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS enrollments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    course_id BIGINT UNSIGNED NULL,
+    class_id BIGINT UNSIGNED NULL,
+    subject_id BIGINT UNSIGNED NULL,
+    role ENUM('aluno', 'professor') NOT NULL DEFAULT 'aluno',
+    status ENUM('ativa', 'concluida', 'cancelada') NOT NULL DEFAULT 'ativa',
+    progress_percent DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    enrolled_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    last_activity_at TIMESTAMP NULL,
+    completed_at TIMESTAMP NULL,
+    UNIQUE KEY enrollments_user_course_unique (user_id, course_id),
+    KEY enrollments_status_index (status),
+    KEY enrollments_progress_index (progress_percent),
+    CONSTRAINT fk_enrollments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_enrollments_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    CONSTRAINT fk_enrollments_class FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
+    CONSTRAINT fk_enrollments_subject FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS lesson_progress (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    enrollment_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    course_id BIGINT UNSIGNED NOT NULL,
+    lesson_id BIGINT UNSIGNED NOT NULL,
+    status ENUM('pendente', 'concluida') NOT NULL DEFAULT 'pendente',
+    completed_at TIMESTAMP NULL,
+    last_activity_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY lesson_progress_enrollment_lesson_unique (enrollment_id, lesson_id),
+    KEY lesson_progress_user_course_index (user_id, course_id),
+    KEY lesson_progress_status_index (status),
+    CONSTRAINT fk_lesson_progress_enrollment FOREIGN KEY (enrollment_id) REFERENCES enrollments(id) ON DELETE CASCADE,
+    CONSTRAINT fk_lesson_progress_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_lesson_progress_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    CONSTRAINT fk_lesson_progress_lesson FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS activities (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    course_id BIGINT UNSIGNED NULL,
+    class_id BIGINT UNSIGNED NULL,
+    subject_id BIGINT UNSIGNED NULL,
+    teacher_id BIGINT UNSIGNED NULL,
+    title VARCHAR(180) NOT NULL,
+    description TEXT NULL,
+    activity_type ENUM('atividade', 'prova', 'projeto', 'forum') NOT NULL DEFAULT 'atividade',
+    due_at TIMESTAMP NULL,
+    max_score DECIMAL(6,2) NOT NULL DEFAULT 10.00,
+    status ENUM('rascunho', 'publicada', 'encerrada') NOT NULL DEFAULT 'rascunho',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_activities_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL,
+    CONSTRAINT fk_activities_class FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL,
+    CONSTRAINT fk_activities_subject FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL,
+    CONSTRAINT fk_activities_teacher FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS submissions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    activity_id BIGINT UNSIGNED NOT NULL,
+    student_id BIGINT UNSIGNED NOT NULL,
+    content LONGTEXT NULL,
+    file_path VARCHAR(255) NULL,
+    status ENUM('enviada', 'revisao', 'corrigida', 'devolvida') NOT NULL DEFAULT 'enviada',
+    submitted_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_submissions_activity FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE CASCADE,
+    CONSTRAINT fk_submissions_student FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS grades (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    submission_id BIGINT UNSIGNED NULL,
+    activity_id BIGINT UNSIGNED NOT NULL,
+    student_id BIGINT UNSIGNED NOT NULL,
+    teacher_id BIGINT UNSIGNED NULL,
+    score DECIMAL(6,2) NOT NULL,
+    feedback TEXT NULL,
+    graded_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_grades_submission FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE SET NULL,
+    CONSTRAINT fk_grades_activity FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE CASCADE,
+    CONSTRAINT fk_grades_student FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_grades_teacher FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS question_bank (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    creator_id BIGINT UNSIGNED NULL,
+    subject_id BIGINT UNSIGNED NULL,
+    statement_text TEXT NOT NULL,
+    question_type ENUM('objetiva', 'discursiva') NOT NULL DEFAULT 'objetiva',
+    alternatives JSON NULL,
+    correct_answer TEXT NULL,
+    difficulty ENUM('facil', 'media', 'dificil') NOT NULL DEFAULT 'media',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_question_bank_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_question_bank_subject FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS exams (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    course_id BIGINT UNSIGNED NULL,
+    class_id BIGINT UNSIGNED NULL,
+    creator_id BIGINT UNSIGNED NULL,
+    title VARCHAR(180) NOT NULL,
+    description TEXT NULL,
+    time_limit_minutes SMALLINT UNSIGNED NULL,
+    auto_correction_enabled TINYINT(1) NOT NULL DEFAULT 0,
+    status ENUM('rascunho', 'publicado', 'encerrado') NOT NULL DEFAULT 'rascunho',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_exams_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL,
+    CONSTRAINT fk_exams_class FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL,
+    CONSTRAINT fk_exams_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS exam_questions (
+    exam_id BIGINT UNSIGNED NOT NULL,
+    question_id BIGINT UNSIGNED NOT NULL,
+    position SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+    score DECIMAL(6,2) NOT NULL DEFAULT 1.00,
+    PRIMARY KEY (exam_id, question_id),
+    CONSTRAINT fk_exam_questions_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+    CONSTRAINT fk_exam_questions_question FOREIGN KEY (question_id) REFERENCES question_bank(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS exam_attempts (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    exam_id BIGINT UNSIGNED NOT NULL,
+    student_id BIGINT UNSIGNED NOT NULL,
+    answers JSON NULL,
+    score DECIMAL(6,2) NULL,
+    started_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    finished_at TIMESTAMP NULL,
+    CONSTRAINT fk_exam_attempts_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+    CONSTRAINT fk_exam_attempts_student FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS posts (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    title VARCHAR(180) NOT NULL,
+    content TEXT NOT NULL,
+    visibility ENUM('publico', 'privado', 'turma') NOT NULL DEFAULT 'publico',
+    status ENUM('pendente', 'aprovado', 'recusado') NOT NULL DEFAULT 'pendente',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_posts_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    parent_id BIGINT UNSIGNED NULL,
+    content TEXT NOT NULL,
+    status ENUM('pendente', 'aprovado', 'recusado') NOT NULL DEFAULT 'pendente',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_comments_post FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    CONSTRAINT fk_comments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_comments_parent FOREIGN KEY (parent_id) REFERENCES comments(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS content_moderation (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    content_type ENUM('post', 'comment', 'project', 'portfolio') NOT NULL,
+    content_id BIGINT UNSIGNED NOT NULL,
+    moderator_id BIGINT UNSIGNED NULL,
+    status ENUM('pendente', 'aprovado', 'recusado') NOT NULL DEFAULT 'pendente',
+    reason VARCHAR(255) NULL,
+    reviewed_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY content_moderation_content_index (content_type, content_id),
+    CONSTRAINT fk_content_moderation_moderator FOREIGN KEY (moderator_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS events (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    institution_id BIGINT UNSIGNED NULL,
+    creator_id BIGINT UNSIGNED NULL,
+    title VARCHAR(180) NOT NULL,
+    event_type ENUM('palestra', 'workshop', 'aula_ao_vivo', 'olimpiada', 'hackathon', 'outro') NOT NULL DEFAULT 'outro',
+    description TEXT NULL,
+    starts_at TIMESTAMP NULL,
+    ends_at TIMESTAMP NULL,
+    location VARCHAR(180) NULL,
+    is_online TINYINT(1) NOT NULL DEFAULT 0,
+    meeting_url VARCHAR(255) NULL,
+    certificate_enabled TINYINT(1) NOT NULL DEFAULT 0,
+    status ENUM('rascunho', 'publicado', 'encerrado') NOT NULL DEFAULT 'rascunho',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_events_institution FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE SET NULL,
+    CONSTRAINT fk_events_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS certificates (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    event_id BIGINT UNSIGNED NULL,
+    course_id BIGINT UNSIGNED NULL,
+    code VARCHAR(80) NOT NULL UNIQUE,
+    title VARCHAR(180) NOT NULL,
+    validation_status ENUM('valido', 'revogado') NOT NULL DEFAULT 'valido',
+    qr_code_path VARCHAR(255) NULL,
+    issued_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_certificates_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_certificates_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE SET NULL,
+    CONSTRAINT fk_certificates_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS gamification_profiles (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL UNIQUE,
+    xp INT UNSIGNED NOT NULL DEFAULT 0,
+    level INT UNSIGNED NOT NULL DEFAULT 1,
+    internal_coins INT UNSIGNED NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_gamification_profiles_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS badges (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(80) NOT NULL UNIQUE,
+    name VARCHAR(120) NOT NULL,
+    description VARCHAR(255) NULL,
+    icon_path VARCHAR(255) NULL,
+    xp_reward INT UNSIGNED NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS user_badges (
+    user_id BIGINT UNSIGNED NOT NULL,
+    badge_id BIGINT UNSIGNED NOT NULL,
+    earned_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, badge_id),
+    CONSTRAINT fk_user_badges_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_badges_badge FOREIGN KEY (badge_id) REFERENCES badges(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS plans (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    description VARCHAR(255) NULL,
+    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    billing_cycle ENUM('mensal', 'anual', 'unico') NOT NULL DEFAULT 'mensal',
+    features JSON NULL,
+    status ENUM('ativo', 'inativo') NOT NULL DEFAULT 'ativo',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS transactions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    plan_id BIGINT UNSIGNED NULL,
+    creator_id BIGINT UNSIGNED NULL,
+    transaction_type ENUM('assinatura', 'mensalidade', 'marketplace', 'comissao') NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    platform_fee DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    creator_amount DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    status ENUM('pendente', 'pago', 'cancelado', 'estornado') NOT NULL DEFAULT 'pendente',
+    reference VARCHAR(120) NULL,
+    paid_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_transactions_plan FOREIGN KEY (plan_id) REFERENCES plans(id) ON DELETE SET NULL,
+    CONSTRAINT fk_transactions_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS notifications (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    title VARCHAR(160) NOT NULL,
+    message TEXT NOT NULL,
+    notification_type VARCHAR(60) NOT NULL DEFAULT 'sistema',
+    read_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_notifications_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NULL,
+    level ENUM('info', 'warning', 'error', 'security') NOT NULL DEFAULT 'info',
+    action VARCHAR(120) NOT NULL,
+    context JSON NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent VARCHAR(255) NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_logs_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS chat_channels (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    class_id BIGINT UNSIGNED NULL,
+    name VARCHAR(140) NOT NULL,
+    channel_type ENUM('turma', 'grupo', 'privado') NOT NULL DEFAULT 'turma',
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_chat_channels_class FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS chat_channel_members (
+    channel_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    joined_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (channel_id, user_id),
+    CONSTRAINT fk_chat_members_channel FOREIGN KEY (channel_id) REFERENCES chat_channels(id) ON DELETE CASCADE,
+    CONSTRAINT fk_chat_members_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    channel_id BIGINT UNSIGNED NOT NULL,
+    sender_id BIGINT UNSIGNED NOT NULL,
+    message TEXT NOT NULL,
+    read_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_chat_messages_channel FOREIGN KEY (channel_id) REFERENCES chat_channels(id) ON DELETE CASCADE,
+    CONSTRAINT fk_chat_messages_sender FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS ai_requests (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NULL,
+    request_type ENUM('tutor', 'correcao', 'resumo', 'quiz', 'recomendacao', 'desempenho', 'plagio') NOT NULL,
+    input_reference VARCHAR(255) NULL,
+    status ENUM('pendente', 'processando', 'concluido', 'falhou') NOT NULL DEFAULT 'pendente',
+    output JSON NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_ai_requests_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO roles (slug, name, description) VALUES
+('aluno', 'Aluno', 'Acesso discente a cursos, atividades, biblioteca e comunidade.'),
+('professor', 'Professor', 'Criação de conteúdos, atividades, correções e acompanhamento de turmas.'),
+('supervisor', 'Supervisor', 'Supervisão acadêmica, aprovação de contas e moderação.'),
+('administrador', 'Administrador', 'Acesso administrativo completo.'),
+('secretaria', 'Secretaria', 'Gestão acadêmica, matrículas, turmas e registros.'),
+('financeiro', 'Financeiro', 'Gestão de planos, transações, mensalidades e marketplace.');
+
+INSERT IGNORE INTO permissions (slug, name, description) VALUES
+('accounts.approve', 'Aprovar contas', 'Permite aprovar ou recusar cadastros pendentes.'),
+('users.manage', 'Gerenciar usuários', 'Permite administrar usuários e perfis.'),
+('courses.manage', 'Gerenciar cursos', 'Permite criar e publicar cursos.'),
+('classes.manage', 'Gerenciar turmas', 'Permite administrar turmas e disciplinas.'),
+('finance.manage', 'Gerenciar financeiro', 'Permite administrar planos, mensalidades e transações.'),
+('community.moderate', 'Moderar comunidade', 'Permite revisar posts, comentários e projetos.'),
+('reports.view', 'Ver relatórios', 'Permite consultar indicadores administrativos e acadêmicos.');
+
+INSERT IGNORE INTO role_permissions (role_id, permission_id)
+SELECT roles.id, permissions.id
+FROM roles
+JOIN permissions
+WHERE roles.slug = 'administrador';
+
+INSERT IGNORE INTO role_permissions (role_id, permission_id)
+SELECT roles.id, permissions.id
+FROM roles
+JOIN permissions ON permissions.slug IN ('accounts.approve', 'courses.manage', 'classes.manage', 'community.moderate', 'reports.view')
+WHERE roles.slug = 'supervisor';
+
+INSERT IGNORE INTO role_permissions (role_id, permission_id)
+SELECT roles.id, permissions.id
+FROM roles
+JOIN permissions ON permissions.slug IN ('courses.manage', 'classes.manage')
+WHERE roles.slug = 'professor';
+
+INSERT IGNORE INTO role_permissions (role_id, permission_id)
+SELECT roles.id, permissions.id
+FROM roles
+JOIN permissions ON permissions.slug IN ('classes.manage')
+WHERE roles.slug = 'secretaria';
+
+INSERT IGNORE INTO role_permissions (role_id, permission_id)
+SELECT roles.id, permissions.id
+FROM roles
+JOIN permissions ON permissions.slug IN ('finance.manage', 'reports.view')
+WHERE roles.slug = 'financeiro';
+
+INSERT IGNORE INTO institutions (source, external_code, name, legal_name, institution_type, state, city, verification_status)
+VALUES ('manual', 'TME-DEMO', 'Theo Mind Educacional', 'Theo Mind Educacional', 'curso_livre', 'SP', 'São Paulo', 'verificada');
+
+INSERT IGNORE INTO users (
+    role_id, institution_id, full_name, email, password_hash, phone, cpf, birth_date,
+    state, city, is_independent, interest_area, platform_goal, terms_accepted_at,
+    status, approved_at, created_at, updated_at
+)
+SELECT
+    roles.id,
+    institutions.id,
+    'Administrador TME',
+    'admin@tme.local',
+    '$2y$10$G/2aVViv0w618ygGzZ38b.0wiJ7Kw0QgZ.yXDathSzUIDDm2D/wRy',
+    '11999999999',
+    '00000000000',
+    '2000-01-01',
+    'SP',
+    'São Paulo',
+    1,
+    'Gestão educacional',
+    'Administrar a plataforma',
+    NOW(),
+    'aprovado',
+    NOW(),
+    NOW(),
+    NOW()
+FROM roles
+JOIN institutions ON institutions.external_code = 'TME-DEMO'
+WHERE roles.slug = 'administrador';
+
+INSERT IGNORE INTO user_settings (user_id, theme, primary_color, created_at, updated_at)
+SELECT id, 'light', '#1f6feb', NOW(), NOW()
+FROM users
+WHERE email = 'admin@tme.local';
+
+INSERT IGNORE INTO gamification_profiles (user_id, xp, level, internal_coins, created_at, updated_at)
+SELECT id, 0, 1, 0, NOW(), NOW()
+FROM users
+WHERE email = 'admin@tme.local';
+
+INSERT IGNORE INTO badges (slug, name, description, xp_reward) VALUES
+('primeiro-acesso', 'Primeiro acesso', 'Conquista liberada no primeiro acesso aprovado.', 25),
+('perfil-academico', 'Perfil acadêmico', 'Conquista para perfil completo.', 50),
+('participacao-comunidade', 'Participação na comunidade', 'Conquista para publicações acadêmicas aprovadas.', 75);
+
+INSERT IGNORE INTO plans (name, description, price, billing_cycle, features, status) VALUES
+('TME Inicial', 'Plano base para validação da plataforma.', 0.00, 'mensal', JSON_ARRAY('LMS', 'Comunidade', 'Biblioteca'), 'ativo');

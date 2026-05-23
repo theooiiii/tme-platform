@@ -1,25 +1,26 @@
-# CakePHP 3
+.env
 
-/vendor/*
-/config/app.php
+/vendor/
+/node_modules/
 
-/tmp/cache/models/*
-!/tmp/cache/models/empty
-/tmp/cache/persistent/*
-!/tmp/cache/persistent/empty
-/tmp/cache/views/*
-!/tmp/cache/views/empty
-/tmp/sessions/*
-!/tmp/sessions/empty
-/tmp/tests/*
-!/tmp/tests/empty
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/temp/*
+!/storage/temp/.gitkeep
 
-/logs/*
-!/logs/empty
+/public/uploads/*
+!/public/uploads/.gitkeep
+!/public/uploads/course-images/
+!/public/uploads/course-images/.gitkeep
+!/public/uploads/materials/
+!/public/uploads/materials/.gitkeep
 
-# CakePHP 2
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.cache
 
-/app/tmp/*
-/app/Config/core.php
-/app/Config/database.php
-/vendors/*
+/.automation/
