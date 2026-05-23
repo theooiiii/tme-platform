@@ -135,6 +135,54 @@ Para bancos existentes, aplique tambem:
 mysql -u root -p < database/migrations/2026_05_23_activities_library_module.sql
 ```
 
+## Certificados
+
+Alunos e professores acessam `/certificados` para consultar certificados emitidos automaticamente. A validacao publica fica em `/certificados/validar`.
+
+Recursos disponiveis:
+
+- Emissao automatica quando uma matricula chega a 100% de progresso.
+- Codigo unico no formato `TME-CUR-ANO-CODIGO`.
+- Visualizacao HTML do certificado em `/certificados/ver/{codigo}`.
+- Botao `Imprimir/Salvar PDF` usando o print do navegador.
+- Validacao publica por codigo, marcando certificados revogados como invalidos.
+- Area administrativa em `/admin/certificados` para listar, filtrar e revogar certificados com motivo.
+- Estrutura preparada para QR Code futuro.
+- Logs para emissao, visualizacao, validacao e revogacao.
+
+## Gamificacao
+
+A TME agora possui XP, niveis, moedas internas, streak, badges e ranking inicial.
+
+Recursos disponiveis:
+
+- Perfil de gamificacao para cada usuario aprovado.
+- Regras centralizadas em `app/services/GamificationService.php`.
+- XP por login inicial, matricula, aula concluida, curso concluido, atividade enviada, boa nota, favorito de biblioteca e certificado emitido.
+- Badges iniciais: Primeiro Login, Primeiro Curso, Primeira Aula Concluida, Curso Finalizado, Explorador da Biblioteca e Aluno Dedicado.
+- Ranking global e ranking filtrado por curso em `/ranking`.
+- Portal e Perfil exibem XP, nivel, moedas, streak e conquistas recentes.
+- Eventos de XP evitam duplicidade por acao/referencia e registram logs.
+
+## Perfil e configuracoes
+
+Preferencias e dados do usuario foram centralizados em `/perfil` e `/configuracoes`.
+
+Recursos disponiveis:
+
+- Informacoes do usuario, instituicao, area de interesse e biografia curta.
+- Placeholder para foto de perfil futura.
+- Tema claro/escuro e cor principal com preview antes de salvar.
+- Estatisticas: XP, nivel, cursos matriculados, cursos concluidos, atividades entregues, certificados e badges recentes.
+- Alteracao de senha com senha atual, confirmacao e `password_hash`.
+- Logout e area reservada para sessoes futuras.
+
+Para bancos existentes, aplique tambem:
+
+```bash
+mysql -u root -p < database/migrations/2026_05_23_certificates_gamification_profile.sql
+```
+
 ## Estrutura
 
 ```text
