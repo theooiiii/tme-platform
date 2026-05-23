@@ -735,6 +735,10 @@ td span {
     background: var(--surface);
 }
 
+.filter-form.library-filter-form {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto;
+}
+
 .admin-form {
     padding: 24px;
     border: 1px solid var(--border);
@@ -759,12 +763,16 @@ td span {
 .status-badge.publicada,
 .status-badge.ativo,
 .status-badge.ativa,
-.status-badge.concluida {
+.status-badge.concluida,
+.status-badge.corrigida {
     background: color-mix(in srgb, var(--success) 18%, var(--surface));
     color: var(--success);
 }
 
-.status-badge.rascunho {
+.status-badge.rascunho,
+.status-badge.pendente,
+.status-badge.enviada,
+.status-badge.devolvida {
     background: color-mix(in srgb, var(--warning) 18%, var(--surface));
     color: var(--warning);
 }
@@ -772,9 +780,22 @@ td span {
 .status-badge.arquivado,
 .status-badge.arquivada,
 .status-badge.inativo,
-.status-badge.cancelada {
+.status-badge.cancelada,
+.status-badge.atrasada,
+.status-badge.recusado {
     background: color-mix(in srgb, var(--danger) 14%, var(--surface));
     color: var(--danger);
+}
+
+.compact-correction-form {
+    min-width: 240px;
+    gap: 8px;
+}
+
+.compact-correction-form input,
+.compact-correction-form select,
+.compact-correction-form textarea {
+    min-height: 36px;
 }
 
 .progress-track {
