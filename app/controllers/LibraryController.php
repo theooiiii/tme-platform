@@ -7,12 +7,14 @@ class LibraryController extends Controller
     private LibraryItem $library;
     private Activity $activities;
     private ActionLog $logs;
+    private GamificationService $gamification;
 
     public function __construct()
     {
         $this->library = new LibraryItem();
         $this->activities = new Activity();
         $this->logs = new ActionLog();
+        $this->gamification = new GamificationService();
     }
 
     public function index(): void
@@ -76,6 +78,10 @@ class LibraryController extends Controller
         $this->logs->record((int) $user['id'], $favorite ? 'library.favorite.added' : 'library.favorite.removed', [
             'library_item_id' => (int) $item['id'],
         ]);
+
+        if ($favorite) {
+            $this->gamification->libraryFavoriteAdded((int) $user['id'], (int) $item['id']);
+        }
 
         flash('success', $favorite ? 'Material adicionado aos favoritos.' : 'Material removido dos favoritos.');
         $this->redirect('/biblioteca/' . $item['id']);

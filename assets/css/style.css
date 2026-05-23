@@ -139,6 +139,29 @@ main {
     white-space: nowrap;
 }
 
+.profile-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 6px 12px 6px 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 800;
+}
+
+.profile-chip span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+}
+
 .nav-toggle {
     display: none;
     width: 42px;
@@ -257,6 +280,10 @@ button.button {
 
 .flash.error {
     border-left-color: var(--danger);
+}
+
+.flash.warning {
+    border-left-color: var(--warning);
 }
 
 .flash.info {
