@@ -32,6 +32,8 @@ $internalLinks = [
 if ($isLearner) {
     $internalLinks['/aluno/cursos'] = 'Cursos';
     $internalLinks['/meus-cursos'] = 'Meus cursos';
+    $internalLinks['/atividades'] = 'Atividades';
+    $internalLinks['/boletim'] = 'Boletim';
 } elseif ($isAdmin) {
     $internalLinks['/admin/cursos'] = 'Cursos';
 }
@@ -43,6 +45,11 @@ $internalLinks['/configuracoes'] = 'Configuracoes/Tema';
 
 if ($isAdmin) {
     $internalLinks['/admin/contas-pendentes'] = 'Administracao';
+    $internalLinks['/admin/atividades'] = 'Atividades admin';
+    $internalLinks['/admin/biblioteca'] = 'Biblioteca admin';
+} elseif ($role === 'professor') {
+    $internalLinks['/admin/atividades'] = 'Gestao atividades';
+    $internalLinks['/admin/biblioteca'] = 'Biblioteca admin';
 }
 
 $isActive = static function (string $href) use ($path): bool {
