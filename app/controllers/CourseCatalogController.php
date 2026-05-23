@@ -107,6 +107,7 @@ class CourseCatalogController extends Controller
             'enrollment' => $enrollment,
             'structure' => $this->courses->structure((int) $enrollment['course_id'], true),
             'progressMap' => $this->enrollments->progressMap((int) $enrollment['id']),
+            'certificate' => (new Certificate())->findByEnrollment((int) $enrollment['id']),
         ]);
     }
 

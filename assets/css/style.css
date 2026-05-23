@@ -811,6 +811,7 @@ td span {
 .status-badge.publicada,
 .status-badge.ativo,
 .status-badge.ativa,
+.status-badge.aprovado,
 .status-badge.concluida,
 .status-badge.corrigida {
     background: color-mix(in srgb, var(--success) 18%, var(--surface));
