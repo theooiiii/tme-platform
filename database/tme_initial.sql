@@ -524,6 +524,22 @@ CREATE TABLE IF NOT EXISTS user_badges (
     CONSTRAINT fk_user_badges_badge FOREIGN KEY (badge_id) REFERENCES badges(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS gamification_events (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    action VARCHAR(120) NOT NULL,
+    reference_type VARCHAR(80) NULL,
+    reference_id BIGINT UNSIGNED NULL,
+    xp_awarded INT UNSIGNED NOT NULL DEFAULT 0,
+    coins_awarded INT UNSIGNED NOT NULL DEFAULT 0,
+    context JSON NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY gamification_event_unique (user_id, action, reference_type, reference_id),
+    KEY gamification_events_user_index (user_id),
+    KEY gamification_events_action_index (action),
+    CONSTRAINT fk_gamification_events_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS plans (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(120) NOT NULL,
