@@ -9,6 +9,8 @@ class PortalController extends Controller
         $user = current_user();
         $counts = (new User())->dashboardCounts();
         $publishedCourses = (new Course())->published();
+        $gamification = new Gamification();
+        $gamification->ensureProfile((int) $user['id']);
         $enrollments = [];
         $learningStats = [
             'enrolled' => 0,
@@ -28,6 +30,8 @@ class PortalController extends Controller
             'publishedCoursesCount' => count($publishedCourses),
             'enrollments' => $enrollments,
             'learningStats' => $learningStats,
+            'gamificationProfile' => $gamification->profile((int) $user['id']),
+            'badges' => $gamification->badgesForUser((int) $user['id'], 6),
         ]);
     }
 

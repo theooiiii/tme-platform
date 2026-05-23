@@ -14,6 +14,8 @@ if ($isLearner) {
         ['label' => 'Matriculas', 'value' => $learningStats['enrolled']],
         ['label' => 'Progresso medio', 'value' => $learningStats['average_progress'] . '%'],
         ['label' => 'Cursos concluidos', 'value' => $learningStats['completed']],
+        ['label' => 'XP', 'value' => (int) ($gamificationProfile['xp_total'] ?? 0)],
+        ['label' => 'Nivel', 'value' => (int) ($gamificationProfile['level'] ?? 1)],
         ['label' => 'Cursos publicados', 'value' => $publishedCoursesCount],
     ];
 
@@ -27,7 +29,8 @@ if ($isLearner) {
         ['title' => 'Favoritos', 'text' => 'Retome materiais salvos na biblioteca digital.', 'href' => '/biblioteca/favoritos', 'action' => 'Ver favoritos'],
         ['title' => 'Eventos', 'text' => 'Acompanhe palestras, workshops e encontros academicos.', 'href' => '/eventos', 'action' => 'Ver agenda'],
         ['title' => 'Comunidade', 'text' => 'Participe da rede academica e acompanhe publicacoes.', 'href' => '/comunidade', 'action' => 'Entrar'],
-        ['title' => 'Certificados futuros', 'text' => 'Espaco reservado para certificados, validacao e QR Code.', 'href' => '', 'action' => 'Planejado'],
+        ['title' => 'Certificados', 'text' => 'Acesse certificados emitidos e valide codigos publicos.', 'href' => '/certificados', 'action' => 'Ver certificados'],
+        ['title' => 'Ranking', 'text' => 'Compare XP, niveis, badges e conquistas da comunidade.', 'href' => '/ranking', 'action' => 'Ver ranking'],
     ]);
 }
 
@@ -57,6 +60,8 @@ if ($isAdmin) {
         ['title' => 'Matriculas', 'text' => 'Visualize alunos por curso, status e progresso.', 'href' => '/admin/matriculas', 'action' => 'Ver lista'],
         ['title' => 'Atividades', 'text' => 'Crie tarefas e corrija entregas com nota e feedback.', 'href' => '/admin/atividades', 'action' => 'Gerenciar'],
         ['title' => 'Biblioteca admin', 'text' => 'Aprove, recuse e publique materiais educacionais.', 'href' => '/admin/biblioteca', 'action' => 'Moderar'],
+        ['title' => 'Certificados', 'text' => 'Liste certificados emitidos e revogue registros invalidos.', 'href' => '/admin/certificados', 'action' => 'Gerenciar'],
+        ['title' => 'Ranking', 'text' => 'Acompanhe XP, niveis e conquistas da comunidade.', 'href' => '/ranking', 'action' => 'Ver ranking'],
         ['title' => 'Usuarios', 'text' => 'Base preparada para gestao completa de usuarios.', 'href' => '/admin/contas-pendentes', 'action' => 'Acessar'],
         ['title' => 'Logs', 'text' => 'Acoes importantes ja sao registradas para auditoria.', 'href' => '', 'action' => 'Planejado'],
         ['title' => 'Relatorios futuros', 'text' => 'Indicadores academicos, financeiros e operacionais.', 'href' => '', 'action' => 'Planejado'],
@@ -104,6 +109,23 @@ if (! $cards) {
                 <strong><?= e($metric['value']) ?></strong>
             </article>
         <?php endforeach; ?>
+    </div>
+
+    <div class="portal-gamification-panel">
+        <div>
+            <span class="eyebrow">Conquistas</span>
+            <h2>Nivel <?= e((int) ($gamificationProfile['level'] ?? 1)) ?> | <?= e((int) ($gamificationProfile['xp_total'] ?? 0)) ?> XP</h2>
+            <p><?= e((int) ($gamificationProfile['internal_coins'] ?? 0)) ?> moedas internas e streak de <?= e((int) ($gamificationProfile['streak_days'] ?? 0)) ?> dia(s).</p>
+        </div>
+        <div class="badge-strip">
+            <?php if (empty($badges)): ?>
+                <span class="muted">Badges serao liberados conforme suas primeiras acoes.</span>
+            <?php else: ?>
+                <?php foreach ($badges as $badge): ?>
+                    <span class="badge-pill"><?= e($badge['name']) ?></span>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
 
     <div class="portal-section-title">
