@@ -7,8 +7,14 @@ return [
     ['GET', '/sobre', [PublicController::class, 'about']],
     ['GET', '/cursos', [PublicController::class, 'courses']],
     ['GET', '/eventos', [PublicController::class, 'events']],
-    ['GET', '/biblioteca', [PublicController::class, 'library']],
     ['GET', '/comunidade', [PublicController::class, 'community']],
+
+    ['GET', '/biblioteca', [LibraryController::class, 'index']],
+    ['GET', '/biblioteca/enviar', [LibraryController::class, 'contribute'], ['auth', 'role:aluno,professor']],
+    ['POST', '/biblioteca/enviar', [LibraryController::class, 'storeContribution'], ['auth', 'role:aluno,professor']],
+    ['GET', '/biblioteca/favoritos', [LibraryController::class, 'favorites'], ['auth']],
+    ['GET', '/biblioteca/{id}', [LibraryController::class, 'show']],
+    ['POST', '/biblioteca/{id}/favoritar', [LibraryController::class, 'toggleFavorite'], ['auth']],
 
     ['GET', '/login', [AuthController::class, 'showLogin']],
     ['POST', '/login', [AuthController::class, 'login']],
@@ -25,6 +31,11 @@ return [
     ['GET', '/dashboard', [DashboardController::class, 'index'], ['auth']],
     ['POST', '/settings', [DashboardController::class, 'updateSettings'], ['auth']],
 
+    ['GET', '/atividades', [ActivityController::class, 'myActivities'], ['auth', 'role:aluno,professor']],
+    ['GET', '/atividades/{id}', [ActivityController::class, 'showForStudent'], ['auth', 'role:aluno,professor']],
+    ['POST', '/atividades/{id}/entregar', [ActivityController::class, 'submit'], ['auth', 'role:aluno,professor']],
+    ['GET', '/boletim', [ActivityController::class, 'gradebook'], ['auth', 'role:aluno,professor']],
+
     ['GET', '/aluno/cursos', [CourseCatalogController::class, 'index'], ['auth', 'role:aluno,professor']],
     ['GET', '/aluno/cursos/{id}', [CourseCatalogController::class, 'show'], ['auth', 'role:aluno,professor']],
     ['POST', '/aluno/cursos/{id}/matricular', [CourseCatalogController::class, 'enroll'], ['auth', 'role:aluno,professor']],
@@ -39,6 +50,24 @@ return [
     ['POST', '/admin/contas/{id}/aprovar', [AdminController::class, 'approve'], ['auth', 'role:administrador,supervisor']],
     ['POST', '/admin/contas/{id}/recusar', [AdminController::class, 'reject'], ['auth', 'role:administrador,supervisor']],
     ['GET', '/admin/matriculas', [AdminEnrollmentController::class, 'index'], ['auth', 'role:administrador,supervisor']],
+
+    ['GET', '/admin/atividades', [ActivityController::class, 'adminIndex'], ['auth', 'role:professor,administrador,supervisor']],
+    ['GET', '/admin/atividades/nova', [ActivityController::class, 'create'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/atividades', [ActivityController::class, 'store'], ['auth', 'role:professor,administrador,supervisor']],
+    ['GET', '/admin/atividades/{id}', [ActivityController::class, 'adminShow'], ['auth', 'role:professor,administrador,supervisor']],
+    ['GET', '/admin/atividades/{id}/editar', [ActivityController::class, 'edit'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/atividades/{id}/atualizar', [ActivityController::class, 'update'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/atividades/{id}/encerrar', [ActivityController::class, 'archive'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/atividades/entregas/{submissionId}/corrigir', [ActivityController::class, 'gradeSubmission'], ['auth', 'role:professor,administrador,supervisor']],
+
+    ['GET', '/admin/biblioteca', [LibraryController::class, 'adminIndex'], ['auth', 'role:professor,administrador,supervisor']],
+    ['GET', '/admin/biblioteca/novo', [LibraryController::class, 'create'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/biblioteca', [LibraryController::class, 'store'], ['auth', 'role:professor,administrador,supervisor']],
+    ['GET', '/admin/biblioteca/{id}/editar', [LibraryController::class, 'edit'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/biblioteca/{id}/atualizar', [LibraryController::class, 'update'], ['auth', 'role:professor,administrador,supervisor']],
+    ['POST', '/admin/biblioteca/{id}/aprovar', [LibraryController::class, 'approve'], ['auth', 'role:administrador,supervisor']],
+    ['POST', '/admin/biblioteca/{id}/recusar', [LibraryController::class, 'reject'], ['auth', 'role:administrador,supervisor']],
+    ['POST', '/admin/biblioteca/{id}/arquivar', [LibraryController::class, 'archive'], ['auth', 'role:professor,administrador,supervisor']],
 
     ['GET', '/admin/cursos', [AdminCourseController::class, 'index'], ['auth', 'role:administrador,supervisor']],
     ['GET', '/admin/cursos/novo', [AdminCourseController::class, 'create'], ['auth', 'role:administrador,supervisor']],
