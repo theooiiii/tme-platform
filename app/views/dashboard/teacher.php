@@ -15,6 +15,8 @@
     </div>
 
     <div class="module-grid">
+        <article class="module-card"><h2>Estudar na TME</h2><p>Professores tambem podem se matricular e acompanhar progresso como alunos.</p><a href="<?= e(url('/aluno/cursos')) ?>">Catalogo</a></article>
+        <article class="module-card"><h2>Meus cursos</h2><p>Continue cursos em andamento e revise aulas concluidas.</p><a href="<?= e(url('/meus-cursos')) ?>">Abrir cursos</a></article>
         <article class="module-card"><h2>Conteúdo</h2><p>Planejamento de módulos, aulas, materiais e simulados.</p></article>
         <article class="module-card"><h2>Avaliações</h2><p>Atividades, entregas, feedbacks e notas ficarão centralizados.</p></article>
         <article class="module-card"><h2>Publicações</h2><p>Posts e projetos podem alimentar a comunidade acadêmica.</p></article>
