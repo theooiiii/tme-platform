@@ -19,6 +19,7 @@ class LibraryItem extends Model
                   AND enrollments.status IN ("ativa", "concluida")
             )';
             $params['viewer_id'] = (int) $user['id'];
+            $params['favorite_viewer_id'] = (int) $user['id'];
 
             if (in_array($user['role_slug'], ['administrador', 'supervisor'], true)) {
                 $visibility[] = 'library_items.visibility = "privada_admin"';
@@ -41,7 +42,7 @@ class LibraryItem extends Model
         $params = [];
 
         if (! empty($user['id'])) {
-            $params['viewer_id'] = (int) $user['id'];
+            $params['favorite_viewer_id'] = (int) $user['id'];
         }
 
         if (($user['role_slug'] ?? '') === 'professor') {
@@ -72,7 +73,7 @@ class LibraryItem extends Model
              WHERE library_items.status = "publicado"
              ORDER BY fav_filter.created_at DESC'
         );
-        $statement->execute(['user_id' => $userId, 'viewer_id' => $userId]);
+        $statement->execute(['user_id' => $userId, 'favorite_viewer_id' => $userId]);
 
         return $statement->fetchAll();
     }
@@ -243,7 +244,7 @@ class LibraryItem extends Model
     private function baseSelect(?array $user): string
     {
         $favoriteSelect = $user
-            ? 'EXISTS (SELECT 1 FROM library_favorites WHERE library_favorites.library_item_id = library_items.id AND library_favorites.user_id = :viewer_id) AS is_favorite,'
+            ? 'EXISTS (SELECT 1 FROM library_favorites WHERE library_favorites.library_item_id = library_items.id AND library_favorites.user_id = :favorite_viewer_id) AS is_favorite,'
             : '0 AS is_favorite,';
 
         return 'SELECT library_items.*,
