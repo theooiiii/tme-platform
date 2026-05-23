@@ -125,6 +125,7 @@ class CourseCatalogController extends Controller
             $this->gamification->lessonCompleted((int) $user['id'], (int) $lessonId, (int) $enrollmentId);
 
             if ($progress['course_completed_now']) {
+                $enrollment = $this->enrollments->find((int) $enrollmentId);
                 $this->logs->record((int) $user['id'], 'course.completed', [
                     'enrollment_id' => (int) $enrollmentId,
                     'progress_percent' => $progress['progress_percent'],
