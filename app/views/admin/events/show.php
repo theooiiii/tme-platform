@@ -17,6 +17,19 @@
         <article class="metric"><span>Certificado</span><strong><?= (bool) $event['certificate_enabled'] ? 'Sim' : 'Nao' ?></strong></article>
     </div>
 
+    <form class="filter-form ranking-filter-form" action="<?= e(url('/admin/eventos/' . $event['id'] . '/status')) ?>" method="post">
+        <?= csrf_field() ?>
+        <label>
+            Status do evento
+            <select name="status">
+                <?php foreach (['rascunho', 'publicado', 'encerrado'] as $status): ?>
+                    <option value="<?= e($status) ?>" <?= $event['status'] === $status ? 'selected' : '' ?>><?= e($status) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <button class="button" type="submit">Atualizar status</button>
+    </form>
+
     <div class="section-toolbar">
         <span class="eyebrow">Inscricoes</span>
         <h2>Participantes</h2>
