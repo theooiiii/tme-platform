@@ -61,6 +61,15 @@ class Event extends Model
         return (int) $this->db->lastInsertId();
     }
 
+    public function setStatus(int $id, string $status): void
+    {
+        $statement = $this->db->prepare('UPDATE events SET status = :status, updated_at = NOW() WHERE id = :id');
+        $statement->execute([
+            'status' => $status,
+            'id' => $id,
+        ]);
+    }
+
     public function registrations(int $eventId): array
     {
         $statement = $this->db->prepare(

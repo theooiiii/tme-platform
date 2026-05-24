@@ -81,6 +81,11 @@ class Router
             if (str_starts_with($item, 'role:')) {
                 $roles = explode(',', substr($item, 5));
                 RoleMiddleware::handle($roles);
+                continue;
+            }
+
+            if ($item === 'premium') {
+                PremiumMiddleware::handle();
             }
         }
     }

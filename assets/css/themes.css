@@ -1,12 +1,14 @@
 [data-theme="dark"] {
-    --bg: #101214;
-    --surface: #171a1f;
-    --surface-soft: #22262d;
+    --bg: #101317;
+    --surface: #171b21;
+    --surface-soft: #222832;
+    --surface-raised: #1b2028;
     --text: #f4f7fb;
     --muted: #aab3c0;
     --border: #343a45;
     --accent-contrast: #ffffff;
-    --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+    --shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.22);
     color-scheme: dark;
 }
 
@@ -17,9 +19,23 @@
 
 [data-theme="dark"] .hero {
     background:
-        linear-gradient(135deg, color-mix(in srgb, var(--surface) 78%, var(--accent) 22%), var(--bg) 56%, #171a1f);
+        linear-gradient(135deg, color-mix(in srgb, var(--surface) 80%, var(--accent) 20%), var(--bg) 56%, #171b21);
 }
 
 [data-theme="dark"] .button.ghost {
     color: var(--text);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .nav-dropdown-panel,
+[data-theme="dark"] .notification-dropdown {
+    background: var(--surface);
+}
+
+[data-theme="dark"] .table-wrap,
+[data-theme="dark"] .site-header,
+[data-theme="dark"] .site-footer {
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
 }

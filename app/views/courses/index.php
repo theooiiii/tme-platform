@@ -29,6 +29,7 @@
                             <span><?= e($course['level']) ?></span>
                             <span><?= e((int) $course['workload_hours']) ?>h</span>
                             <span><?= e($course['lessons_count']) ?> aulas</span>
+                            <span><?= ($course['access_level'] ?? 'gratuito') === 'premium' ? 'Premium' : 'Gratuito' ?></span>
                         </div>
                         <a class="button" href="<?= e(url('/aluno/cursos/' . $course['id'])) ?>">Ver detalhes</a>
                     </div>

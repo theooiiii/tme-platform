@@ -45,6 +45,15 @@ $value = static fn (string $key, mixed $default = ''): mixed => old($key, $cours
         </label>
 
         <label>
+            Acesso
+            <select name="access_level">
+                <?php foreach (['gratuito' => 'Gratuito', 'premium' => 'Premium'] as $option => $label): ?>
+                    <option value="<?= e($option) ?>" <?= $value('access_level', 'gratuito') === $option ? 'selected' : '' ?>><?= e($label) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+
+        <label>
             Status
             <select name="status">
                 <?php foreach (['rascunho' => 'Rascunho', 'publicado' => 'Publicado', 'arquivado' => 'Arquivado'] as $option => $label): ?>

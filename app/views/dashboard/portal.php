@@ -16,6 +16,9 @@ if ($isLearner) {
         ['label' => 'Cursos concluidos', 'value' => $learningStats['completed']],
         ['label' => 'XP', 'value' => (int) ($gamificationProfile['xp_total'] ?? 0)],
         ['label' => 'Nivel', 'value' => (int) ($gamificationProfile['level'] ?? 1)],
+        ['label' => 'Eventos inscritos', 'value' => count($registeredEvents ?? [])],
+        ['label' => 'Turmas', 'value' => count($linkedClasses ?? [])],
+        ['label' => 'Plano', 'value' => $activeSubscription['plan_name'] ?? 'Sem plano'],
         ['label' => 'Cursos publicados', 'value' => $publishedCoursesCount],
     ];
 
@@ -25,12 +28,19 @@ if ($isLearner) {
         ['title' => 'Progresso', 'text' => 'Veja matriculas ativas, conclusoes e ultima atividade.', 'href' => '/meus-cursos', 'action' => 'Acompanhar'],
         ['title' => 'Atividades', 'text' => 'Entregue tarefas dos cursos e acompanhe correcoes.', 'href' => '/atividades', 'action' => 'Ver tarefas'],
         ['title' => 'Boletim', 'text' => 'Veja notas simples por curso e entregas corrigidas.', 'href' => '/boletim', 'action' => 'Abrir'],
+        ['title' => 'Provas', 'text' => 'Acesse simulados, tentativas e resultados por disciplina.', 'href' => '/provas', 'action' => 'Ver provas'],
+        ['title' => 'Minha frequencia', 'text' => 'Consulte chamadas, presencas, faltas e justificativas.', 'href' => '/minha-frequencia', 'action' => 'Acompanhar'],
         ['title' => 'Biblioteca', 'text' => 'Acesse materiais, leituras e referencias da TME.', 'href' => '/biblioteca', 'action' => 'Abrir'],
         ['title' => 'Favoritos', 'text' => 'Retome materiais salvos na biblioteca digital.', 'href' => '/biblioteca/favoritos', 'action' => 'Ver favoritos'],
         ['title' => 'Eventos', 'text' => 'Acompanhe palestras, workshops e encontros academicos.', 'href' => '/eventos', 'action' => 'Ver agenda'],
+        ['title' => 'Minhas turmas', 'text' => 'Veja turmas, disciplinas, professores e materiais futuros.', 'href' => '/turmas', 'action' => 'Abrir'],
         ['title' => 'Comunidade', 'text' => 'Participe da rede academica e acompanhe publicacoes.', 'href' => '/comunidade', 'action' => 'Entrar'],
+        ['title' => 'Chat', 'text' => 'Converse com colegas, professores e grupos de turma.', 'href' => '/chat', 'action' => 'Abrir'],
         ['title' => 'Certificados', 'text' => 'Acesse certificados emitidos e valide codigos publicos.', 'href' => '/certificados', 'action' => 'Ver certificados'],
         ['title' => 'Ranking', 'text' => 'Compare XP, niveis, badges e conquistas da comunidade.', 'href' => '/ranking', 'action' => 'Ver ranking'],
+        ['title' => 'Planos', 'text' => 'Escolha acesso gratuito ou premium e acompanhe sua assinatura.', 'href' => '/planos', 'action' => 'Ver planos'],
+        ['title' => 'Financeiro', 'text' => 'Veja historico financeiro, moedas internas e carteira futura.', 'href' => '/financeiro', 'action' => 'Abrir'],
+        ['title' => 'Notificacoes', 'text' => 'Acompanhe alertas de cursos, chat, provas e conquistas.', 'href' => '/notificacoes', 'action' => 'Ver central'],
     ]);
 }
 
@@ -38,10 +48,13 @@ if ($isTeacher) {
     $cards = array_merge($cards, [
         ['title' => 'Minhas turmas', 'text' => 'Gestao de turmas e disciplinas do professor.', 'href' => '/dashboard', 'action' => 'Ver painel'],
         ['title' => 'Meus cursos publicados', 'text' => 'Area preparada para conteudos assinados pelo docente.', 'href' => '/dashboard', 'action' => 'Acompanhar'],
+        ['title' => 'Chamada', 'text' => 'Registre frequencia por turma, disciplina e data.', 'href' => '/frequencia', 'action' => 'Registrar'],
+        ['title' => 'Provas e simulados', 'text' => 'Crie avaliacoes com objetivas, discursivas e tentativas.', 'href' => '/admin/provas', 'action' => 'Gerenciar'],
         ['title' => 'Criar atividade', 'text' => 'Publique tarefas, projetos e avaliacoes dos cursos.', 'href' => '/admin/atividades/nova', 'action' => 'Criar'],
         ['title' => 'Materiais', 'text' => 'Envie materiais para a biblioteca e acompanhe moderacao.', 'href' => '/admin/biblioteca', 'action' => 'Gerenciar'],
         ['title' => 'Correcoes futuras', 'text' => 'Espaco para atividades, feedbacks e avaliacoes.', 'href' => '', 'action' => 'Planejado'],
         ['title' => 'Analytics futuro', 'text' => 'Indicadores de engajamento e desempenho por turma.', 'href' => '', 'action' => 'Planejado'],
+        ['title' => 'Monetizacao creator', 'text' => 'Carteira preparada para repasse 80/20 de conteudos futuros.', 'href' => '/financeiro', 'action' => 'Abrir'],
     ]);
 }
 
@@ -51,6 +64,7 @@ if ($isAdmin) {
         ['label' => 'Usuarios aprovados', 'value' => $counts['approved_users']],
         ['label' => 'Cursos', 'value' => $counts['courses']],
         ['label' => 'Matriculas', 'value' => $counts['enrollments']],
+        ['label' => 'Receita paga', 'value' => 'R$ ' . number_format((float) ($financeSummary['paid_total'] ?? 0), 2, ',', '.')],
     ];
 
     $cards = array_merge($cards, [
@@ -59,8 +73,18 @@ if ($isAdmin) {
         ['title' => 'Cursos admin', 'text' => 'Gerencie cursos, modulos, aulas e materiais.', 'href' => '/admin/cursos', 'action' => 'Gerenciar'],
         ['title' => 'Matriculas', 'text' => 'Visualize alunos por curso, status e progresso.', 'href' => '/admin/matriculas', 'action' => 'Ver lista'],
         ['title' => 'Atividades', 'text' => 'Crie tarefas e corrija entregas com nota e feedback.', 'href' => '/admin/atividades', 'action' => 'Gerenciar'],
+        ['title' => 'Frequencia', 'text' => 'Registre chamadas e consulte relatorios por turma.', 'href' => '/frequencia', 'action' => 'Abrir'],
+        ['title' => 'Provas admin', 'text' => 'Crie provas, acompanhe tentativas e corrija discursivas.', 'href' => '/admin/provas', 'action' => 'Gerenciar'],
         ['title' => 'Biblioteca admin', 'text' => 'Aprove, recuse e publique materiais educacionais.', 'href' => '/admin/biblioteca', 'action' => 'Moderar'],
         ['title' => 'Certificados', 'text' => 'Liste certificados emitidos e revogue registros invalidos.', 'href' => '/admin/certificados', 'action' => 'Gerenciar'],
+        ['title' => 'Comunidade admin', 'text' => 'Modere posts academicos, destaques e recusas.', 'href' => '/admin/comunidade', 'action' => 'Moderar'],
+        ['title' => 'Eventos admin', 'text' => 'Crie eventos, confirme presenca e emita certificados.', 'href' => '/admin/eventos', 'action' => 'Gerenciar'],
+        ['title' => 'Turmas admin', 'text' => 'Gerencie turmas, disciplinas e vinculos academicos.', 'href' => '/admin/turmas', 'action' => 'Gerenciar'],
+        ['title' => 'Chat auditoria', 'text' => 'Audite conversas apenas para seguranca e moderacao.', 'href' => '/admin/chat', 'action' => 'Auditar'],
+        ['title' => 'Planos admin', 'text' => 'Gerencie planos gratuitos, premium e beneficios.', 'href' => '/admin/planos', 'action' => 'Gerenciar'],
+        ['title' => 'Analytics', 'text' => 'Acompanhe crescimento, atividade e cursos populares.', 'href' => '/analytics', 'action' => 'Abrir'],
+        ['title' => 'Financeiro', 'text' => 'Veja historico financeiro e estrutura de pagamentos.', 'href' => '/financeiro', 'action' => 'Abrir'],
+        ['title' => 'Notificacoes', 'text' => 'Central de avisos persistentes do sistema.', 'href' => '/notificacoes', 'action' => 'Abrir'],
         ['title' => 'Ranking', 'text' => 'Acompanhe XP, niveis e conquistas da comunidade.', 'href' => '/ranking', 'action' => 'Ver ranking'],
         ['title' => 'Usuarios', 'text' => 'Base preparada para gestao completa de usuarios.', 'href' => '/admin/contas-pendentes', 'action' => 'Acessar'],
         ['title' => 'Logs', 'text' => 'Acoes importantes ja sao registradas para auditoria.', 'href' => '', 'action' => 'Planejado'],
@@ -127,6 +151,31 @@ if (! $cards) {
             <?php endif; ?>
         </div>
     </div>
+
+    <?php if ($isLearner): ?>
+        <div class="portal-linked-panel">
+            <section>
+                <span class="eyebrow">Eventos inscritos</span>
+                <?php if (empty($registeredEvents)): ?>
+                    <p class="muted">Nenhuma inscricao em eventos ainda.</p>
+                <?php else: ?>
+                    <?php foreach (array_slice($registeredEvents, 0, 3) as $event): ?>
+                        <p><strong><?= e($event['title']) ?></strong><br><span class="muted"><?= e($event['starts_at'] ? date('d/m/Y H:i', strtotime($event['starts_at'])) : 'data a definir') ?></span></p>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </section>
+            <section>
+                <span class="eyebrow">Turmas vinculadas</span>
+                <?php if (empty($linkedClasses)): ?>
+                    <p class="muted">Nenhuma turma vinculada ainda.</p>
+                <?php else: ?>
+                    <?php foreach (array_slice($linkedClasses, 0, 3) as $class): ?>
+                        <p><strong><?= e($class['name']) ?></strong><br><span class="muted"><?= e($class['period'] ?: 'periodo a definir') ?></span></p>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </section>
+        </div>
+    <?php endif; ?>
 
     <div class="portal-section-title">
         <span class="eyebrow">Atalhos</span>

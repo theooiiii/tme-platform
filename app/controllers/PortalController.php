@@ -11,6 +11,7 @@ class PortalController extends Controller
         $publishedCourses = (new Course())->published();
         $gamification = new Gamification();
         $gamification->ensureProfile((int) $user['id']);
+        $finance = new Finance();
         $enrollments = [];
         $learningStats = [
             'enrolled' => 0,
@@ -23,6 +24,14 @@ class PortalController extends Controller
             $learningStats = $this->learningStats($enrollments);
         }
 
+        $registeredEvents = in_array($user['role_slug'], ['aluno', 'professor'], true)
+            ? (new Event())->registrationsForUser((int) $user['id'])
+            : [];
+
+        $linkedClasses = in_array($user['role_slug'], ['aluno', 'professor'], true)
+            ? (new SchoolClass())->linkedForUser((int) $user['id'], $user['role_slug'])
+            : [];
+
         $this->view('dashboard/portal', [
             'title' => 'Portal TME',
             'user' => $user,
@@ -32,6 +41,10 @@ class PortalController extends Controller
             'learningStats' => $learningStats,
             'gamificationProfile' => $gamification->profile((int) $user['id']),
             'badges' => $gamification->badgesForUser((int) $user['id'], 6),
+            'registeredEvents' => $registeredEvents,
+            'linkedClasses' => $linkedClasses,
+            'activeSubscription' => $finance->activeSubscription((int) $user['id']),
+            'financeSummary' => $finance->summaryForUser((int) $user['id']),
         ]);
     }
 

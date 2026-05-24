@@ -66,7 +66,7 @@
                         <tr>
                             <td>
                                 <strong><?= e($course['title']) ?></strong>
-                                <span><?= e($course['level']) ?> • <?= e((int) $course['workload_hours']) ?>h</span>
+                                <span><?= e($course['level']) ?> - <?= e((int) $course['workload_hours']) ?>h - <?= ($course['access_level'] ?? 'gratuito') === 'premium' ? 'Premium' : 'Gratuito' ?></span>
                                 <span>Criado em <?= e(date('d/m/Y', strtotime($course['created_at']))) ?></span>
                             </td>
                             <td><?= e($course['category']) ?></td>
