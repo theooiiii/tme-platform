@@ -829,6 +829,8 @@ td span {
 .status-badge.ativo,
 .status-badge.ativa,
 .status-badge.aprovado,
+.status-badge.presente,
+.status-badge.justificado,
 .status-badge.concluida,
 .status-badge.corrigida,
 .status-badge.confirmado,
@@ -839,6 +841,8 @@ td span {
 
 .status-badge.rascunho,
 .status-badge.pendente,
+.status-badge.em_andamento,
+.status-badge.pendente_correcao,
 .status-badge.enviada,
 .status-badge.devolvida {
     background: color-mix(in srgb, var(--warning) 18%, var(--surface));
@@ -851,6 +855,8 @@ td span {
 .status-badge.inativa,
 .status-badge.cancelada,
 .status-badge.atrasada,
+.status-badge.atraso,
+.status-badge.falta,
 .status-badge.recusado {
     background: color-mix(in srgb, var(--danger) 14%, var(--surface));
     color: var(--danger);
