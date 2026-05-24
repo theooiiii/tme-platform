@@ -9,27 +9,27 @@
         <?= csrf_field() ?>
         <label>
             Nome
-            <input type="text" name="name" required>
+            <input type="text" name="name" value="<?= e(old('name', $subject['name'] ?? '')) ?>" required>
         </label>
         <label>
             Area
-            <input type="text" name="area">
+            <input type="text" name="area" value="<?= e(old('area', $subject['area'] ?? '')) ?>">
         </label>
         <label>
             Carga horaria
-            <input type="number" name="workload_hours" min="0">
+            <input type="number" name="workload_hours" min="0" value="<?= e(old('workload_hours', $subject['workload_hours'] ?? 0)) ?>">
         </label>
         <label>
             Status
             <select name="status">
-                <option value="ativa">Ativa</option>
-                <option value="inativa">Inativa</option>
-                <option value="arquivada">Arquivada</option>
+                <?php foreach (['ativa' => 'Ativa', 'inativa' => 'Inativa', 'arquivada' => 'Arquivada'] as $value => $label): ?>
+                    <option value="<?= e($value) ?>" <?= old('status', $subject['status'] ?? 'ativa') === $value ? 'selected' : '' ?>><?= e($label) ?></option>
+                <?php endforeach; ?>
             </select>
         </label>
         <label class="span-2">
             Descricao
-            <textarea name="description" rows="4"></textarea>
+            <textarea name="description" rows="4"><?= e(old('description', $subject['description'] ?? '')) ?></textarea>
         </label>
         <button class="button span-2" type="submit">Salvar disciplina</button>
     </form>
