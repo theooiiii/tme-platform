@@ -6,11 +6,13 @@ class ExamController extends Controller
 {
     private Exam $exams;
     private ActionLog $logs;
+    private NotificationService $notifications;
 
     public function __construct()
     {
         $this->exams = new Exam();
         $this->logs = new ActionLog();
+        $this->notifications = new NotificationService();
     }
 
     public function adminIndex(): void
@@ -62,6 +64,11 @@ class ExamController extends Controller
             'exam_id' => $examId,
             'status' => $data['status'],
         ]);
+        if ($data['status'] === 'publicado') {
+            foreach ($this->exams->targetUsersForExam($examId) as $targetUser) {
+                $this->notifications->examReleased((int) $targetUser['id'], $examId, (string) $data['title']);
+            }
+        }
 
         flash('success', 'Prova criada. Agora adicione questoes.');
         $this->redirect('/admin/provas/' . $examId);

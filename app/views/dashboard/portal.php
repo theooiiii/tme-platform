@@ -18,6 +18,7 @@ if ($isLearner) {
         ['label' => 'Nivel', 'value' => (int) ($gamificationProfile['level'] ?? 1)],
         ['label' => 'Eventos inscritos', 'value' => count($registeredEvents ?? [])],
         ['label' => 'Turmas', 'value' => count($linkedClasses ?? [])],
+        ['label' => 'Plano', 'value' => $activeSubscription['plan_name'] ?? 'Sem plano'],
         ['label' => 'Cursos publicados', 'value' => $publishedCoursesCount],
     ];
 
@@ -37,6 +38,9 @@ if ($isLearner) {
         ['title' => 'Chat', 'text' => 'Converse com colegas, professores e grupos de turma.', 'href' => '/chat', 'action' => 'Abrir'],
         ['title' => 'Certificados', 'text' => 'Acesse certificados emitidos e valide codigos publicos.', 'href' => '/certificados', 'action' => 'Ver certificados'],
         ['title' => 'Ranking', 'text' => 'Compare XP, niveis, badges e conquistas da comunidade.', 'href' => '/ranking', 'action' => 'Ver ranking'],
+        ['title' => 'Planos', 'text' => 'Escolha acesso gratuito ou premium e acompanhe sua assinatura.', 'href' => '/planos', 'action' => 'Ver planos'],
+        ['title' => 'Financeiro', 'text' => 'Veja historico financeiro, moedas internas e carteira futura.', 'href' => '/financeiro', 'action' => 'Abrir'],
+        ['title' => 'Notificacoes', 'text' => 'Acompanhe alertas de cursos, chat, provas e conquistas.', 'href' => '/notificacoes', 'action' => 'Ver central'],
     ]);
 }
 
@@ -50,6 +54,7 @@ if ($isTeacher) {
         ['title' => 'Materiais', 'text' => 'Envie materiais para a biblioteca e acompanhe moderacao.', 'href' => '/admin/biblioteca', 'action' => 'Gerenciar'],
         ['title' => 'Correcoes futuras', 'text' => 'Espaco para atividades, feedbacks e avaliacoes.', 'href' => '', 'action' => 'Planejado'],
         ['title' => 'Analytics futuro', 'text' => 'Indicadores de engajamento e desempenho por turma.', 'href' => '', 'action' => 'Planejado'],
+        ['title' => 'Monetizacao creator', 'text' => 'Carteira preparada para repasse 80/20 de conteudos futuros.', 'href' => '/financeiro', 'action' => 'Abrir'],
     ]);
 }
 
@@ -59,6 +64,7 @@ if ($isAdmin) {
         ['label' => 'Usuarios aprovados', 'value' => $counts['approved_users']],
         ['label' => 'Cursos', 'value' => $counts['courses']],
         ['label' => 'Matriculas', 'value' => $counts['enrollments']],
+        ['label' => 'Receita paga', 'value' => 'R$ ' . number_format((float) ($financeSummary['paid_total'] ?? 0), 2, ',', '.')],
     ];
 
     $cards = array_merge($cards, [
@@ -75,6 +81,10 @@ if ($isAdmin) {
         ['title' => 'Eventos admin', 'text' => 'Crie eventos, confirme presenca e emita certificados.', 'href' => '/admin/eventos', 'action' => 'Gerenciar'],
         ['title' => 'Turmas admin', 'text' => 'Gerencie turmas, disciplinas e vinculos academicos.', 'href' => '/admin/turmas', 'action' => 'Gerenciar'],
         ['title' => 'Chat auditoria', 'text' => 'Audite conversas apenas para seguranca e moderacao.', 'href' => '/admin/chat', 'action' => 'Auditar'],
+        ['title' => 'Planos admin', 'text' => 'Gerencie planos gratuitos, premium e beneficios.', 'href' => '/admin/planos', 'action' => 'Gerenciar'],
+        ['title' => 'Analytics', 'text' => 'Acompanhe crescimento, atividade e cursos populares.', 'href' => '/analytics', 'action' => 'Abrir'],
+        ['title' => 'Financeiro', 'text' => 'Veja historico financeiro e estrutura de pagamentos.', 'href' => '/financeiro', 'action' => 'Abrir'],
+        ['title' => 'Notificacoes', 'text' => 'Central de avisos persistentes do sistema.', 'href' => '/notificacoes', 'action' => 'Abrir'],
         ['title' => 'Ranking', 'text' => 'Acompanhe XP, niveis e conquistas da comunidade.', 'href' => '/ranking', 'action' => 'Ver ranking'],
         ['title' => 'Usuarios', 'text' => 'Base preparada para gestao completa de usuarios.', 'href' => '/admin/contas-pendentes', 'action' => 'Acessar'],
         ['title' => 'Logs', 'text' => 'Acoes importantes ja sao registradas para auditoria.', 'href' => '', 'action' => 'Planejado'],

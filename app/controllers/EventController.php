@@ -6,11 +6,13 @@ class EventController extends Controller
 {
     private Event $events;
     private ActionLog $logs;
+    private NotificationService $notifications;
 
     public function __construct()
     {
         $this->events = new Event();
         $this->logs = new ActionLog();
+        $this->notifications = new NotificationService();
     }
 
     public function index(): void
@@ -64,6 +66,7 @@ class EventController extends Controller
 
         $registrationId = $this->events->register((int) $event['id'], (int) $user['id']);
         $this->logs->record((int) $user['id'], 'event.registered', ['event_id' => (int) $event['id'], 'registration_id' => $registrationId]);
+        $this->notifications->eventRegistered((int) $user['id'], (int) $event['id'], (string) $event['title']);
 
         flash('success', 'Inscricao realizada.');
         $this->redirect('/eventos/' . $id);

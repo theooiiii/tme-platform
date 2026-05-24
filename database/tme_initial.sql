@@ -105,10 +105,12 @@ CREATE TABLE IF NOT EXISTS courses (
     visibility ENUM('publico', 'privado', 'institucional') NOT NULL DEFAULT 'privado',
     status ENUM('rascunho', 'publicado', 'arquivado') NOT NULL DEFAULT 'rascunho',
     price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    access_level ENUM('gratuito', 'premium') NOT NULL DEFAULT 'gratuito',
     image_path VARCHAR(255) NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     KEY courses_status_index (status),
+    KEY courses_access_level_index (access_level),
     KEY courses_category_index (category),
     KEY courses_teacher_index (responsible_teacher_id),
     CONSTRAINT fk_courses_institution FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE SET NULL,
@@ -702,7 +704,11 @@ CREATE TABLE IF NOT EXISTS plans (
     description VARCHAR(255) NULL,
     price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     billing_cycle ENUM('mensal', 'anual', 'unico') NOT NULL DEFAULT 'mensal',
+    duration_days SMALLINT UNSIGNED NOT NULL DEFAULT 30,
     features JSON NULL,
+    benefits JSON NULL,
+    is_premium TINYINT(1) NOT NULL DEFAULT 0,
+    sort_order SMALLINT UNSIGNED NOT NULL DEFAULT 1,
     status ENUM('ativo', 'inativo') NOT NULL DEFAULT 'ativo',
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -712,18 +718,58 @@ CREATE TABLE IF NOT EXISTS transactions (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT UNSIGNED NOT NULL,
     plan_id BIGINT UNSIGNED NULL,
+    subscription_id BIGINT UNSIGNED NULL,
     creator_id BIGINT UNSIGNED NULL,
     transaction_type ENUM('assinatura', 'mensalidade', 'marketplace', 'comissao') NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
     platform_fee DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     creator_amount DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    status ENUM('pendente', 'pago', 'cancelado', 'estornado') NOT NULL DEFAULT 'pendente',
+    status ENUM('pendente', 'pago', 'cancelado', 'expirado', 'estornado') NOT NULL DEFAULT 'pendente',
+    payment_method ENUM('manual', 'pix', 'cartao', 'interno') NOT NULL DEFAULT 'manual',
+    gateway VARCHAR(80) NULL,
+    gateway_reference VARCHAR(160) NULL,
     reference VARCHAR(120) NULL,
+    due_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
     paid_at TIMESTAMP NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY transactions_status_index (status),
+    KEY transactions_user_status_index (user_id, status),
+    KEY transactions_plan_index (plan_id),
     CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_transactions_plan FOREIGN KEY (plan_id) REFERENCES plans(id) ON DELETE SET NULL,
     CONSTRAINT fk_transactions_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS subscriptions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    plan_id BIGINT UNSIGNED NOT NULL,
+    transaction_id BIGINT UNSIGNED NULL,
+    status ENUM('pendente', 'ativa', 'cancelada', 'expirada') NOT NULL DEFAULT 'pendente',
+    starts_at TIMESTAMP NULL,
+    ends_at TIMESTAMP NULL,
+    auto_renew TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY subscriptions_user_status_index (user_id, status),
+    KEY subscriptions_plan_index (plan_id),
+    CONSTRAINT fk_subscriptions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_subscriptions_plan FOREIGN KEY (plan_id) REFERENCES plans(id) ON DELETE CASCADE,
+    CONSTRAINT fk_subscriptions_transaction FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS creator_wallets (
+    user_id BIGINT UNSIGNED PRIMARY KEY,
+    available_balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    pending_balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    lifetime_earnings DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    platform_share_percent DECIMAL(5,2) NOT NULL DEFAULT 20.00,
+    creator_share_percent DECIMAL(5,2) NOT NULL DEFAULT 80.00,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_creator_wallets_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS notifications (
@@ -732,8 +778,14 @@ CREATE TABLE IF NOT EXISTS notifications (
     title VARCHAR(160) NOT NULL,
     message TEXT NOT NULL,
     notification_type VARCHAR(60) NOT NULL DEFAULT 'sistema',
+    action_url VARCHAR(255) NULL,
+    metadata JSON NULL,
+    priority ENUM('baixa', 'normal', 'alta') NOT NULL DEFAULT 'normal',
     read_at TIMESTAMP NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY notifications_user_read_index (user_id, read_at),
+    KEY notifications_type_index (notification_type),
     CONSTRAINT fk_notifications_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -894,5 +946,7 @@ INSERT IGNORE INTO badges (slug, name, description, xp_reward) VALUES
 ('explorador-biblioteca', 'Explorador da Biblioteca', 'Primeiro material favoritado na biblioteca.', 35),
 ('aluno-dedicado', 'Aluno Dedicado', 'Marcou pelo menos cinco aulas como concluidas.', 120);
 
-INSERT IGNORE INTO plans (name, description, price, billing_cycle, features, status) VALUES
-('TME Inicial', 'Plano base para validação da plataforma.', 0.00, 'mensal', JSON_ARRAY('LMS', 'Comunidade', 'Biblioteca'), 'ativo');
+INSERT IGNORE INTO plans (name, description, price, billing_cycle, duration_days, features, benefits, is_premium, sort_order, status) VALUES
+('TME Gratuito', 'Acesso inicial para estudar, participar da comunidade e usar recursos basicos.', 0.00, 'mensal', 30, JSON_ARRAY('Catalogo publico', 'Comunidade', 'Biblioteca publica'), JSON_ARRAY('Cursos gratuitos', 'Eventos abertos', 'Perfil e ranking'), 0, 1, 'ativo'),
+('TME Premium Mensal', 'Plano premium para liberar cursos e recursos avancados da plataforma.', 39.90, 'mensal', 30, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium', 'Provas e simulados avancados', 'Suporte academico futuro'), 1, 2, 'ativo'),
+('TME Premium Anual', 'Plano anual com acesso premium e melhor custo-beneficio.', 399.00, 'anual', 365, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium por 12 meses', 'Recursos avancados', 'Prioridade em eventos futuros'), 1, 3, 'ativo');

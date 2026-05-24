@@ -6,11 +6,13 @@ class ChatController extends Controller
 {
     private Chat $chat;
     private ActionLog $logs;
+    private NotificationService $notifications;
 
     public function __construct()
     {
         $this->chat = new Chat();
         $this->logs = new ActionLog();
+        $this->notifications = new NotificationService();
     }
 
     public function index(): void
@@ -92,6 +94,11 @@ class ChatController extends Controller
                 'channel_id' => (int) $channelId,
                 'message_id' => $messageId,
             ]);
+            foreach ($this->chat->members((int) $channelId) as $member) {
+                if ((int) $member['id'] !== (int) $user['id']) {
+                    $this->notifications->chatMessage((int) $member['id'], (int) $channelId, (string) $user['full_name']);
+                }
+            }
         } catch (Throwable $exception) {
             flash('error', $exception->getMessage());
         }

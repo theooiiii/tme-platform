@@ -11,6 +11,17 @@ class DashboardController extends Controller
         $counts = $users->dashboardCounts();
         $gamification = new Gamification();
         $gamification->ensureProfile((int) $user['id']);
+        $analyticsModel = new Analytics();
+        $period = $analyticsModel->periodFromRequest($_GET);
+        $dashboardAnalytics = [];
+
+        if (in_array($user['role_slug'], ['administrador', 'supervisor'], true)) {
+            $dashboardAnalytics = $analyticsModel->admin($period);
+        } elseif ($user['role_slug'] === 'professor') {
+            $dashboardAnalytics = $analyticsModel->teacher((int) $user['id'], $period);
+        } elseif ($user['role_slug'] === 'aluno') {
+            $dashboardAnalytics = $analyticsModel->student((int) $user['id'], $period);
+        }
 
         $views = [
             'aluno' => 'dashboard/student',
@@ -30,6 +41,9 @@ class DashboardController extends Controller
             'profile' => $gamification->profile((int) $user['id']),
             'stats' => $users->profileStats((int) $user['id']),
             'badges' => $gamification->badgesForUser((int) $user['id'], 4),
+            'dashboardAnalytics' => $dashboardAnalytics,
+            'period' => $period,
+            'usesCharts' => ! empty($dashboardAnalytics),
         ]);
     }
 

@@ -11,6 +11,7 @@ class PortalController extends Controller
         $publishedCourses = (new Course())->published();
         $gamification = new Gamification();
         $gamification->ensureProfile((int) $user['id']);
+        $finance = new Finance();
         $enrollments = [];
         $learningStats = [
             'enrolled' => 0,
@@ -42,6 +43,8 @@ class PortalController extends Controller
             'badges' => $gamification->badgesForUser((int) $user['id'], 6),
             'registeredEvents' => $registeredEvents,
             'linkedClasses' => $linkedClasses,
+            'activeSubscription' => $finance->activeSubscription((int) $user['id']),
+            'financeSummary' => $finance->summaryForUser((int) $user['id']),
         ]);
     }
 

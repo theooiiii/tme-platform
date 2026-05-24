@@ -157,6 +157,7 @@ class GamificationService
             'badge_id' => (int) $badge['id'],
             'badge' => $badge['slug'],
         ]);
+        (new NotificationService())->badgeAwarded($userId, (string) $badge['name']);
 
         $reward = (int) ($badge['xp_reward'] ?? 0);
 

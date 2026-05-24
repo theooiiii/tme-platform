@@ -16,6 +16,7 @@
                 <span><?= e($course['level']) ?></span>
                 <span><?= e((int) $course['workload_hours']) ?>h</span>
                 <span>R$ <?= e(number_format((float) $course['price'], 2, ',', '.')) ?></span>
+                <span><?= $requiresPremium ? 'Premium' : 'Gratuito' ?></span>
                 <span><?= e($course['teacher_name'] ?? 'Equipe TME') ?></span>
             </div>
 
@@ -27,6 +28,15 @@
                     </div>
                     <p><?= e(number_format((float) $enrollment['progress_percent'], 0)) ?>% concluído</p>
                     <a class="button" href="<?= e(url('/meus-cursos/' . $enrollment['id'])) ?>">Continuar curso</a>
+                </div>
+            <?php elseif ($requiresPremium && ! $hasPremium): ?>
+                <div class="enrollment-callout">
+                    <strong>Curso premium</strong>
+                    <p>Assine um plano premium para liberar esta matricula.</p>
+                    <div class="actions-row">
+                        <a class="button large" href="<?= e(url('/planos')) ?>">Ver planos</a>
+                        <a class="button ghost large" href="<?= e(url('/aluno/cursos')) ?>">Voltar ao catalogo</a>
+                    </div>
                 </div>
             <?php else: ?>
                 <form action="<?= e(url('/aluno/cursos/' . $course['id'] . '/matricular')) ?>" method="post" class="actions-row">

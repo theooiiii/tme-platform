@@ -281,6 +281,68 @@ Para bancos existentes, aplique tambem:
 mysql -u root -p < database/migrations/2026_05_24_attendance_exams_chat.sql
 ```
 
+## Financeiro e assinaturas
+
+Planos publicos ficam em `/planos`, historico financeiro em `/financeiro` e a gestao administrativa em `/admin/planos`.
+
+Recursos disponiveis:
+
+- Planos gratuitos e premium com nome, descricao, preco, duracao, beneficios e status.
+- Assinatura de plano por usuario logado, com transacao e assinatura persistidas.
+- Status financeiros: `pendente`, `pago`, `cancelado`, `expirado` e `estornado`.
+- Estrutura inicial para PIX/cartao via campos de gateway, referencia, vencimento e expiracao.
+- Controle premium por plano e middleware `premium` para recursos futuros.
+- Cursos podem ser marcados como `gratuito` ou `premium`; curso premium exige assinatura ativa.
+- Historico financeiro do usuario e carteira creator preparada para monetizacao 80/20.
+- Moedas internas seguem integradas ao perfil de gamificacao.
+- Logs financeiros para criacao/edicao de planos e pedidos de assinatura.
+
+## Notificacoes
+
+A navbar autenticada possui icone de notificacoes com contador e dropdown. A central completa fica em `/notificacoes`.
+
+Recursos disponiveis:
+
+- Notificacoes persistidas no banco com tipo, prioridade, link de acao e leitura.
+- Servico central em `app/services/NotificationService.php`.
+- Marcar notificacao como lida/nao lida e marcar todas como lidas.
+- Eventos notificados: matricula, curso concluido, certificado emitido, atividade corrigida, comentario em post, mensagem no chat, inscricao em evento, prova liberada e badge conquistada.
+- Logs de envio em `logs` pela acao `notification.sent`.
+
+## Analytics e dashboard avancado
+
+Dashboards de aluno, professor e administrador agora exibem metricas reais e graficos com Chart.js. Administradores e supervisores tambem acessam `/analytics`.
+
+Recursos disponiveis:
+
+- Admin: usuarios ativos, matriculas, cursos populares, atividade da plataforma, crescimento, certificados e receita paga.
+- Professor: alunos ativos, entregas pendentes, desempenho medio e progresso medio dos cursos.
+- Aluno: progresso geral, frequencia, XP semanal, desempenho em provas e certificados.
+- Filtro por periodo em `/analytics`.
+- Fallback em canvas simples quando o CDN do Chart.js nao estiver disponivel.
+
+Para bancos existentes, aplique tambem:
+
+```bash
+mysql -u root -p < database/migrations/2026_05_24_finance_notifications_analytics.sql
+```
+
+## Organizacao visual e CSS
+
+A interface foi reorganizada para uma base visual de plataforma SaaS educacional premium, mantendo as classes usadas pelas views e sem alterar rotas ou permissoes.
+
+Arquivos CSS principais:
+
+- `assets/css/base.css`: variaveis globais, reset, tipografia, campos e tokens de tema.
+- `assets/css/layout.css`: navbar, dropdowns, header, containers, rodape e mensagens.
+- `assets/css/components.css`: botoes, cards, metricas, tabelas, formularios, badges, notificacoes e graficos.
+- `assets/css/dashboard.css`: Portal, dashboards, perfil, ranking e paineis de dados.
+- `assets/css/modules.css`: cursos, comunidade, financeiro, planos, biblioteca, eventos, provas, frequencia e chat.
+- `assets/css/responsive.css`: ajustes mobile/tablet, menu responsivo, grids e impressao.
+- `assets/css/themes.css`: tema escuro e ajustes dependentes de tema.
+
+`assets/css/style.css` permanece apenas como agregador por compatibilidade. O layout principal carrega os arquivos separados diretamente.
+
 ## Estrutura
 
 ```text

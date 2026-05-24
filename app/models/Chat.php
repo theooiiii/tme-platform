@@ -187,6 +187,20 @@ class Chat extends Model
         return $statement->fetchAll();
     }
 
+    public function members(int $channelId): array
+    {
+        $statement = $this->db->prepare(
+            'SELECT users.id, users.full_name
+             FROM chat_channel_members
+             INNER JOIN users ON users.id = chat_channel_members.user_id
+             WHERE chat_channel_members.channel_id = :channel_id
+               AND users.status = "aprovado"'
+        );
+        $statement->execute(['channel_id' => $channelId]);
+
+        return $statement->fetchAll();
+    }
+
     public function sendMessage(int $channelId, int $senderId, string $message): int
     {
         $sender = $this->approvedUser($senderId);

@@ -586,6 +586,61 @@ class Exam extends Model
         return $statement->fetchAll();
     }
 
+    public function targetUsersForExam(int $examId): array
+    {
+        $exam = $this->find($examId);
+
+        if (! $exam) {
+            return [];
+        }
+
+        $statement = $this->db->prepare(
+            'SELECT DISTINCT users.id
+             FROM users
+             INNER JOIN roles ON roles.id = users.role_id
+             WHERE users.status = "aprovado"
+               AND roles.slug IN ("aluno", "professor")
+               AND (
+                    :is_global = 1
+                    OR (:course_id IS NOT NULL AND EXISTS (
+                        SELECT 1 FROM enrollments
+                        WHERE enrollments.user_id = users.id
+                          AND enrollments.course_id = :course_id_match
+                          AND enrollments.status IN ("ativa", "concluida")
+                    ))
+                    OR (:class_id IS NOT NULL AND EXISTS (
+                        SELECT 1 FROM class_students
+                        WHERE class_students.user_id = users.id
+                          AND class_students.class_id = :class_id_match
+                          AND class_students.status = "ativo"
+                    ))
+                    OR (:subject_id IS NOT NULL AND EXISTS (
+                        SELECT 1
+                        FROM class_subjects
+                        INNER JOIN class_students ON class_students.class_id = class_subjects.class_id
+                        WHERE class_students.user_id = users.id
+                          AND class_subjects.subject_id = :subject_id_match
+                          AND class_subjects.status = "ativa"
+                          AND class_students.status = "ativo"
+                    ))
+               )'
+        );
+        $courseId = $exam['course_id'] ? (int) $exam['course_id'] : null;
+        $classId = $exam['class_id'] ? (int) $exam['class_id'] : null;
+        $subjectId = $exam['subject_id'] ? (int) $exam['subject_id'] : null;
+        $statement->execute([
+            'is_global' => (! $courseId && ! $classId && ! $subjectId) ? 1 : 0,
+            'course_id' => $courseId,
+            'course_id_match' => $courseId,
+            'class_id' => $classId,
+            'class_id_match' => $classId,
+            'subject_id' => $subjectId,
+            'subject_id_match' => $subjectId,
+        ]);
+
+        return $statement->fetchAll();
+    }
+
     public function canManage(int $examId, array $user): bool
     {
         if (in_array($user['role_slug'], ['administrador', 'supervisor'], true)) {

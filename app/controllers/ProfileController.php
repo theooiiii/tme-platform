@@ -28,6 +28,8 @@ class ProfileController extends Controller
             'badges' => $this->gamification->badgesForUser((int) $user['id'], 8),
             'stats' => $this->users->profileStats((int) $user['id']),
             'posts' => (new CommunityPost())->forUser((int) $user['id']),
+            'activeSubscription' => (new Finance())->activeSubscription((int) $user['id']),
+            'unreadNotifications' => (new NotificationService())->unreadCount((int) $user['id']),
         ]);
     }
 

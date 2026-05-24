@@ -100,10 +100,10 @@ class Course extends Model
         $statement = $this->db->prepare(
             'INSERT INTO courses (
                 creator_id, responsible_teacher_id, title, slug, description, category, level,
-                workload_hours, visibility, status, price, image_path, created_at, updated_at
+                workload_hours, visibility, access_level, status, price, image_path, created_at, updated_at
              ) VALUES (
                 :creator_id, :responsible_teacher_id, :title, :slug, :description, :category, :level,
-                :workload_hours, :visibility, :status, :price, :image_path, NOW(), NOW()
+                :workload_hours, :visibility, :access_level, :status, :price, :image_path, NOW(), NOW()
              )'
         );
 
@@ -117,6 +117,7 @@ class Course extends Model
             'level' => $data['level'],
             'workload_hours' => $data['workload_hours'],
             'visibility' => 'privado',
+            'access_level' => $data['access_level'] ?? 'gratuito',
             'status' => $data['status'],
             'price' => $data['price'],
             'image_path' => $data['image_path'] ?: null,
@@ -135,6 +136,7 @@ class Course extends Model
                  category = :category,
                  level = :level,
                  workload_hours = :workload_hours,
+                 access_level = :access_level,
                  status = :status,
                  price = :price,
                  image_path = COALESCE(:image_path, image_path),
@@ -149,6 +151,7 @@ class Course extends Model
             'category' => $data['category'],
             'level' => $data['level'],
             'workload_hours' => $data['workload_hours'],
+            'access_level' => $data['access_level'] ?? 'gratuito',
             'status' => $data['status'],
             'price' => $data['price'],
             'image_path' => $data['image_path'] ?: null,

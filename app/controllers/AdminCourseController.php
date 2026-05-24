@@ -413,6 +413,7 @@ class AdminCourseController extends Controller
             'level' => trim($_POST['level'] ?? 'livre'),
             'workload_hours' => max(0, (int) ($_POST['workload_hours'] ?? 0)),
             'price' => max(0, (float) str_replace(',', '.', (string) ($_POST['price'] ?? 0))),
+            'access_level' => trim($_POST['access_level'] ?? 'gratuito'),
             'status' => trim($_POST['status'] ?? 'rascunho'),
             'responsible_teacher_id' => (int) ($_POST['responsible_teacher_id'] ?? 0),
             'image_path' => null,
@@ -480,6 +481,10 @@ class AdminCourseController extends Controller
 
         if (! in_array($data['status'], ['rascunho', 'publicado', 'arquivado'], true)) {
             $errors[] = 'Selecione um status válido.';
+        }
+
+        if (! in_array($data['access_level'], ['gratuito', 'premium'], true)) {
+            $errors[] = 'Selecione um tipo de acesso valido.';
         }
 
         return $errors;

@@ -6,11 +6,13 @@ class CommunityController extends Controller
 {
     private CommunityPost $posts;
     private ActionLog $logs;
+    private NotificationService $notifications;
 
     public function __construct()
     {
         $this->posts = new CommunityPost();
         $this->logs = new ActionLog();
+        $this->notifications = new NotificationService();
     }
 
     public function index(): void
@@ -91,6 +93,9 @@ class CommunityController extends Controller
 
         $commentId = $this->posts->addComment((int) $post['id'], (int) $user['id'], $content);
         $this->logs->record((int) $user['id'], 'community.comment_created', ['post_id' => (int) $post['id'], 'comment_id' => $commentId]);
+        if ((int) $post['user_id'] !== (int) $user['id']) {
+            $this->notifications->commentCreated((int) $post['user_id'], (int) $post['id'], (string) $post['title']);
+        }
 
         flash('success', 'Comentario publicado.');
         $this->redirect('/comunidade/' . $id);

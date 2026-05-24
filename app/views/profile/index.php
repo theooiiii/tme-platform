@@ -58,6 +58,10 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                         <span>Foto de perfil</span>
                         <strong>Placeholder preparado</strong>
                     </div>
+                    <div>
+                        <span>Plano atual</span>
+                        <strong><?= e($activeSubscription['plan_name'] ?? 'Sem plano ativo') ?></strong>
+                    </div>
                 </div>
 
                 <form class="form" action="<?= e(url('/perfil/dados')) ?>" method="post">
@@ -136,6 +140,8 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                     <article class="metric"><span>Concluidos</span><strong><?= e($stats['completed_courses']) ?></strong></article>
                     <article class="metric"><span>Atividades</span><strong><?= e($stats['submitted_activities']) ?></strong></article>
                     <article class="metric"><span>Certificados</span><strong><?= e($stats['certificates']) ?></strong></article>
+                    <article class="metric"><span>Moedas</span><strong><?= e((int) ($profile['internal_coins'] ?? 0)) ?></strong></article>
+                    <article class="metric"><span>Notificacoes</span><strong><?= e((int) $unreadNotifications) ?></strong></article>
                 </div>
 
                 <div class="badge-strip">
@@ -179,6 +185,8 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                         <strong>Sessoes futuras</strong>
                         <p class="muted">Area reservada para historico de dispositivos e encerramento remoto.</p>
                     </div>
+                    <a class="button ghost" href="<?= e(url('/notificacoes')) ?>">Notificacoes</a>
+                    <a class="button ghost" href="<?= e(url('/financeiro')) ?>">Financeiro</a>
                     <form action="<?= e(url('/logout')) ?>" method="post">
                         <?= csrf_field() ?>
                         <button class="button ghost" type="submit">Sair da conta</button>

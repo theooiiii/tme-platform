@@ -9,6 +9,7 @@ class ActivityController extends Controller
     private Course $courses;
     private ActionLog $logs;
     private GamificationService $gamification;
+    private NotificationService $notifications;
 
     public function __construct()
     {
@@ -17,6 +18,7 @@ class ActivityController extends Controller
         $this->courses = new Course();
         $this->logs = new ActionLog();
         $this->gamification = new GamificationService();
+        $this->notifications = new NotificationService();
     }
 
     public function myActivities(): void
@@ -241,6 +243,7 @@ class ActivityController extends Controller
             'submission_id' => (int) $submission['id'],
             'score' => $score,
         ]);
+        $this->notifications->activityGraded((int) $submission['student_id'], (int) $activity['id'], (string) $activity['title']);
         try {
             $this->gamification->activityGraded((int) $submission['student_id'], (int) $submission['id'], $score, (float) $activity['max_score']);
         } catch (Throwable $eventException) {

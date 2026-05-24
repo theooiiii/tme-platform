@@ -9,6 +9,8 @@ class CourseCatalogController extends Controller
     private ActionLog $logs;
     private GamificationService $gamification;
     private CertificateService $certificates;
+    private Finance $finance;
+    private NotificationService $notifications;
 
     public function __construct()
     {
@@ -17,6 +19,8 @@ class CourseCatalogController extends Controller
         $this->logs = new ActionLog();
         $this->gamification = new GamificationService();
         $this->certificates = new CertificateService();
+        $this->finance = new Finance();
+        $this->notifications = new NotificationService();
     }
 
     public function index(): void
@@ -42,6 +46,8 @@ class CourseCatalogController extends Controller
             'course' => $course,
             'structure' => $this->courses->structure((int) $course['id'], true),
             'enrollment' => $this->enrollments->findByUserAndCourse((int) $user['id'], (int) $course['id']),
+            'requiresPremium' => ($course['access_level'] ?? 'gratuito') === 'premium',
+            'hasPremium' => $this->finance->hasActivePremium((int) $user['id']),
         ]);
     }
 
@@ -67,12 +73,18 @@ class CourseCatalogController extends Controller
             $this->redirect('/meus-cursos/' . $existing['id']);
         }
 
+        if (($course['access_level'] ?? 'gratuito') === 'premium' && ! $this->finance->hasActivePremium((int) $user['id'])) {
+            flash('error', 'Este curso exige uma assinatura premium ativa.');
+            $this->redirect('/planos');
+        }
+
         try {
             $enrollmentId = $this->enrollments->create((int) $user['id'], (int) $course['id']);
             $this->logs->record((int) $user['id'], 'enrollment.created', [
                 'enrollment_id' => $enrollmentId,
                 'course_id' => (int) $course['id'],
             ]);
+            $this->notifications->enrollmentCreated((int) $user['id'], $enrollmentId, (string) $course['title']);
             try {
                 $this->gamification->enrollmentCreated((int) $user['id'], $enrollmentId, (int) $course['id']);
             } catch (Throwable $eventException) {
@@ -143,6 +155,7 @@ class CourseCatalogController extends Controller
                     try {
                         $this->gamification->courseCompleted((int) $user['id'], (int) $enrollmentId, (int) $enrollment['course_id']);
                         $this->certificates->issueForEnrollment((int) $enrollmentId);
+                        $this->notifications->courseCompleted((int) $user['id'], (int) $enrollmentId, (string) $enrollment['course_title']);
                     } catch (Throwable $eventException) {
                         $this->logs->record((int) $user['id'], 'certificate_or_gamification.error', ['message' => $eventException->getMessage()], 'warning');
                     }

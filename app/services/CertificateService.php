@@ -8,6 +8,7 @@ class CertificateService
     private Enrollment $enrollments;
     private ActionLog $logs;
     private GamificationService $gamification;
+    private NotificationService $notifications;
 
     public function __construct()
     {
@@ -15,6 +16,7 @@ class CertificateService
         $this->enrollments = new Enrollment();
         $this->logs = new ActionLog();
         $this->gamification = new GamificationService();
+        $this->notifications = new NotificationService();
     }
 
     public function issueForEnrollment(int $enrollmentId): ?array
@@ -53,6 +55,7 @@ class CertificateService
         ]);
 
         $this->gamification->certificateIssued((int) $enrollment['user_id'], $certificateId, (int) $enrollment['course_id']);
+        $this->notifications->certificateIssued((int) $enrollment['user_id'], (string) $certificate['code'], (string) $enrollment['course_title']);
 
         return $certificate;
     }
@@ -94,6 +97,7 @@ class CertificateService
             'registration_id' => $registrationId,
             'code' => $certificate['code'] ?? null,
         ]);
+        $this->notifications->certificateIssued((int) $registration['user_id'], (string) $certificate['code'], (string) $registration['event_title']);
 
         return $certificate;
     }

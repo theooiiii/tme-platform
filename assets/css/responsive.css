@@ -1,0 +1,273 @@
+@media (max-width: 1180px) {
+    .site-header {
+        grid-template-columns: auto auto;
+    }
+
+    .brand {
+        min-width: 0;
+    }
+
+    .nav-toggle {
+        display: inline-grid;
+        justify-self: end;
+    }
+
+    .site-nav {
+        display: none;
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding-top: 8px;
+    }
+
+    .site-nav.open {
+        display: flex;
+    }
+
+    .header-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .nav-dropdown-panel,
+    .nav-dropdown-panel.wide {
+        position: static;
+        min-width: 100%;
+        max-width: 100%;
+        margin-top: 6px;
+        box-shadow: none;
+    }
+
+    .nav-dropdown.open .nav-dropdown-panel {
+        display: grid;
+    }
+
+    .nav-dropdown-panel.wide {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero,
+    .portal-hero,
+    .portal-gamification-panel,
+    .portal-linked-panel,
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .portal-actions {
+        justify-content: flex-start;
+    }
+
+    .profile-sidebar {
+        position: static;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .feature-grid,
+    .metric-grid,
+    .module-grid,
+    .library-shelf,
+    .course-card-grid,
+    .plan-grid,
+    .finance-grid,
+    .chart-grid,
+    .certificate-grid,
+    .event-grid,
+    .community-layout,
+    .class-link-grid,
+    .detail-columns,
+    .admin-detail-grid,
+    .chat-layout,
+    .detail-grid,
+    .filter-form,
+    .filter-form.library-filter-form,
+    .certificate-filter-form,
+    .profile-info-grid,
+    .profile-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .community-composer,
+    .chat-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 760px) {
+    .site-header {
+        padding-inline: 14px;
+    }
+
+    .brand small,
+    .user-chip {
+        display: none;
+    }
+
+    .brand-mark {
+        width: 42px;
+        height: 42px;
+    }
+
+    .site-nav,
+    .site-nav.open {
+        display: none;
+    }
+
+    .site-nav.open {
+        display: grid;
+    }
+
+    .site-nav a,
+    .nav-dropdown > button {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .nav-dropdown-panel,
+    .nav-dropdown-panel.wide {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        gap: 8px;
+    }
+
+    .page-section,
+    .dashboard-shell {
+        width: min(100% - 28px, var(--container));
+        padding-block: 34px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 44px 14px;
+    }
+
+    .hero-visual {
+        min-height: 320px;
+    }
+
+    .visual-grid,
+    .feature-grid,
+    .module-grid,
+    .metric-grid,
+    .split,
+    .library-shelf,
+    .grid-form,
+    .form-grid,
+    .course-card-grid,
+    .plan-grid,
+    .finance-grid,
+    .chart-grid,
+    .certificate-grid,
+    .event-grid,
+    .community-layout,
+    .class-link-grid,
+    .detail-columns,
+    .admin-detail-grid,
+    .chat-layout,
+    .profile-info-grid,
+    .profile-metrics,
+    .detail-grid,
+    .filter-form,
+    .filter-form.library-filter-form,
+    .certificate-filter-form,
+    .ranking-filter-form,
+    .portal-linked-panel,
+    .portal-gamification-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .span-2,
+    .chart-card.span-2 {
+        grid-column: span 1;
+    }
+
+    .admin-toolbar,
+    .section-toolbar,
+    .curriculum-module header,
+    .lesson-row,
+    .timeline > div,
+    .site-footer,
+    .profile-hero,
+    .security-actions,
+    .finance-highlight {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .finance-highlight,
+    .notification-row {
+        grid-template-columns: 1fr;
+    }
+
+    .ranking-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ranking-stats {
+        justify-content: flex-start;
+    }
+
+    .attendance-status-grid,
+    .chat-message-form,
+    .meta-list {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-sidebar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .certificate-border footer {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .auth-panel,
+    .admin-form,
+    .profile-panel,
+    .detail-card {
+        padding: 18px;
+    }
+}
+
+@media print {
+    body {
+        background: #ffffff;
+        color: #101214;
+    }
+
+    .site-header,
+    .site-footer,
+    .flash-stack,
+    .no-print {
+        display: none !important;
+    }
+
+    main {
+        min-height: auto;
+    }
+
+    .dashboard-shell {
+        width: 100%;
+        padding: 0;
+    }
+
+    .certificate-sheet {
+        width: 100%;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .certificate-border {
+        min-height: 96vh;
+        border-color: #101214;
+        background: #ffffff;
+    }
+}
