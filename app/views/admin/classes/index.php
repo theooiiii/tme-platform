@@ -23,7 +23,14 @@
                         <td><span><?= e($class['institution_name'] ?: 'sem instituicao') ?></span></td>
                         <td><span class="status-badge <?= e($class['status']) ?>"><?= e($class['status']) ?></span></td>
                         <td><span><?= e((int) $class['students_count']) ?> alunos</span><span><?= e((int) $class['subjects_count']) ?> disciplinas</span></td>
-                        <td><a class="button small" href="<?= e(url('/admin/turmas/' . $class['id'])) ?>">Gerenciar</a></td>
+                        <td class="actions-cell">
+                            <a class="button small" href="<?= e(url('/admin/turmas/' . $class['id'])) ?>">Gerenciar</a>
+                            <a class="button ghost small" href="<?= e(url('/admin/turmas/' . $class['id'] . '/editar')) ?>">Editar</a>
+                            <form action="<?= e(url('/admin/turmas/' . $class['id'] . '/arquivar')) ?>" method="post" data-confirm="Arquivar esta turma?">
+                                <?= csrf_field() ?>
+                                <button class="button ghost small" type="submit">Arquivar</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -40,6 +47,13 @@
                 <span class="status-badge <?= e($subject['status'] ?? 'ativa') ?>"><?= e($subject['status'] ?? 'ativa') ?></span>
                 <h2><?= e($subject['name']) ?></h2>
                 <p><?= e($subject['area'] ?: 'Area nao informada') ?> | <?= e((int) $subject['workload_hours']) ?>h</p>
+                <div class="inline-actions">
+                    <a href="<?= e(url('/admin/disciplinas/' . $subject['id'] . '/editar')) ?>">Editar</a>
+                    <form action="<?= e(url('/admin/disciplinas/' . $subject['id'] . '/arquivar')) ?>" method="post" data-confirm="Arquivar esta disciplina?">
+                        <?= csrf_field() ?>
+                        <button type="submit">Arquivar</button>
+                    </form>
+                </div>
             </article>
         <?php endforeach; ?>
     </div>
