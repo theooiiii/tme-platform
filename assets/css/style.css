@@ -1572,6 +1572,315 @@ td span {
     margin-bottom: 20px;
 }
 
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.checkbox-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.checkbox-line input {
+    width: 18px;
+    min-height: 18px;
+}
+
+.admin-detail-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.detail-card {
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.detail-card h2 {
+    margin: 8px 0 12px;
+}
+
+.attendance-form {
+    display: grid;
+    gap: 16px;
+}
+
+.attendance-status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    min-width: 280px;
+}
+
+.status-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+    font-size: 0.9rem;
+}
+
+.status-option input {
+    width: 16px;
+    min-height: 16px;
+}
+
+.exam-question-list {
+    display: grid;
+    gap: 14px;
+}
+
+.exam-question-card {
+    display: grid;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+}
+
+.exam-question-card h2,
+.exam-question-card h3,
+.exam-question-card p {
+    margin: 0;
+}
+
+.answer-list {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding-left: 24px;
+}
+
+.answer-list li {
+    padding: 8px 10px;
+    border-radius: var(--radius);
+}
+
+.answer-list li.selected {
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+    color: var(--text);
+    font-weight: 800;
+}
+
+.answer-options {
+    display: grid;
+    gap: 10px;
+}
+
+.answer-option {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.answer-option input {
+    width: 18px;
+    min-height: 18px;
+    margin-top: 2px;
+}
+
+.sticky-exam-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--surface) 96%, transparent);
+    backdrop-filter: blur(12px);
+}
+
+.exam-timer {
+    min-width: 180px;
+    padding: 14px;
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+}
+
+.exam-timer span,
+.exam-timer strong {
+    display: block;
+}
+
+.exam-timer strong {
+    margin-top: 4px;
+    font-size: 1.6rem;
+}
+
+.submission-content {
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.chat-layout {
+    display: grid;
+    grid-template-columns: 330px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.chat-sidebar,
+.chat-thread {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.chat-sidebar {
+    position: sticky;
+    top: 96px;
+    display: grid;
+    gap: 14px;
+    padding: 14px;
+}
+
+.chat-start-form {
+    display: grid;
+    gap: 10px;
+}
+
+.conversation-list {
+    display: grid;
+    gap: 8px;
+    max-height: 620px;
+    overflow: auto;
+}
+
+.conversation-item {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+    color: var(--text);
+}
+
+.conversation-item.active {
+    border-color: color-mix(in srgb, var(--accent) 44%, var(--border));
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+}
+
+.conversation-item span {
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.conversation-item em {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 24px;
+    min-height: 24px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #ffffff;
+    font-style: normal;
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.chat-thread {
+    min-height: 620px;
+    display: grid;
+    grid-template-rows: auto minmax(260px, 1fr) auto;
+}
+
+.chat-thread-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.chat-thread-header h2 {
+    margin: 6px 0 0;
+}
+
+.message-list {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 18px;
+    max-height: 560px;
+    overflow: auto;
+}
+
+.message-bubble {
+    max-width: min(680px, 88%);
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+}
+
+.message-bubble.mine {
+    justify-self: end;
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+
+.message-bubble.audit {
+    max-width: 100%;
+}
+
+.message-bubble div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.message-bubble p {
+    margin: 8px 0 0;
+}
+
+.chat-message-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 18px;
+    border-top: 1px solid var(--border);
+}
+
 .profile-post-list {
     display: grid;
     gap: 10px;
@@ -1657,6 +1966,8 @@ td span {
     .community-layout,
     .class-link-grid,
     .detail-columns,
+    .admin-detail-grid,
+    .chat-layout,
     .detail-grid,
     .filter-form,
     .filter-form.library-filter-form,
@@ -1701,6 +2012,9 @@ td span {
     .community-layout,
     .class-link-grid,
     .detail-columns,
+    .admin-detail-grid,
+    .chat-layout,
+    .form-grid,
     .profile-info-grid,
     .profile-metrics,
     .detail-grid,
@@ -1733,6 +2047,15 @@ td span {
     .ranking-row {
         display: flex;
         align-items: flex-start;
+    }
+
+    .attendance-status-grid,
+    .chat-message-form {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-sidebar {
+        position: static;
     }
 
     .profile-sidebar {

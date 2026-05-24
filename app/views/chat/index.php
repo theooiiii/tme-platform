@@ -1,6 +1,6 @@
 <?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
 
-<section class="dashboard-shell chat-shell">
+<section class="dashboard-shell chat-shell" data-chat-refresh="45000">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Comunicacao interna</span>
