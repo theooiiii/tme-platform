@@ -34,6 +34,8 @@ if ($isLearner) {
     $internalLinks['/meus-cursos'] = 'Meus cursos';
     $internalLinks['/atividades'] = 'Atividades';
     $internalLinks['/boletim'] = 'Boletim';
+    $internalLinks['/provas'] = 'Provas';
+    $internalLinks['/minha-frequencia'] = 'Frequencia';
     $internalLinks['/certificados'] = 'Certificados';
     $internalLinks['/turmas'] = 'Turmas';
 } elseif ($isAdmin) {
@@ -44,16 +46,22 @@ $internalLinks['/biblioteca'] = 'Biblioteca';
 $internalLinks['/eventos'] = 'Eventos';
 $internalLinks['/comunidade'] = 'Comunidade';
 $internalLinks['/ranking'] = 'Ranking';
+$internalLinks['/chat'] = 'Chat';
 
 if ($isAdmin) {
     $internalLinks['/admin/contas-pendentes'] = 'Administracao';
     $internalLinks['/admin/atividades'] = 'Atividades admin';
+    $internalLinks['/frequencia'] = 'Frequencia';
+    $internalLinks['/admin/provas'] = 'Provas admin';
     $internalLinks['/admin/biblioteca'] = 'Biblioteca admin';
     $internalLinks['/admin/certificados'] = 'Certificados admin';
     $internalLinks['/admin/comunidade'] = 'Comunidade admin';
     $internalLinks['/admin/eventos'] = 'Eventos admin';
     $internalLinks['/admin/turmas'] = 'Turmas admin';
+    $internalLinks['/admin/chat'] = 'Chat auditoria';
 } elseif ($role === 'professor') {
+    $internalLinks['/frequencia'] = 'Chamada';
+    $internalLinks['/admin/provas'] = 'Gestao provas';
     $internalLinks['/admin/atividades'] = 'Gestao atividades';
     $internalLinks['/admin/biblioteca'] = 'Biblioteca admin';
 }
