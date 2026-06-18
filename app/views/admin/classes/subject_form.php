@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
@@ -12,11 +12,11 @@
             <input type="text" name="name" value="<?= e(old('name', $subject['name'] ?? '')) ?>" required>
         </label>
         <label>
-            Area
+            Área
             <input type="text" name="area" value="<?= e(old('area', $subject['area'] ?? '')) ?>">
         </label>
         <label>
-            Carga horaria
+            Carga horária
             <input type="number" name="workload_hours" min="0" value="<?= e(old('workload_hours', $subject['workload_hours'] ?? 0)) ?>">
         </label>
         <label>
@@ -28,7 +28,7 @@
             </select>
         </label>
         <label class="span-2">
-            Descricao
+            Descrição
             <textarea name="description" rows="4"><?= e(old('description', $subject['description'] ?? '')) ?></textarea>
         </label>
         <button class="button span-2" type="submit">Salvar disciplina</button>

@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $isLate = ! empty($activity['due_at']) && strtotime($activity['due_at']) < time();
 $canSubmit = ! $isLate || (bool) $activity['allow_late'];
@@ -45,7 +45,7 @@ $submissionStatus = $submission['status'] ?? 'pendente';
                 <?php endif; ?>
             <?php else: ?>
                 <h2>Entrega pendente</h2>
-                <p><?= $isLate ? 'O prazo ja passou.' : 'Envie sua resposta antes do prazo.' ?></p>
+                <p><?= $isLate ? 'O prazo já passou.' : 'Envie sua resposta antes do prazo.' ?></p>
             <?php endif; ?>
         </div>
     </div>
@@ -58,11 +58,11 @@ $submissionStatus = $submission['status'] ?? 'pendente';
     <?php if (! $canSubmit): ?>
         <div class="empty-state">
             <h2>Prazo encerrado</h2>
-            <p>Esta atividade nao aceita envios atrasados.</p>
+            <p>Esta atividade não aceita envios atrasados.</p>
         </div>
     <?php elseif ($submission && in_array($submission['status'], ['corrigida', 'devolvida'], true)): ?>
         <div class="empty-state">
-            <h2>Entrega ja avaliada</h2>
+            <h2>Entrega já avaliada</h2>
             <p>Entregas corrigidas ou devolvidas ficam bloqueadas para novo envio nesta versao.</p>
         </div>
     <?php else: ?>

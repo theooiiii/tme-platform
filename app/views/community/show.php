@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $typeLabels = [
     'duvida' => 'Duvida',
@@ -39,7 +39,7 @@ $typeLabels = [
 
     <div class="section-toolbar">
         <span class="eyebrow">Comentarios</span>
-        <h2>Discussao academica</h2>
+        <h2>Discussão acadêmica</h2>
     </div>
 
     <form class="admin-form form" action="<?= e(url('/comunidade/' . $post['id'] . '/comentar')) ?>" method="post">

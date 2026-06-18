@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Gestao academica</span>
+            <span class="eyebrow">Gestão acadêmica</span>
             <h1>Atividades</h1>
-            <p>Crie tarefas, projetos e avaliacoes vinculadas a cursos, modulos e aulas.</p>
+            <p>Crie tarefas, projetos e avaliações vinculadas a cursos, módulos e aulas.</p>
         </div>
         <a class="button large" href="<?= e(url('/admin/atividades/nova')) ?>">Nova atividade</a>
     </div>
@@ -34,7 +34,7 @@
             <select name="type">
                 <option value="">Todos</option>
                 <?php foreach (['texto', 'arquivo', 'quiz', 'tarefa_pratica', 'projeto'] as $type): ?>
-                    <option value="<?= e($type) ?>" <?= ($filters['type'] ?? '') === $type ? 'selected' : '' ?>><?= e($type) ?></option>
+                    <option value="<?= e($type) ?>" <?= ($filters['type'] ?? '') === $type ? 'selected' : '' ?>><?= e(human_label($type)) ?></option>
                 <?php endforeach; ?>
             </select>
         </label>
@@ -57,7 +57,7 @@
                         <th>Prazo</th>
                         <th>Entregas</th>
                         <th>Status</th>
-                        <th>Acoes</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,12 +73,12 @@
                             </td>
                             <td><?= e($activity['due_at'] ? date('d/m/Y H:i', strtotime($activity['due_at'])) : 'Sem prazo') ?></td>
                             <td><?= e((int) $activity['submissions_count']) ?></td>
-                            <td><span class="status-badge <?= e($activity['status']) ?>"><?= e($activity['status']) ?></span></td>
+                            <td><span class="status-badge <?= e($activity['status']) ?>"><?= e(human_label($activity['status'])) ?></span></td>
                             <td class="actions-cell">
                                 <a class="button small" href="<?= e(url('/admin/atividades/' . $activity['id'])) ?>">Ver</a>
                                 <a class="button ghost small" href="<?= e(url('/admin/atividades/' . $activity['id'] . '/editar')) ?>">Editar</a>
                                 <?php if ($activity['status'] !== 'encerrada'): ?>
-                                    <form action="<?= e(url('/admin/atividades/' . $activity['id'] . '/encerrar')) ?>" method="post" data-confirm="Encerrar esta atividade?">
+                                    <form action="<?= e(url('/admin/atividades/' . $activity['id'] . '/encerrar')) ?>" method="post" data-confirm="Encerrar está atividade?">
                                         <?= csrf_field() ?>
                                         <button class="button ghost small" type="submit">Encerrar</button>
                                     </form>

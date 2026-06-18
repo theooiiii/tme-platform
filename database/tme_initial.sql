@@ -941,12 +941,12 @@ WHERE status = 'aprovado';
 INSERT IGNORE INTO badges (slug, name, description, xp_reward) VALUES
 ('primeiro-login', 'Primeiro Login', 'Primeiro acesso aprovado na TME.', 25),
 ('primeiro-curso', 'Primeiro Curso', 'Primeira matricula realizada em um curso.', 40),
-('primeira-aula-concluida', 'Primeira Aula Concluida', 'Primeira aula marcada como concluida.', 40),
-('curso-finalizado', 'Curso Finalizado', 'Primeiro curso concluido na plataforma.', 100),
+('primeira-aula-concluida', 'Primeira Aula Concluída', 'Primeira aula marcada como concluída.', 40),
+('curso-finalizado', 'Curso Finalizado', 'Primeiro curso concluído na plataforma.', 100),
 ('explorador-biblioteca', 'Explorador da Biblioteca', 'Primeiro material favoritado na biblioteca.', 35),
 ('aluno-dedicado', 'Aluno Dedicado', 'Marcou pelo menos cinco aulas como concluidas.', 120);
 
 INSERT IGNORE INTO plans (name, description, price, billing_cycle, duration_days, features, benefits, is_premium, sort_order, status) VALUES
-('TME Gratuito', 'Acesso inicial para estudar, participar da comunidade e usar recursos basicos.', 0.00, 'mensal', 30, JSON_ARRAY('Catalogo publico', 'Comunidade', 'Biblioteca publica'), JSON_ARRAY('Cursos gratuitos', 'Eventos abertos', 'Perfil e ranking'), 0, 1, 'ativo'),
-('TME Premium Mensal', 'Plano premium para liberar cursos e recursos avancados da plataforma.', 39.90, 'mensal', 30, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium', 'Provas e simulados avancados', 'Suporte academico futuro'), 1, 2, 'ativo'),
+('TME Gratuito', 'Acesso inicial para estudar, participar da comunidade e usar recursos básicos.', 0.00, 'mensal', 30, JSON_ARRAY('Catálogo público', 'Comunidade', 'Biblioteca pública'), JSON_ARRAY('Cursos gratuitos', 'Eventos abertos', 'Perfil e ranking'), 0, 1, 'ativo'),
+('TME Premium Mensal', 'Plano premium para liberar cursos e recursos avançados da plataforma.', 39.90, 'mensal', 30, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium', 'Provas e simulados avançados', 'Suporte acadêmico futuro'), 1, 2, 'ativo'),
 ('TME Premium Anual', 'Plano anual com acesso premium e melhor custo-beneficio.', 399.00, 'anual', 365, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium por 12 meses', 'Recursos avancados', 'Prioridade em eventos futuros'), 1, 3, 'ativo');

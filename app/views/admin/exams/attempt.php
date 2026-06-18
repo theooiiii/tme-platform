@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $decodeAlternatives = static function (?string $json): array {
     $decoded = $json ? json_decode($json, true) : [];
@@ -10,7 +10,7 @@ $decodeAlternatives = static function (?string $json): array {
 <section class="dashboard-shell exams-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Correcao</span>
+            <span class="eyebrow">Correção</span>
             <h1><?= e($attempt['title']) ?></h1>
             <p><?= e($attempt['student_name']) ?> | tentativa <?= e((int) $attempt['attempt_number']) ?> | status <?= e($attempt['status']) ?></p>
         </div>
@@ -30,7 +30,7 @@ $decodeAlternatives = static function (?string $json): array {
         <div class="exam-question-list">
             <?php foreach ($answers as $answer): ?>
                 <article class="exam-question-card">
-                    <span class="status-badge <?= e($answer['status']) ?>"><?= e($answer['question_type']) ?></span>
+                    <span class="status-badge <?= e($answer['status']) ?>"><?= e(human_label($answer['question_type'])) ?></span>
                     <h2><?= e($answer['statement_text']) ?></h2>
 
                     <?php if ($answer['question_type'] === 'objetiva'): ?>
@@ -65,7 +65,7 @@ $decodeAlternatives = static function (?string $json): array {
         </div>
 
         <div class="form-actions">
-            <button class="button large" type="submit">Salvar correcao</button>
+            <button class="button large" type="submit">Salvar correção</button>
         </div>
     </form>
 </section>

@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="<?= $isPublicPage ? 'page-section compact' : 'dashboard-shell' ?>">
     <div class="admin-toolbar">
         <div class="<?= $isPublicPage ? 'section-heading' : 'dashboard-heading' ?>">
             <span class="eyebrow">Biblioteca</span>
             <h1>Biblioteca digital</h1>
-            <p>Materiais educacionais publicados: PDFs, livros, apostilas, artigos, videos, links e arquivos.</p>
+            <p>Materiais educacionais publicados: PDFs, livros, apostilas, artigos, vídeos, links e arquivos.</p>
         </div>
         <?php if (current_user()): ?>
             <div class="actions-row">
@@ -20,7 +20,7 @@
     <form class="filter-form library-filter-form" action="<?= e(url('/biblioteca')) ?>" method="get">
         <label>
             Busca
-            <input type="search" name="q" value="<?= e($filters['q'] ?? '') ?>" placeholder="Titulo, descricao ou autor">
+            <input type="search" name="q" value="<?= e($filters['q'] ?? '') ?>" placeholder="Título, descrição ou autor">
         </label>
         <label>
             Categoria
@@ -45,7 +45,7 @@
             <select name="type">
                 <option value="">Todos</option>
                 <?php foreach (['pdf', 'livro', 'apostila', 'artigo', 'video', 'link', 'apresentacao', 'imagem', 'arquivo'] as $type): ?>
-                    <option value="<?= e($type) ?>" <?= ($filters['type'] ?? '') === $type ? 'selected' : '' ?>><?= e($type) ?></option>
+                    <option value="<?= e($type) ?>" <?= ($filters['type'] ?? '') === $type ? 'selected' : '' ?>><?= e(human_label($type)) ?></option>
                 <?php endforeach; ?>
             </select>
         </label>
@@ -56,7 +56,7 @@
     <?php if (empty($items)): ?>
         <div class="empty-state">
             <h2>Nenhum material encontrado</h2>
-            <p>Novos itens aparecerao aqui quando forem publicados.</p>
+            <p>Novos itens aparecerão aqui quando forem publicados.</p>
         </div>
     <?php else: ?>
         <div class="course-card-grid">
@@ -72,9 +72,9 @@
                         <h2><?= e($item['title']) ?></h2>
                         <p><?= e($item['description'] ?: 'Material da biblioteca TME.') ?></p>
                         <div class="course-meta">
-                            <span><?= e($item['item_type']) ?></span>
+                            <span><?= e(human_label($item['item_type'])) ?></span>
                             <span><?= e($item['subject'] ?: 'Geral') ?></span>
-                            <span><?= e($item['visibility']) ?></span>
+                            <span><?= e(human_label($item['visibility'])) ?></span>
                         </div>
                         <a class="button" href="<?= e(url('/biblioteca/' . $item['id'])) ?>">Abrir</a>
                     </div>

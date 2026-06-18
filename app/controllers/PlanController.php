@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class PlanController extends Controller
 {
@@ -36,14 +36,14 @@ class PlanController extends Controller
         $plan = $this->plans->find((int) $id);
 
         if (! $plan || $plan['status'] !== 'ativo') {
-            flash('error', 'Plano indisponivel.');
+            flash('error', 'Plano indisponível.');
             $this->redirect('/planos');
         }
 
         $active = $this->finance->activeSubscription((int) $user['id']);
 
         if ($active && (int) $active['plan_id'] === (int) $plan['id']) {
-            flash('info', 'Voce ja possui este plano ativo.');
+            flash('info', 'Você já possui este plano ativo.');
             $this->redirect('/financeiro');
         }
 
@@ -69,14 +69,14 @@ class PlanController extends Controller
                 $result['status'] === 'pago' ? 'success' : 'info',
                 $result['status'] === 'pago'
                     ? 'Plano ativado com sucesso.'
-                    : 'Assinatura criada como pendente. A integracao PIX/cartao esta preparada para uma etapa futura.'
+                    : 'Assinatura criada como pendente. A integração PIX/cartão está preparada para uma etapa futura.'
             );
         } catch (Throwable $exception) {
             $this->logs->record((int) $user['id'], 'finance.subscription_error', [
                 'plan_id' => (int) $plan['id'],
                 'message' => $exception->getMessage(),
             ], 'warning');
-            flash('error', 'Nao foi possivel assinar este plano agora.');
+            flash('error', 'Não foi possível assinar este plano agora.');
         }
 
         $this->redirect('/financeiro');
@@ -186,7 +186,7 @@ class PlanController extends Controller
         }
 
         if (! in_array($data['billing_cycle'], ['mensal', 'anual', 'unico'], true)) {
-            $errors[] = 'Selecione uma duracao de cobranca valida.';
+            $errors[] = 'Selecione uma duração de cobrança válida.';
         }
 
         if (! in_array($data['status'], ['ativo', 'inativo'], true)) {
@@ -205,7 +205,7 @@ class PlanController extends Controller
         $plan = $this->plans->find($id);
 
         if (! $plan) {
-            flash('error', 'Plano nao encontrado.');
+            flash('error', 'Plano não encontrado.');
             $this->redirect('/admin/planos');
         }
 

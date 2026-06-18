@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell exams-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Avaliacao</span>
+            <span class="eyebrow">Avaliação</span>
             <h1>Provas e simulados</h1>
-            <p>Crie provas com questoes objetivas, discursivas, tentativas e ranking opcional.</p>
+            <p>Crie provas com questões objetivas, discursivas, tentativas e ranking opcional.</p>
         </div>
         <a class="button large" href="<?= e(url('/admin/provas/nova')) ?>">Nova prova</a>
     </div>
@@ -51,7 +51,7 @@
     <?php if (empty($exams)): ?>
         <div class="empty-state">
             <h2>Nenhuma prova encontrada</h2>
-            <p>Crie uma avaliacao para publicar aos alunos vinculados.</p>
+            <p>Crie uma avaliação para publicar aos alunos vinculados.</p>
         </div>
     <?php else: ?>
         <div class="table-wrap">
@@ -59,12 +59,12 @@
                 <thead>
                     <tr>
                         <th>Prova</th>
-                        <th>Vinculo</th>
-                        <th>Periodo</th>
-                        <th>Questoes</th>
+                        <th>Vínculo</th>
+                        <th>Período</th>
+                        <th>Questões</th>
                         <th>Tentativas</th>
                         <th>Status</th>
-                        <th>Acoes</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +84,7 @@
                             </td>
                             <td><?= e((int) $exam['questions_count']) ?></td>
                             <td><?= e((int) $exam['attempts_count']) ?></td>
-                            <td><span class="status-badge <?= e($exam['status']) ?>"><?= e($exam['status']) ?></span></td>
+                            <td><span class="status-badge <?= e($exam['status']) ?>"><?= e(human_label($exam['status'])) ?></span></td>
                             <td class="actions-cell">
                                 <a class="button small" href="<?= e(url('/admin/provas/' . $exam['id'])) ?>">Gerenciar</a>
                             </td>

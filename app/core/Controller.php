@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class Controller
 {
@@ -10,7 +10,7 @@ class Controller
 
         if (! is_file($viewFile)) {
             http_response_code(500);
-            echo 'View nao encontrada: ' . e($view);
+            echo 'View não encontrada: ' . e($view);
             return;
         }
 
@@ -25,7 +25,7 @@ class Controller
 
         if (! is_file($layoutFile)) {
             http_response_code(500);
-            echo 'Layout nao encontrado: ' . e($layout);
+            echo 'Layout não encontrado: ' . e($layout);
             return;
         }
 

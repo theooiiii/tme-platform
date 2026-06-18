@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: TME Platform API
+  version: 1.0.0
+  description: API REST inicial da TME Platform.
+servers:
+  - url: /api/v1
+security:
+  - bearerAuth: []
+  - apiTokenHeader: []
+paths:
+  /health:
+    get:
+      security: []
+      summary: Verifica status da aplicacao
+      responses:
+        "200":
+          description: Status da plataforma
+  /auth/token:
+    post:
+      security: []
+      summary: Emite token Bearer para usuarios aprovados
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Token emitido
+        "401":
+          description: Credenciais invalidas
+        "429":
+          description: Limite excedido
+  /me:
+    get:
+      summary: Dados do usuario autenticado
+      responses:
+        "200":
+          description: Perfil do usuario
+        "401":
+          description: Token ausente ou invalido
+  /courses:
+    get:
+      security: []
+      summary: Lista cursos publicados
+      responses:
+        "200":
+          description: Cursos publicados
+  /courses/{id}:
+    get:
+      security: []
+      summary: Detalhe de curso publicado
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Curso com estrutura
+        "404":
+          description: Curso nao encontrado
+  /plans:
+    get:
+      security: []
+      summary: Lista planos ativos
+      responses:
+        "200":
+          description: Planos ativos
+  /ranking:
+    get:
+      security: []
+      summary: Ranking global ou por curso
+      parameters:
+        - name: course_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ranking de gamificacao
+  /certificates/{code}/validate:
+    get:
+      security: []
+      summary: Valida certificado por codigo
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Certificado encontrado
+        "404":
+          description: Certificado nao encontrado
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    apiTokenHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Token

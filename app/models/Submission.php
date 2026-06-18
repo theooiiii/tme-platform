@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class Submission extends Model
 {
@@ -44,7 +44,7 @@ class Submission extends Model
         $existing = $this->findByActivityAndStudent($activityId, $studentId);
 
         if ($existing && in_array($existing['status'], ['corrigida', 'devolvida'], true)) {
-            throw new RuntimeException('Esta entrega ja foi corrigida ou devolvida.');
+            throw new RuntimeException('Esta entrega já foi corrigida ou devolvida.');
         }
 
         $statement = $this->db->prepare(
@@ -73,7 +73,7 @@ class Submission extends Model
         $submission = $this->find($submissionId);
 
         if (! $submission) {
-            throw new RuntimeException('Entrega nao encontrada.');
+            throw new RuntimeException('Entrega não encontrada.');
         }
 
         $this->db->beginTransaction();

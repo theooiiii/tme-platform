@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
@@ -73,7 +73,7 @@
                                 </div>
                                 <span><?= e(number_format((float) $enrollment['progress_percent'], 0)) ?>%</span>
                             </td>
-                            <td><span class="status-badge <?= e($enrollment['status']) ?>"><?= e($enrollment['status']) ?></span></td>
+                            <td><span class="status-badge <?= e($enrollment['status']) ?>"><?= e(human_label($enrollment['status'])) ?></span></td>
                             <td>
                                 <span>Início: <?= e(date('d/m/Y H:i', strtotime($enrollment['enrolled_at']))) ?></span>
                                 <span>Última: <?= e($enrollment['last_activity_at'] ? date('d/m/Y H:i', strtotime($enrollment['last_activity_at'])) : 'sem registro') ?></span>

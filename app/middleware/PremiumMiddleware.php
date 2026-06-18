@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class PremiumMiddleware
 {
@@ -9,7 +9,7 @@ class PremiumMiddleware
         $user = current_user();
 
         if (! $user) {
-            flash('info', 'Faca login para acessar recursos premium.');
+            flash('info', 'Faça login para acessar recursos premium.');
             redirect_to('/login');
         }
 

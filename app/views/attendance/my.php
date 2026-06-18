@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $totals = [
     'total' => 0,
@@ -26,15 +26,15 @@ $frequencyPercent = $totals['total'] > 0
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Minha jornada</span>
-            <h1>Minha frequencia</h1>
-            <p>Acompanhe seu historico por turma, disciplina e periodo.</p>
+            <h1>Minha frequência</h1>
+            <p>Acompanhe seu histórico por turma, disciplina e período.</p>
         </div>
         <a class="button ghost large" href="<?= e(url('/portal')) ?>">Portal</a>
     </div>
 
     <div class="metric-grid">
-        <article class="metric"><span>Frequencia</span><strong><?= e(number_format($frequencyPercent, 2, ',', '.')) ?>%</strong></article>
-        <article class="metric"><span>Presencas</span><strong><?= e($totals['present']) ?></strong></article>
+        <article class="metric"><span>Frequência</span><strong><?= e(number_format($frequencyPercent, 2, ',', '.')) ?>%</strong></article>
+        <article class="metric"><span>Presenças</span><strong><?= e($totals['present']) ?></strong></article>
         <article class="metric"><span>Atrasos</span><strong><?= e($totals['late']) ?></strong></article>
         <article class="metric"><span>Faltas</span><strong><?= e($totals['absence']) ?></strong></article>
     </div>
@@ -56,7 +56,7 @@ $frequencyPercent = $totals['total'] > 0
             <input type="date" name="date_from" value="<?= e($filters['date_from'] ?? '') ?>">
         </label>
         <label>
-            Ate
+            Até
             <input type="date" name="date_to" value="<?= e($filters['date_to'] ?? '') ?>">
         </label>
         <button class="button" type="submit">Filtrar</button>
@@ -66,7 +66,7 @@ $frequencyPercent = $totals['total'] > 0
     <?php if (empty($records)): ?>
         <div class="empty-state">
             <h2>Nenhum registro encontrado</h2>
-            <p>Quando professores registrarem chamadas, seu historico aparecera aqui.</p>
+            <p>Quando professores registrarem chamadas, seu histórico aparecerá aqui.</p>
         </div>
     <?php else: ?>
         <div class="table-wrap">
@@ -86,7 +86,7 @@ $frequencyPercent = $totals['total'] > 0
                             <td><?= e(date('d/m/Y', strtotime($record['attendance_date']))) ?></td>
                             <td><?= e($record['class_name']) ?></td>
                             <td><?= e($record['subject_name']) ?></td>
-                            <td><span class="status-badge <?= e($record['status']) ?>"><?= e($record['status']) ?></span></td>
+                            <td><span class="status-badge <?= e($record['status']) ?>"><?= e(human_label($record['status'])) ?></span></td>
                             <td><?= e($record['note'] ?: '-') ?></td>
                         </tr>
                     <?php endforeach; ?>

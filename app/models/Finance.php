@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class Finance extends Model
 {
@@ -9,7 +9,7 @@ class Finance extends Model
         $plan = (new Plan())->find($planId);
 
         if (! $plan || $plan['status'] !== 'ativo') {
-            throw new RuntimeException('Plano indisponivel.');
+            throw new RuntimeException('Plano indisponível.');
         }
 
         $status = ((float) $plan['price'] <= 0.0) ? 'pago' : 'pendente';

@@ -50,7 +50,7 @@ WHERE status = 'aprovado';
 INSERT IGNORE INTO badges (slug, name, description, xp_reward) VALUES
 ('primeiro-login', 'Primeiro Login', 'Primeiro acesso aprovado na TME.', 25),
 ('primeiro-curso', 'Primeiro Curso', 'Primeira matricula realizada em um curso.', 40),
-('primeira-aula-concluida', 'Primeira Aula Concluida', 'Primeira aula marcada como concluida.', 40),
-('curso-finalizado', 'Curso Finalizado', 'Primeiro curso concluido na plataforma.', 100),
+('primeira-aula-concluida', 'Primeira Aula Concluída', 'Primeira aula marcada como concluída.', 40),
+('curso-finalizado', 'Curso Finalizado', 'Primeiro curso concluído na plataforma.', 100),
 ('explorador-biblioteca', 'Explorador da Biblioteca', 'Primeiro material favoritado na biblioteca.', 35),
 ('aluno-dedicado', 'Aluno Dedicado', 'Marcou pelo menos cinco aulas como concluidas.', 120);

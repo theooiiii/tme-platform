@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $activePlanId = $currentSubscription['plan_id'] ?? null;
 ?>
@@ -8,7 +8,7 @@ $activePlanId = $currentSubscription['plan_id'] ?? null;
     <div class="dashboard-heading">
         <span class="eyebrow">Financeiro TME</span>
         <h1>Planos e assinaturas</h1>
-        <p>Escolha entre acesso gratuito e premium. Pagamentos PIX/cartao estao preparados para integracao futura.</p>
+        <p>Escolha entre acesso gratuito e premium. Pagamentos PIX/cartão estão preparados para integração futura.</p>
     </div>
 
     <?php if ($currentSubscription): ?>
@@ -33,7 +33,7 @@ $activePlanId = $currentSubscription['plan_id'] ?? null;
                     <strong>R$ <?= e(number_format((float) $plan['price'], 2, ',', '.')) ?></strong>
                 </div>
                 <h2><?= e($plan['name']) ?></h2>
-                <p><?= e($plan['description'] ?: 'Plano TME para aprendizagem e evolucao academica.') ?></p>
+                <p><?= e($plan['description'] ?: 'Plano TME para aprendizagem e evolução acadêmica.') ?></p>
                 <ul class="check-list">
                     <?php foreach ($plan['benefits_list'] as $benefit): ?>
                         <li><?= e($benefit) ?></li>

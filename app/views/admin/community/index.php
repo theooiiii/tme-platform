@@ -1,14 +1,14 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $typeLabels = ['duvida' => 'Duvida', 'artigo' => 'Artigo', 'projeto' => 'Projeto', 'material' => 'Material', 'conquista' => 'Conquista', 'aviso' => 'Aviso'];
 ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
-        <span class="eyebrow">Administracao</span>
-        <h1>Comunidade academica</h1>
-        <p>Modere posts, aprove conteudos academicos, recuse itens inadequados, arquive ou destaque publicacoes.</p>
+        <span class="eyebrow">Administração</span>
+        <h1>Comunidade acadêmica</h1>
+        <p>Modere posts, aprove conteúdos acadêmicos, recuse itens inadequados, arquive ou destaque publicações.</p>
     </div>
 
     <form class="filter-form ranking-filter-form" action="<?= e(url('/admin/comunidade')) ?>" method="get">
@@ -17,7 +17,7 @@ $typeLabels = ['duvida' => 'Duvida', 'artigo' => 'Artigo', 'projeto' => 'Projeto
             <select name="status">
                 <option value="">Todos</option>
                 <?php foreach (['pendente', 'aprovado', 'recusado', 'arquivado'] as $status): ?>
-                    <option value="<?= e($status) ?>" <?= ($filters['status'] ?? '') === $status ? 'selected' : '' ?>><?= e($status) ?></option>
+                    <option value="<?= e($status) ?>" <?= ($filters['status'] ?? '') === $status ? 'selected' : '' ?>><?= e(human_label($status)) ?></option>
                 <?php endforeach; ?>
             </select>
         </label>
@@ -42,7 +42,7 @@ $typeLabels = ['duvida' => 'Duvida', 'artigo' => 'Artigo', 'projeto' => 'Projeto
                     <th>Autor</th>
                     <th>Status</th>
                     <th>Interacoes</th>
-                    <th>Acoes</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,7 +57,7 @@ $typeLabels = ['duvida' => 'Duvida', 'artigo' => 'Artigo', 'projeto' => 'Projeto
                             <span><?= e(role_label($post['author_role'])) ?></span>
                         </td>
                         <td>
-                            <span class="status-badge <?= e($post['status']) ?>"><?= e($post['status']) ?></span>
+                            <span class="status-badge <?= e($post['status']) ?>"><?= e(human_label($post['status'])) ?></span>
                             <?php if ($post['is_featured']): ?><span>Destaque</span><?php endif; ?>
                         </td>
                         <td>

@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 $isEdit = (bool) $lesson;
 $value = static fn (string $key, mixed $default = ''): mixed => old($key, $lesson[$key] ?? $default);
 ?>

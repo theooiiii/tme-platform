@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class Exam extends Model
 {
@@ -247,11 +247,11 @@ class Exam extends Model
         $exam = $this->findAvailableForStudent($examId, $studentId);
 
         if (! $exam) {
-            throw new RuntimeException('Prova nao encontrada ou fora do periodo.');
+            throw new RuntimeException('Prova não encontrada ou fora do período.');
         }
 
         if ((int) $exam['questions_count'] === 0) {
-            throw new RuntimeException('Esta prova ainda nao possui questoes.');
+            throw new RuntimeException('Esta prova ainda não possui questões.');
         }
 
         $count = $this->attemptCount($examId, $studentId);
@@ -334,15 +334,15 @@ class Exam extends Model
         $attempt = $this->findAttemptForStudent($attemptId, $studentId);
 
         if (! $attempt) {
-            throw new RuntimeException('Tentativa nao encontrada.');
+            throw new RuntimeException('Tentativa não encontrada.');
         }
 
         if ($attempt['status'] !== 'em_andamento') {
-            throw new RuntimeException('Esta tentativa ja foi enviada.');
+            throw new RuntimeException('Esta tentativa já foi enviada.');
         }
 
         if ($this->isAttemptExpired($attempt)) {
-            throw new RuntimeException('Tempo limite encerrado para esta tentativa.');
+            throw new RuntimeException('Tempo limite encerrado para está tentativa.');
         }
 
         $questions = $this->questionsForAttempt($attemptId);

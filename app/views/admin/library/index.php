@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Administracao</span>
+            <span class="eyebrow">Administração</span>
             <h1>Biblioteca</h1>
-            <p>Gerencie materiais publicos, restritos, pendentes e arquivados.</p>
+            <p>Gerencie materiais públicos, restritos, pendentes e arquivados.</p>
         </div>
         <a class="button large" href="<?= e(url('/admin/biblioteca/novo')) ?>">Novo material</a>
     </div>
@@ -20,7 +20,7 @@
             <select name="status">
                 <option value="">Todos</option>
                 <?php foreach (['rascunho', 'pendente', 'publicado', 'arquivado', 'recusado'] as $status): ?>
-                    <option value="<?= e($status) ?>" <?= ($filters['status'] ?? '') === $status ? 'selected' : '' ?>><?= e($status) ?></option>
+                    <option value="<?= e($status) ?>" <?= ($filters['status'] ?? '') === $status ? 'selected' : '' ?>><?= e(human_label($status)) ?></option>
                 <?php endforeach; ?>
             </select>
         </label>
@@ -38,7 +38,7 @@
             <select name="type">
                 <option value="">Todos</option>
                 <?php foreach (['pdf', 'livro', 'apostila', 'artigo', 'video', 'link', 'apresentacao', 'imagem', 'arquivo'] as $type): ?>
-                    <option value="<?= e($type) ?>" <?= ($filters['type'] ?? '') === $type ? 'selected' : '' ?>><?= e($type) ?></option>
+                    <option value="<?= e($type) ?>" <?= ($filters['type'] ?? '') === $type ? 'selected' : '' ?>><?= e(human_label($type)) ?></option>
                 <?php endforeach; ?>
             </select>
         </label>
@@ -61,7 +61,7 @@
                         <th>Visibilidade</th>
                         <th>Autor</th>
                         <th>Status</th>
-                        <th>Acoes</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +75,7 @@
                             <td><?= e($item['item_type']) ?></td>
                             <td><?= e($item['visibility']) ?></td>
                             <td><?= e($item['author'] ?: $item['owner_name'] ?: '-') ?></td>
-                            <td><span class="status-badge <?= e($item['status']) ?>"><?= e($item['status']) ?></span></td>
+                            <td><span class="status-badge <?= e($item['status']) ?>"><?= e(human_label($item['status'])) ?></span></td>
                             <td class="actions-cell">
                                 <a class="button small" href="<?= e(url('/biblioteca/' . $item['id'])) ?>">Ver</a>
                                 <a class="button ghost small" href="<?= e(url('/admin/biblioteca/' . $item['id'] . '/editar')) ?>">Editar</a>

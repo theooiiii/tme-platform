@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class NotificationService
 {
@@ -108,22 +108,22 @@ class NotificationService
 
     public function enrollmentCreated(int $userId, int $enrollmentId, string $courseTitle): void
     {
-        $this->send($userId, 'matricula', 'Matricula realizada', 'Voce se matriculou em ' . $courseTitle . '.', '/meus-cursos/' . $enrollmentId);
+        $this->send($userId, 'matricula', 'Matricula realizada', 'Você se matriculou em ' . $courseTitle . '.', '/meus-cursos/' . $enrollmentId);
     }
 
     public function courseCompleted(int $userId, int $enrollmentId, string $courseTitle): void
     {
-        $this->send($userId, 'curso_concluido', 'Curso concluido', 'Parabens pela conclusao de ' . $courseTitle . '.', '/meus-cursos/' . $enrollmentId, ['priority' => 'alta']);
+        $this->send($userId, 'curso_concluido', 'Curso concluído', 'Parabéns pela conclusão de ' . $courseTitle . '.', '/meus-cursos/' . $enrollmentId, ['priority' => 'alta']);
     }
 
     public function certificateIssued(int $userId, string $code, string $title): void
     {
-        $this->send($userId, 'certificado_emitido', 'Certificado emitido', 'Seu certificado de ' . $title . ' esta disponivel.', '/certificados/ver/' . $code, ['priority' => 'alta']);
+        $this->send($userId, 'certificado_emitido', 'Certificado emitido', 'Seu certificado de ' . $title . ' está disponível.', '/certificados/ver/' . $code, ['priority' => 'alta']);
     }
 
     public function activityGraded(int $userId, int $activityId, string $title): void
     {
-        $this->send($userId, 'atividade_corrigida', 'Atividade corrigida', 'A atividade ' . $title . ' recebeu correcao.', '/atividades/' . $activityId);
+        $this->send($userId, 'atividade_corrigida', 'Atividade corrigida', 'A atividade ' . $title . ' recebeu correção.', '/atividades/' . $activityId);
     }
 
     public function commentCreated(int $userId, int $postId, string $postTitle): void
@@ -138,16 +138,16 @@ class NotificationService
 
     public function eventRegistered(int $userId, int $eventId, string $title): void
     {
-        $this->send($userId, 'evento_inscrito', 'Inscricao em evento', 'Sua inscricao em ' . $title . ' foi registrada.', '/eventos/' . $eventId);
+        $this->send($userId, 'evento_inscrito', 'Inscrição em evento', 'Sua inscrição em ' . $title . ' foi registrada.', '/eventos/' . $eventId);
     }
 
     public function examReleased(int $userId, int $examId, string $title): void
     {
-        $this->send($userId, 'prova_liberada', 'Prova liberada', 'A prova ' . $title . ' esta disponivel.', '/provas/' . $examId);
+        $this->send($userId, 'prova_liberada', 'Prova liberada', 'A prova ' . $title . ' está disponível.', '/provas/' . $examId);
     }
 
     public function badgeAwarded(int $userId, string $badgeName): void
     {
-        $this->send($userId, 'badge_conquistada', 'Badge conquistada', 'Voce conquistou: ' . $badgeName . '.', '/perfil#estatisticas');
+        $this->send($userId, 'badge_conquistada', 'Badge conquistada', 'Você conquistou: ' . $badgeName . '.', '/perfil#estatisticas');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class Chat extends Model
 {
@@ -124,7 +124,7 @@ class Chat extends Model
         $recipient = $this->approvedUser($otherUserId);
 
         if (! $recipient) {
-            throw new RuntimeException('Usuario indisponivel para conversa.');
+            throw new RuntimeException('Usuário indisponível para conversa.');
         }
 
         $statement = $this->db->prepare(
@@ -201,23 +201,48 @@ class Chat extends Model
         return $statement->fetchAll();
     }
 
-    public function sendMessage(int $channelId, int $senderId, string $message): int
+    public function sendMessage(int $channelId, int $senderId, string $message, ?array $attachment = null): int
     {
         $sender = $this->approvedUser($senderId);
 
         if (! $sender) {
-            throw new RuntimeException('Somente usuarios aprovados podem enviar mensagens.');
+            throw new RuntimeException('Somente usuários aprovados podem enviar mensagens.');
         }
 
-        $statement = $this->db->prepare(
-            'INSERT INTO chat_messages (channel_id, sender_id, message, created_at)
-             VALUES (:channel_id, :sender_id, :message, NOW())'
-        );
-        $statement->execute([
-            'channel_id' => $channelId,
-            'sender_id' => $senderId,
-            'message' => $message,
-        ]);
+        if ($attachment && ! $this->supportsAttachments()) {
+            throw new RuntimeException('Aplique a migration de anexos do chat antes de enviar arquivos.');
+        }
+
+        if ($this->supportsAttachments()) {
+            $statement = $this->db->prepare(
+                'INSERT INTO chat_messages (
+                    channel_id, sender_id, message, attachment_path, attachment_name,
+                    attachment_type, attachment_size, created_at
+                 ) VALUES (
+                    :channel_id, :sender_id, :message, :attachment_path, :attachment_name,
+                    :attachment_type, :attachment_size, NOW()
+                 )'
+            );
+            $statement->execute([
+                'channel_id' => $channelId,
+                'sender_id' => $senderId,
+                'message' => $message,
+                'attachment_path' => $attachment['path'] ?? null,
+                'attachment_name' => $attachment['name'] ?? null,
+                'attachment_type' => $attachment['type'] ?? null,
+                'attachment_size' => $attachment['size'] ?? null,
+            ]);
+        } else {
+            $statement = $this->db->prepare(
+                'INSERT INTO chat_messages (channel_id, sender_id, message, created_at)
+                 VALUES (:channel_id, :sender_id, :message, NOW())'
+            );
+            $statement->execute([
+                'channel_id' => $channelId,
+                'sender_id' => $senderId,
+                'message' => $message,
+            ]);
+        }
 
         $update = $this->db->prepare('UPDATE chat_channels SET updated_at = NOW() WHERE id = :id');
         $update->execute(['id' => $channelId]);
@@ -346,5 +371,23 @@ class Chat extends Model
         $user = $statement->fetch();
 
         return $user ?: null;
+    }
+
+    private function supportsAttachments(): bool
+    {
+        static $supported = null;
+
+        if ($supported !== null) {
+            return $supported;
+        }
+
+        try {
+            $statement = $this->db->query("SHOW COLUMNS FROM chat_messages LIKE 'attachment_path'");
+            $supported = (bool) $statement->fetch();
+        } catch (PDOException) {
+            $supported = false;
+        }
+
+        return $supported;
     }
 }

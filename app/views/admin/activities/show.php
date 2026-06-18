@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Atividade</span>
             <h1><?= e($activity['title']) ?></h1>
-            <p><?= e($activity['description'] ?: 'Atividade academica da TME.') ?></p>
+            <p><?= e($activity['description'] ?: 'Atividade acadêmica da TME.') ?></p>
         </div>
         <div class="actions-row">
             <a class="button ghost large" href="<?= e(url('/admin/atividades/' . $activity['id'] . '/editar')) ?>">Editar</a>
@@ -29,13 +29,13 @@
 
     <div class="section-toolbar">
         <span class="eyebrow">Entregas</span>
-        <h2>Correcoes</h2>
+        <h2>Correções</h2>
     </div>
 
     <?php if (empty($submissions)): ?>
         <div class="empty-state">
             <h2>Nenhuma entrega recebida</h2>
-            <p>As entregas dos alunos aparecerao aqui.</p>
+            <p>As entregas dos alunos aparecerão aqui.</p>
         </div>
     <?php else: ?>
         <div class="table-wrap">
@@ -56,7 +56,7 @@
                                 <span><?= e($submission['student_email']) ?></span>
                             </td>
                             <td>
-                                <span class="status-badge <?= e($submission['status']) ?>"><?= e($submission['status']) ?></span>
+                                <span class="status-badge <?= e($submission['status']) ?>"><?= e(human_label($submission['status'])) ?></span>
                                 <span><?= e(date('d/m/Y H:i', strtotime($submission['submitted_at']))) ?></span>
                                 <?php if (! empty($submission['file_path'])): ?>
                                     <a href="<?= e(url('/' . $submission['file_path'])) ?>" target="_blank" rel="noopener">Arquivo enviado</a>
@@ -80,7 +80,7 @@
                                         <option value="devolvida" <?= $submission['status'] === 'devolvida' ? 'selected' : '' ?>>Devolvida</option>
                                     </select>
                                     <textarea name="feedback" rows="3" placeholder="Feedback"><?= e($submission['feedback'] ?? '') ?></textarea>
-                                    <button class="button small" type="submit">Salvar correcao</button>
+                                    <button class="button small" type="submit">Salvar correção</button>
                                 </form>
                             </td>
                         </tr>

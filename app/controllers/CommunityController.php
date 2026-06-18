@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class CommunityController extends Controller
 {
@@ -51,7 +51,7 @@ class CommunityController extends Controller
         unset($_SESSION['_old']);
         $this->logs->record((int) $user['id'], 'community.post_created', ['post_id' => $postId, 'status' => $data['status']]);
 
-        flash('success', $data['status'] === 'aprovado' ? 'Post publicado.' : 'Post enviado para moderacao.');
+        flash('success', $data['status'] === 'aprovado' ? 'Post publicado.' : 'Post enviado para moderação.');
         $this->redirect('/comunidade');
     }
 
@@ -61,7 +61,7 @@ class CommunityController extends Controller
         $post = $this->posts->find((int) $id, $user ? (int) $user['id'] : null, true);
 
         if (! $post) {
-            flash('error', 'Post nao encontrado ou indisponivel.');
+            flash('error', 'Post não encontrado ou indisponível.');
             $this->redirect('/comunidade');
         }
 
@@ -80,7 +80,7 @@ class CommunityController extends Controller
         $post = $this->posts->find((int) $id, (int) $user['id'], true);
 
         if (! $post) {
-            flash('error', 'Post nao encontrado.');
+            flash('error', 'Post não encontrado.');
             $this->redirect('/comunidade');
         }
 
@@ -97,7 +97,7 @@ class CommunityController extends Controller
             $this->notifications->commentCreated((int) $post['user_id'], (int) $post['id'], (string) $post['title']);
         }
 
-        flash('success', 'Comentario publicado.');
+        flash('success', 'Comentário publicado.');
         $this->redirect('/comunidade/' . $id);
     }
 
@@ -157,7 +157,7 @@ class CommunityController extends Controller
         $post = $this->posts->find((int) $id, (int) $user['id'], true);
 
         if (! $post) {
-            flash('error', 'Post nao encontrado.');
+            flash('error', 'Post não encontrado.');
             $this->redirect('/comunidade');
         }
 
@@ -203,11 +203,11 @@ class CommunityController extends Controller
         }
 
         if (strlen($data['title']) < 4) {
-            $errors[] = 'Informe um titulo com pelo menos 4 caracteres.';
+            $errors[] = 'Informe um título com pelo menos 4 caracteres.';
         }
 
         if (strlen($data['content']) < 10) {
-            $errors[] = 'Escreva um conteudo com pelo menos 10 caracteres.';
+            $errors[] = 'Escreva um conteúdo com pelo menos 10 caracteres.';
         }
 
         return $errors;

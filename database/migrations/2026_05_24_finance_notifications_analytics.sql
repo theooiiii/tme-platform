@@ -65,6 +65,6 @@ CREATE INDEX IF NOT EXISTS notifications_user_read_index ON notifications (user_
 CREATE INDEX IF NOT EXISTS notifications_type_index ON notifications (notification_type);
 
 INSERT IGNORE INTO plans (name, description, price, billing_cycle, duration_days, features, benefits, is_premium, sort_order, status) VALUES
-('TME Gratuito', 'Acesso inicial para estudar, participar da comunidade e usar recursos basicos.', 0.00, 'mensal', 30, JSON_ARRAY('Catalogo publico', 'Comunidade', 'Biblioteca publica'), JSON_ARRAY('Cursos gratuitos', 'Eventos abertos', 'Perfil e ranking'), 0, 1, 'ativo'),
-('TME Premium Mensal', 'Plano premium para liberar cursos e recursos avancados da plataforma.', 39.90, 'mensal', 30, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium', 'Provas e simulados avancados', 'Suporte academico futuro'), 1, 2, 'ativo'),
+('TME Gratuito', 'Acesso inicial para estudar, participar da comunidade e usar recursos básicos.', 0.00, 'mensal', 30, JSON_ARRAY('Catálogo público', 'Comunidade', 'Biblioteca pública'), JSON_ARRAY('Cursos gratuitos', 'Eventos abertos', 'Perfil e ranking'), 0, 1, 'ativo'),
+('TME Premium Mensal', 'Plano premium para liberar cursos e recursos avançados da plataforma.', 39.90, 'mensal', 30, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium', 'Provas e simulados avançados', 'Suporte acadêmico futuro'), 1, 2, 'ativo'),
 ('TME Premium Anual', 'Plano anual com acesso premium e melhor custo-beneficio.', 399.00, 'anual', 365, JSON_ARRAY('Cursos premium', 'Certificados', 'Analytics pessoal'), JSON_ARRAY('Acesso premium por 12 meses', 'Recursos avancados', 'Prioridade em eventos futuros'), 1, 3, 'ativo');

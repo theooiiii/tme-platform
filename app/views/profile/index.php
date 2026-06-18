@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $firstName = explode(' ', trim($user['full_name']))[0] ?: $user['full_name'];
 $initials = strtoupper(substr($user['full_name'], 0, 1));
@@ -9,28 +9,28 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
     <div class="profile-hero">
         <div class="profile-avatar"><?= e($initials) ?></div>
         <div>
-            <span class="eyebrow">Perfil e configuracoes</span>
+            <span class="eyebrow">Perfil e configurações</span>
             <h1><?= e($firstName) ?></h1>
-            <p>Centralize identidade, aparencia, estatisticas, seguranca e preferencias da sua experiencia TME.</p>
+            <p>Centralize identidade, aparência, estatísticas, segurança e preferências da sua experiência TME.</p>
         </div>
     </div>
 
     <div class="profile-layout">
         <aside class="profile-sidebar">
             <a href="#perfil">Perfil</a>
-            <a href="#aparencia">Aparencia</a>
-            <a href="#estatisticas">Estatisticas</a>
-            <a href="#seguranca">Seguranca</a>
+            <a href="#aparencia">Aparência</a>
+            <a href="#estatisticas">Estatísticas</a>
+            <a href="#seguranca">Segurança</a>
         </aside>
 
         <div class="profile-content">
             <section id="perfil" class="profile-panel">
                 <div class="section-toolbar compact">
                     <div>
-                        <span class="eyebrow">Informacoes</span>
-                        <h2>Dados do usuario</h2>
+                        <span class="eyebrow">Informações</span>
+                        <h2>Dados do usuário</h2>
                     </div>
-                    <span class="status-badge <?= e($user['status']) ?>"><?= e($user['status']) ?></span>
+                    <span class="status-badge <?= e($user['status']) ?>"><?= e(human_label($user['status'])) ?></span>
                 </div>
 
                 <div class="profile-info-grid">
@@ -47,12 +47,12 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                         <strong><?= e(role_label($user['role_slug'])) ?></strong>
                     </div>
                     <div>
-                        <span>Instituicao</span>
+                        <span>Instituição</span>
                         <strong><?= e($user['institution_name'] ?: 'Independente') ?></strong>
                     </div>
                     <div>
-                        <span>Area de interesse</span>
-                        <strong><?= e($user['interest_area'] ?: 'Nao informada') ?></strong>
+                        <span>Área de interesse</span>
+                        <strong><?= e($user['interest_area'] ?: 'Não informada') ?></strong>
                     </div>
                     <div>
                         <span>Foto de perfil</span>
@@ -68,7 +68,7 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                     <?= csrf_field() ?>
                     <label>
                         Biografia curta
-                        <textarea name="bio_short" rows="4" maxlength="280" placeholder="Conte em poucas linhas sua trajetoria academica."><?= e($user['bio_short'] ?? '') ?></textarea>
+                        <textarea name="bio_short" rows="4" maxlength="280" placeholder="Conte em poucas linhas sua trajetória acadêmica."><?= e($user['bio_short'] ?? '') ?></textarea>
                     </label>
                     <button class="button" type="submit">Salvar perfil</button>
                 </form>
@@ -82,12 +82,12 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                 </div>
                 <div class="profile-post-list">
                     <?php if (empty($posts)): ?>
-                        <p class="muted">Seus posts academicos aparecerao aqui.</p>
+                        <p class="muted">Seus posts acadêmicos aparecerão aqui.</p>
                     <?php else: ?>
                         <?php foreach ($posts as $post): ?>
                             <article>
                                 <strong><?= e($post['title']) ?></strong>
-                                <span class="status-badge <?= e($post['status']) ?>"><?= e($post['status']) ?></span>
+                                <span class="status-badge <?= e($post['status']) ?>"><?= e(human_label($post['status'])) ?></span>
                             </article>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -98,7 +98,7 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                 <div class="section-toolbar compact">
                     <div>
                         <span class="eyebrow">Personalizacao</span>
-                        <h2>Aparencia</h2>
+                        <h2>Aparência</h2>
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                         <strong>Botao, barras de progresso e destaques usam sua cor principal.</strong>
                         <div class="progress-track"><span style="width: 72%;"></span></div>
                     </div>
-                    <button class="button span-2" type="submit">Salvar aparencia</button>
+                    <button class="button span-2" type="submit">Salvar aparência</button>
                 </form>
             </section>
 
@@ -128,7 +128,7 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                 <div class="section-toolbar compact">
                     <div>
                         <span class="eyebrow">Gamificacao</span>
-                        <h2>Estatisticas</h2>
+                        <h2>Estatísticas</h2>
                     </div>
                     <a class="button ghost small" href="<?= e(url('/ranking')) ?>">Ver ranking</a>
                 </div>
@@ -141,12 +141,12 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                     <article class="metric"><span>Atividades</span><strong><?= e($stats['submitted_activities']) ?></strong></article>
                     <article class="metric"><span>Certificados</span><strong><?= e($stats['certificates']) ?></strong></article>
                     <article class="metric"><span>Moedas</span><strong><?= e((int) ($profile['internal_coins'] ?? 0)) ?></strong></article>
-                    <article class="metric"><span>Notificacoes</span><strong><?= e((int) $unreadNotifications) ?></strong></article>
+                    <article class="metric"><span>Notificações</span><strong><?= e((int) $unreadNotifications) ?></strong></article>
                 </div>
 
                 <div class="badge-strip">
                     <?php if (empty($badges)): ?>
-                        <span class="muted">Suas conquistas recentes aparecerao aqui.</span>
+                        <span class="muted">Suas conquistas recentes aparecerão aqui.</span>
                     <?php else: ?>
                         <?php foreach ($badges as $badge): ?>
                             <span class="badge-pill"><?= e($badge['name']) ?></span>
@@ -158,7 +158,7 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
             <section id="seguranca" class="profile-panel">
                 <div class="section-toolbar compact">
                     <div>
-                        <span class="eyebrow">Seguranca</span>
+                        <span class="eyebrow">Segurança</span>
                         <h2>Acesso</h2>
                     </div>
                 </div>
@@ -183,9 +183,9 @@ $initials = strtoupper(substr($user['full_name'], 0, 1));
                 <div class="security-actions">
                     <div>
                         <strong>Sessoes futuras</strong>
-                        <p class="muted">Area reservada para historico de dispositivos e encerramento remoto.</p>
+                        <p class="muted">Área reservada para histórico de dispositivos e encerramento remoto.</p>
                     </div>
-                    <a class="button ghost" href="<?= e(url('/notificacoes')) ?>">Notificacoes</a>
+                    <a class="button ghost" href="<?= e(url('/notificacoes')) ?>">Notificações</a>
                     <a class="button ghost" href="<?= e(url('/financeiro')) ?>">Financeiro</a>
                     <form action="<?= e(url('/logout')) ?>" method="post">
                         <?= csrf_field() ?>

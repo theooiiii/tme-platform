@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $value = static fn (string $key, mixed $default = ''): mixed => old($key, $default);
 ?>
@@ -8,7 +8,7 @@ $value = static fn (string $key, mixed $default = ''): mixed => old($key, $defau
     <div class="dashboard-heading">
         <span class="eyebrow">Biblioteca</span>
         <h1>Enviar material</h1>
-        <p>Materiais enviados por alunos e professores entram como pendentes para moderacao.</p>
+        <p>Materiais enviados por alunos e professores entram como pendentes para moderação.</p>
     </div>
 
     <?php require BASE_PATH . '/app/views/library/partials/form_fields.php'; ?>

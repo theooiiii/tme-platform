@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $statusLabels = [
     'presente' => 'Presente',
@@ -12,11 +12,11 @@ $statusLabels = [
 <section class="dashboard-shell attendance-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Registro academico</span>
-            <h1>Frequencia</h1>
-            <p>Registre presenca por turma, disciplina e data com observacoes individuais.</p>
+            <span class="eyebrow">Registro acadêmico</span>
+            <h1>Frequência</h1>
+            <p>Registre presença por turma, disciplina e data com observações individuais.</p>
         </div>
-        <a class="button ghost large" href="<?= e(url('/frequencia/relatorio')) ?>">Relatorios</a>
+        <a class="button ghost large" href="<?= e(url('/frequencia/relatorio')) ?>">Relatórios</a>
     </div>
 
     <form class="filter-form" action="<?= e(url('/frequencia')) ?>" method="get">
@@ -49,13 +49,13 @@ $statusLabels = [
 
     <?php if (empty($classes)): ?>
         <div class="empty-state">
-            <h2>Nenhuma turma disponivel</h2>
-            <p>Vincule turmas e disciplinas antes de registrar frequencia.</p>
+            <h2>Nenhuma turma disponível</h2>
+            <p>Vincule turmas e disciplinas antes de registrar frequência.</p>
         </div>
     <?php elseif (empty($students)): ?>
         <div class="empty-state">
             <h2>Sem alunos vinculados</h2>
-            <p>A turma selecionada ainda nao possui alunos ativos.</p>
+            <p>A turma selecionada ainda não possui alunos ativos.</p>
         </div>
     <?php else: ?>
         <form action="<?= e(url('/frequencia')) ?>" method="post" class="attendance-form">

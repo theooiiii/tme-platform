@@ -1,0 +1,11 @@
+.env
+.git
+.automation
+node_modules
+vendor
+storage/logs/*
+storage/cache/*
+storage/temp/*
+tools
+*.log
+*.tmp

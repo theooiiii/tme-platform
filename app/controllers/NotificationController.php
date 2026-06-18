@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class NotificationController extends Controller
 {
@@ -16,7 +16,7 @@ class NotificationController extends Controller
         $user = current_user();
 
         $this->view('notifications/index', [
-            'title' => 'Notificacoes',
+            'title' => 'Notificações',
             'notifications' => $this->notifications->all((int) $user['id']),
             'unreadCount' => $this->notifications->unreadCount((int) $user['id']),
         ]);
@@ -46,7 +46,7 @@ class NotificationController extends Controller
         $user = current_user();
         $this->notifications->markAllRead((int) $user['id']);
 
-        flash('success', 'Notificacoes marcadas como lidas.');
+        flash('success', 'Notificações marcadas como lidas.');
         $this->redirectBack();
     }
 

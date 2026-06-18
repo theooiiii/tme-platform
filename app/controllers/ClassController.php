@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class ClassController extends Controller
 {
@@ -26,7 +26,7 @@ class ClassController extends Controller
         $class = $this->classes->find((int) $id);
 
         if (! $class) {
-            flash('error', 'Turma nao encontrada.');
+            flash('error', 'Turma não encontrada.');
             $this->redirect('/turmas');
         }
 

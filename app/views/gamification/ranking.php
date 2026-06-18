@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Gamificacao</span>
             <h1>Ranking TME</h1>
-            <p>Classificacao global por XP, nivel, moedas e conquistas. O filtro por curso considera alunos matriculados.</p>
+            <p>Classificação global por XP, nível, moedas e conquistas. O filtro por curso considera alunos matriculados.</p>
         </div>
         <a class="button ghost large" href="<?= e(url('/perfil#estatisticas')) ?>">Meu perfil</a>
     </div>

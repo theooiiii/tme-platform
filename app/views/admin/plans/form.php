@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $isEdit = (bool) $plan;
 $value = static fn (string $key, mixed $default = ''): mixed => old($key, $plan[$key] ?? $default);
@@ -9,7 +9,7 @@ $value = static fn (string $key, mixed $default = ''): mixed => old($key, $plan[
     <div class="dashboard-heading">
         <span class="eyebrow">Planos</span>
         <h1><?= $isEdit ? 'Editar plano' : 'Novo plano' ?></h1>
-        <p>Configure preco, duracao, beneficios e status. Pagamentos reais entram em uma integracao futura.</p>
+        <p>Configure preço, duração, benefícios e status. Pagamentos reais entram em uma integração futura.</p>
     </div>
 
     <form class="form grid-form admin-form" action="<?= e($action) ?>" method="post">
@@ -21,21 +21,21 @@ $value = static fn (string $key, mixed $default = ''): mixed => old($key, $plan[
         </label>
 
         <label>
-            Preco
+            Preço
             <input type="number" name="price" min="0" step="0.01" value="<?= e($value('price', '0.00')) ?>">
         </label>
 
         <label>
             Cobranca
             <select name="billing_cycle">
-                <?php foreach (['mensal' => 'Mensal', 'anual' => 'Anual', 'unico' => 'Unico'] as $option => $label): ?>
+                <?php foreach (['mensal' => 'Mensal', 'anual' => 'Anual', 'unico' => 'Único'] as $option => $label): ?>
                     <option value="<?= e($option) ?>" <?= $value('billing_cycle', 'mensal') === $option ? 'selected' : '' ?>><?= e($label) ?></option>
                 <?php endforeach; ?>
             </select>
         </label>
 
         <label>
-            Duracao em dias
+            Duração em dias
             <input type="number" name="duration_days" min="1" value="<?= e($value('duration_days', 30)) ?>">
         </label>
 
@@ -59,12 +59,12 @@ $value = static fn (string $key, mixed $default = ''): mixed => old($key, $plan[
         </label>
 
         <label class="span-2">
-            Descricao
+            Descrição
             <textarea name="description" rows="3"><?= e($value('description')) ?></textarea>
         </label>
 
         <label class="span-2">
-            Beneficios, um por linha
+            Benefícios, um por linha
             <textarea name="benefits_text" rows="7" required><?= e($value('benefits_text')) ?></textarea>
         </label>
 

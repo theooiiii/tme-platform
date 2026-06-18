@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class CertificateController extends Controller
 {
@@ -62,7 +62,7 @@ class CertificateController extends Controller
         $code = strtoupper(trim($_POST['code'] ?? ''));
 
         if ($code === '') {
-            flash('error', 'Informe o codigo do certificado.');
+            flash('error', 'Informe o código do certificado.');
             $this->redirect('/certificados/validar');
         }
 
@@ -80,7 +80,7 @@ class CertificateController extends Controller
         ]);
 
         $this->view('certificates/validation_result', [
-            'title' => 'Resultado da validacao',
+            'title' => 'Resultado da validação',
             'certificate' => $certificate,
             'code' => strtoupper(trim($code)),
         ]);
@@ -114,14 +114,14 @@ class CertificateController extends Controller
         $certificate = $this->certificates->find((int) $id);
 
         if (! $certificate) {
-            flash('error', 'Certificado nao encontrado.');
+            flash('error', 'Certificado não encontrado.');
             $this->redirect('/admin/certificados');
         }
 
         $reason = trim($_POST['revocation_reason'] ?? '');
 
         if (strlen($reason) < 6) {
-            flash('error', 'Informe um motivo de revogacao com pelo menos 6 caracteres.');
+            flash('error', 'Informe um motivo de revogação com pelo menos 6 caracteres.');
             $this->redirect('/admin/certificados');
         }
 
@@ -142,7 +142,7 @@ class CertificateController extends Controller
         $certificate = $this->certificates->findByCode($code);
 
         if (! $certificate) {
-            flash('error', 'Certificado nao encontrado.');
+            flash('error', 'Certificado não encontrado.');
             $this->redirect($fallback);
         }
 

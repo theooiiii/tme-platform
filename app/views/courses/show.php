@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="detail-grid">
@@ -32,10 +32,10 @@
             <?php elseif ($requiresPremium && ! $hasPremium): ?>
                 <div class="enrollment-callout">
                     <strong>Curso premium</strong>
-                    <p>Assine um plano premium para liberar esta matricula.</p>
+                    <p>Assine um plano premium para liberar está matricula.</p>
                     <div class="actions-row">
                         <a class="button large" href="<?= e(url('/planos')) ?>">Ver planos</a>
-                        <a class="button ghost large" href="<?= e(url('/aluno/cursos')) ?>">Voltar ao catalogo</a>
+                        <a class="button ghost large" href="<?= e(url('/aluno/cursos')) ?>">Voltar ao catálogo</a>
                     </div>
                 </div>
             <?php else: ?>

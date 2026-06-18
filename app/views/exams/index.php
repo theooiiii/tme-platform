@@ -1,9 +1,9 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell exams-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Avaliacoes</span>
+            <span class="eyebrow">Avaliações</span>
             <h1>Provas e simulados</h1>
             <p>Acesse provas publicadas, acompanhe tentativas e veja seu desempenho por disciplina.</p>
         </div>
@@ -24,20 +24,20 @@
     <?php if (empty($availableExams)): ?>
         <div class="empty-state">
             <h2>Nenhuma prova publicada</h2>
-            <p>As avaliacoes aparecerao aqui quando forem liberadas para seus cursos ou turmas.</p>
+            <p>As avaliações aparecerão aqui quando forem liberadas para seus cursos ou turmas.</p>
         </div>
     <?php else: ?>
         <div class="course-card-grid">
             <?php foreach ($availableExams as $exam): ?>
                 <article class="course-card">
                     <div>
-                        <span class="status-badge <?= e($exam['status']) ?>"><?= e($exam['status']) ?></span>
+                        <span class="status-badge <?= e($exam['status']) ?>"><?= e(human_label($exam['status'])) ?></span>
                         <h2><?= e($exam['title']) ?></h2>
-                        <p><?= e($exam['description'] ?: 'Prova vinculada a sua jornada academica.') ?></p>
+                        <p><?= e($exam['description'] ?: 'Prova vinculada a sua jornada acadêmica.') ?></p>
                         <div class="course-meta">
                             <span><?= e($exam['course_title'] ?: 'Geral') ?></span>
                             <span><?= e($exam['class_name'] ?: 'Sem turma') ?></span>
-                            <span><?= e((int) $exam['questions_count']) ?> questoes</span>
+                            <span><?= e((int) $exam['questions_count']) ?> questões</span>
                             <span><?= e((int) $exam['attempts_used']) ?>/<?= e((int) $exam['attempts_allowed']) ?> tentativas</span>
                         </div>
                         <a class="button" href="<?= e(url('/provas/' . $exam['id'])) ?>">Abrir prova</a>
@@ -49,19 +49,19 @@
 
     <div class="admin-detail-grid">
         <section class="detail-card">
-            <span class="eyebrow">Historico</span>
+            <span class="eyebrow">Histórico</span>
             <h2>Minhas tentativas</h2>
             <?php if (empty($attempts)): ?>
                 <p class="muted">Nenhuma tentativa iniciada.</p>
             <?php else: ?>
                 <div class="table-wrap compact-table">
                     <table>
-                        <thead><tr><th>Prova</th><th>Status</th><th>Nota</th><th>Acao</th></tr></thead>
+                        <thead><tr><th>Prova</th><th>Status</th><th>Nota</th><th>Ação</th></tr></thead>
                         <tbody>
                             <?php foreach ($attempts as $attempt): ?>
                                 <tr>
                                     <td><strong><?= e($attempt['title']) ?></strong><span><?= e($attempt['subject_name'] ?: 'Geral') ?></span></td>
-                                    <td><span class="status-badge <?= e($attempt['status']) ?>"><?= e($attempt['status']) ?></span></td>
+                                    <td><span class="status-badge <?= e($attempt['status']) ?>"><?= e(human_label($attempt['status'])) ?></span></td>
                                     <td><?= e(number_format((float) $attempt['total_score'], 2, ',', '.')) ?></td>
                                     <td><a href="<?= e(url('/provas/tentativas/' . $attempt['id'] . '/resultado')) ?>">Resultado</a></td>
                                 </tr>

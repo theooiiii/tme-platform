@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <div class="lesson-row">
     <div>
@@ -28,7 +28,7 @@
     <div class="inline-actions">
         <a href="<?= e(url('/admin/cursos/' . $course['id'] . '/aulas/' . $lesson['id'] . '/materiais/novo')) ?>">Material</a>
         <a href="<?= e(url('/admin/cursos/' . $course['id'] . '/aulas/' . $lesson['id'] . '/editar')) ?>">Editar</a>
-        <form action="<?= e(url('/admin/cursos/' . $course['id'] . '/aulas/' . $lesson['id'] . '/excluir')) ?>" method="post" data-confirm="Excluir esta aula?">
+        <form action="<?= e(url('/admin/cursos/' . $course['id'] . '/aulas/' . $lesson['id'] . '/excluir')) ?>" method="post" data-confirm="Excluir está aula?">
             <?= csrf_field() ?>
             <button type="submit">Excluir</button>
         </form>

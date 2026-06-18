@@ -1,10 +1,10 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell notifications-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Central</span>
-            <h1>Notificacoes</h1>
+            <h1>Notificações</h1>
             <p>Acompanhe eventos importantes de cursos, certificados, atividades, comunidade, chat, provas e badges.</p>
         </div>
         <?php if ($unreadCount > 0): ?>
@@ -18,8 +18,8 @@
     <div class="notification-list">
         <?php if (empty($notifications)): ?>
             <div class="empty-state">
-                <h2>Nenhuma notificacao</h2>
-                <p>Quando algo importante acontecer, voce vera aqui.</p>
+                <h2>Nenhuma notificação</h2>
+                <p>Quando algo importante acontecer, você vera aqui.</p>
             </div>
         <?php endif; ?>
 
@@ -27,7 +27,7 @@
             <article class="notification-row <?= empty($notification['read_at']) ? 'unread' : '' ?>">
                 <div>
                     <span class="status-badge <?= empty($notification['read_at']) ? 'pendente' : 'ativo' ?>">
-                        <?= empty($notification['read_at']) ? 'Nao lida' : 'Lida' ?>
+                        <?= empty($notification['read_at']) ? 'Não lida' : 'Lida' ?>
                     </span>
                     <h2><?= e($notification['title']) ?></h2>
                     <p><?= e($notification['message']) ?></p>
@@ -45,7 +45,7 @@
                     <?php else: ?>
                         <form action="<?= e(url('/notificacoes/' . $notification['id'] . '/nao-lida')) ?>" method="post">
                             <?= csrf_field() ?>
-                            <button class="button small ghost" type="submit">Nao lida</button>
+                            <button class="button small ghost" type="submit">Não lida</button>
                         </form>
                     <?php endif; ?>
                 </div>

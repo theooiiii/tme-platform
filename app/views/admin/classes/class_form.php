@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
@@ -12,7 +12,7 @@
             <input type="text" name="name" value="<?= e(old('name', $class['name'] ?? '')) ?>" required>
         </label>
         <label>
-            Instituicao
+            Instituição
             <select name="institution_id">
                 <option value="">Nenhuma</option>
                 <?php foreach ($institutions as $institution): ?>
@@ -21,7 +21,7 @@
             </select>
         </label>
         <label>
-            Periodo
+            Período
             <input type="text" name="period" value="<?= e(old('period', $class['period'] ?? '')) ?>" placeholder="2026.1, manha, noite">
         </label>
         <label>
@@ -33,7 +33,7 @@
             </select>
         </label>
         <label class="span-2">
-            Descricao
+            Descrição
             <textarea name="description" rows="4"><?= e(old('description', $class['description'] ?? '')) ?></textarea>
         </label>
         <button class="button span-2" type="submit">Salvar turma</button>

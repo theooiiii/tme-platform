@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 function env(string $key, mixed $default = null): mixed
 {
@@ -53,6 +53,10 @@ function e(mixed $value): string
 
 function route_base_path(): string
 {
+    if (env('VERCEL') || env('TME_SERVERLESS')) {
+        return '';
+    }
+
     $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
 
     if ($scriptDir === '/' || $scriptDir === '.') {
@@ -64,6 +68,10 @@ function route_base_path(): string
 
 function project_base_path(): string
 {
+    if (env('VERCEL') || env('TME_SERVERLESS')) {
+        return '';
+    }
+
     $base = route_base_path();
 
     if (str_ends_with($base, '/public')) {
@@ -204,6 +212,63 @@ function role_label(string $slug): string
     ][$slug] ?? ucfirst($slug);
 }
 
+function human_label(?string $value): string
+{
+    $value = trim((string) $value);
+
+    if ($value === '') {
+        return '-';
+    }
+
+    $labels = [
+        'ao_vivo' => 'Ao vivo',
+        'apresentacao' => 'Apresentação',
+        'aprovado' => 'Aprovado',
+        'arquivo' => 'Arquivo',
+        'arquivado' => 'Arquivado',
+        'arquivada' => 'Arquivada',
+        'ativa' => 'Ativa',
+        'ativo' => 'Ativo',
+        'atrasada' => 'Atrasada',
+        'cancelada' => 'Cancelada',
+        'cancelado' => 'Cancelado',
+        'cartao' => 'Cartão',
+        'comissao' => 'Comissão',
+        'concluida' => 'Concluída',
+        'concluido' => 'Concluído',
+        'discursiva' => 'Discursiva',
+        'encerrado' => 'Encerrado',
+        'encerrada' => 'Encerrada',
+        'estornado' => 'Estornado',
+        'facil' => 'Fácil',
+        'imagem' => 'Imagem',
+        'institucional' => 'Institucional',
+        'logados' => 'Somente logados',
+        'media' => 'Média',
+        'mensalidade' => 'Mensalidade',
+        'objetiva' => 'Objetiva',
+        'pendente' => 'Pendente',
+        'pendente atrasada' => 'Pendente atrasada',
+        'pendente_correcao' => 'Pendente de correção',
+        'privada_admin' => 'Privada/admin',
+        'privado' => 'Privado',
+        'processando' => 'Processando',
+        'publica' => 'Pública',
+        'publicada' => 'Publicada',
+        'publicado' => 'Publicado',
+        'publico' => 'Público',
+        'rascunho' => 'Rascunho',
+        'recusado' => 'Recusado',
+        'recusada' => 'Recusada',
+        'revogado' => 'Revogado',
+        'unico' => 'Único',
+        'valido' => 'Válido',
+        'video' => 'Vídeo',
+    ];
+
+    return $labels[$value] ?? ucwords(str_replace('_', ' ', $value));
+}
+
 function slugify(string $value): string
 {
     $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value) ?: $value;
@@ -212,4 +277,42 @@ function slugify(string $value): string
     $value = trim($value, '-');
 
     return $value !== '' ? $value : 'item';
+}
+
+function media_embed_url(?string $url): ?string
+{
+    $url = trim((string) $url);
+
+    if ($url === '') {
+        return null;
+    }
+
+    $host = strtolower((string) parse_url($url, PHP_URL_HOST));
+    $path = (string) parse_url($url, PHP_URL_PATH);
+
+    if (str_contains($host, 'youtube.com')) {
+        parse_str((string) parse_url($url, PHP_URL_QUERY), $query);
+        $video = $query['v'] ?? trim($path, '/');
+
+        return $video ? 'https://www.youtube.com/embed/' . rawurlencode((string) $video) : null;
+    }
+
+    if (str_contains($host, 'youtu.be')) {
+        $video = trim($path, '/');
+
+        return $video ? 'https://www.youtube.com/embed/' . rawurlencode($video) : null;
+    }
+
+    if (str_contains($host, 'vimeo.com')) {
+        $video = trim($path, '/');
+
+        return $video ? 'https://player.vimeo.com/video/' . rawurlencode($video) : null;
+    }
+
+    return null;
+}
+
+function is_direct_video_url(?string $url): bool
+{
+    return (bool) preg_match('/\.(mp4|webm|ogg)(\?.*)?$/i', (string) $url);
 }

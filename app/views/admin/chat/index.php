@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell chat-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Seguranca e moderacao</span>
+            <span class="eyebrow">Segurança e moderação</span>
             <h1>Auditoria de chat</h1>
-            <p>Visualizacao restrita para seguranca, moderacao e apuracao de incidentes.</p>
+            <p>Visualização restrita para segurança, moderação e apuração de incidentes.</p>
         </div>
         <a class="button ghost large" href="<?= e(url('/chat')) ?>">Meu chat</a>
     </div>

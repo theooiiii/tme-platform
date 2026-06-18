@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell chat-shell" data-chat-refresh="45000">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Comunicacao interna</span>
             <h1>Chat TME</h1>
-            <p>Converse com usuarios aprovados e acompanhe grupos vinculados as suas turmas.</p>
+            <p>Converse com usuários aprovados e acompanhe grupos vinculados às suas turmas.</p>
         </div>
         <a class="button ghost large" href="<?= e(url('/portal')) ?>">Portal</a>
     </div>
@@ -17,7 +17,7 @@
                 <label>
                     Nova conversa
                     <select name="user_id" required>
-                        <option value="">Selecionar usuario</option>
+                        <option value="">Selecionar usuário</option>
                         <?php foreach ($users as $availableUser): ?>
                             <option value="<?= e($availableUser['id']) ?>">
                                 <?= e($availableUser['full_name']) ?> (<?= e(role_label($availableUser['role_slug'])) ?>)
@@ -49,7 +49,7 @@
             <?php if (! $channel): ?>
                 <div class="empty-state">
                     <h2>Selecione uma conversa</h2>
-                    <p>Use a lista lateral ou inicie uma conversa privada com outro usuario aprovado.</p>
+                    <p>Use a lista lateral ou inicie uma conversa privada com outro usuário aprovado.</p>
                 </div>
             <?php else: ?>
                 <div class="chat-thread-header">
@@ -70,15 +70,25 @@
                                     <strong><?= e($message['sender_name']) ?></strong>
                                     <span><?= e(date('d/m H:i', strtotime($message['created_at']))) ?></span>
                                 </div>
-                                <p><?= nl2br(e($message['message'])) ?></p>
+                                <?php if (! empty($message['message'])): ?>
+                                    <p><?= nl2br(e($message['message'])) ?></p>
+                                <?php endif; ?>
+                                <?php if (! empty($message['attachment_path'])): ?>
+                                    <a class="message-attachment" href="<?= e(url('/' . $message['attachment_path'])) ?>" target="_blank" rel="noopener">
+                                        <?= e($message['attachment_name'] ?: 'Arquivo anexado') ?>
+                                    </a>
+                                <?php endif; ?>
                             </article>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 
-                <form class="chat-message-form" action="<?= e(url('/chat/' . $channel['id'] . '/enviar')) ?>" method="post">
+                <form class="chat-message-form" action="<?= e(url('/chat/' . $channel['id'] . '/enviar')) ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-                    <textarea name="message" rows="3" placeholder="Escreva uma mensagem..." required></textarea>
+                    <div>
+                        <textarea name="message" rows="3" placeholder="Escreva uma mensagem..."></textarea>
+                        <input type="file" name="attachment" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.zip,.docx,.pptx">
+                    </div>
                     <button class="button" type="submit">Enviar</button>
                 </form>
             <?php endif; ?>

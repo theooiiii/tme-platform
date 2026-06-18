@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
@@ -35,7 +35,7 @@
                             </td>
                             <td><?= e($account['role_name']) ?></td>
                             <td><?= e($account['city']) ?> / <?= e($account['state']) ?></td>
-                            <td><?= $account['is_independent'] ? 'Independente' : e($account['institution_name'] ?? 'Nao informada') ?></td>
+                            <td><?= $account['is_independent'] ? 'Independente' : e($account['institution_name'] ?? 'Não informada') ?></td>
                             <td>
                                 <strong><?= e($account['interest_area']) ?></strong>
                                 <span><?= e($account['platform_goal']) ?></span>

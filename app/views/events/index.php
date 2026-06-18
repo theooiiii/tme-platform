@@ -1,14 +1,14 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
         <span class="eyebrow">Eventos</span>
         <h1>Agenda TME</h1>
-        <p>Palestras, workshops, aulas ao vivo, simulados, olimpiadas e hackathons publicados pela equipe.</p>
+        <p>Palestras, workshops, aulas ao vivo, simulados, olimpíadas e hackathons publicados pela equipe.</p>
     </div>
 
     <?php if (empty($events)): ?>
-        <div class="empty-state"><h2>Nenhum evento publicado</h2><p>A agenda academica aparecera aqui.</p></div>
+        <div class="empty-state"><h2>Nenhum evento publicado</h2><p>A agenda acadêmica aparecerá aqui.</p></div>
     <?php else: ?>
         <div class="event-grid">
             <?php foreach ($events as $event): ?>
@@ -19,9 +19,9 @@
                         <div class="course-card-placeholder">TME</div>
                     <?php endif; ?>
                     <div>
-                        <span class="status-badge"><?= e($event['event_type']) ?></span>
+                        <span class="status-badge"><?= e(human_label($event['event_type'])) ?></span>
                         <h2><?= e($event['title']) ?></h2>
-                        <p><?= e($event['description'] ?: 'Evento academico TME.') ?></p>
+                        <p><?= e($event['description'] ?: 'Evento acadêmico TME.') ?></p>
                         <div class="course-meta">
                             <span><?= e($event['starts_at'] ? date('d/m/Y H:i', strtotime($event['starts_at'])) : 'data a definir') ?></span>
                             <span><?= e((int) $event['registrations_count']) ?> inscritos</span>

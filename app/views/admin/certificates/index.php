@@ -1,8 +1,8 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
-        <span class="eyebrow">Administracao</span>
+        <span class="eyebrow">Administração</span>
         <h1>Certificados emitidos</h1>
         <p>Acompanhe certificados gerados automaticamente, valide codigos e revogue registros quando necessario.</p>
     </div>
@@ -10,7 +10,7 @@
     <form class="filter-form certificate-filter-form" action="<?= e(url('/admin/certificados')) ?>" method="get">
         <label>
             Busca
-            <input type="search" name="q" value="<?= e($filters['q'] ?? '') ?>" placeholder="Codigo, titulo ou aluno">
+            <input type="search" name="q" value="<?= e($filters['q'] ?? '') ?>" placeholder="Código, título ou aluno">
         </label>
         <label>
             Curso
@@ -54,9 +54,9 @@
                     <tr>
                         <th>Aluno</th>
                         <th>Curso</th>
-                        <th>Codigo</th>
+                        <th>Código</th>
                         <th>Status</th>
-                        <th>Acoes</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +75,7 @@
                                 <span><?= e($certificate['certificate_type']) ?></span>
                             </td>
                             <td>
-                                <span class="status-badge <?= e($certificate['validation_status']) ?>"><?= e($certificate['validation_status']) ?></span>
+                                <span class="status-badge <?= e($certificate['validation_status']) ?>"><?= e(human_label($certificate['validation_status'])) ?></span>
                                 <?php if ($certificate['validation_status'] === 'revogado'): ?>
                                     <span><?= e($certificate['revocation_reason'] ?: 'sem motivo') ?></span>
                                 <?php endif; ?>
@@ -86,7 +86,7 @@
                                 <?php if ($certificate['validation_status'] === 'valido'): ?>
                                     <form action="<?= e(url('/admin/certificados/' . $certificate['id'] . '/revogar')) ?>" method="post" data-confirm="Revogar este certificado?">
                                         <?= csrf_field() ?>
-                                        <input type="text" name="revocation_reason" placeholder="Motivo da revogacao" required>
+                                        <input type="text" name="revocation_reason" placeholder="Motivo da revogação" required>
                                         <button class="button ghost small" type="submit">Revogar</button>
                                     </form>
                                 <?php endif; ?>

@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
@@ -27,7 +27,7 @@
         </section>
         <section class="profile-panel">
             <h2>Materiais futuros</h2>
-            <p class="muted">Area preparada para materiais, calendario, frequencia e ranking por turma.</p>
+            <p class="muted">Área preparada para materiais, calendário, frequência e ranking por turma.</p>
         </section>
     </div>
 </section>

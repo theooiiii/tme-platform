@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class ProfileController extends Controller
 {
@@ -71,7 +71,7 @@ class ProfileController extends Controller
             'primary_color' => $primaryColor,
         ]);
 
-        flash('success', 'Preferencias visuais atualizadas.');
+        flash('success', 'Preferências visuais atualizadas.');
         $this->redirect('/perfil#aparencia');
     }
 
@@ -95,7 +95,7 @@ class ProfileController extends Controller
         }
 
         if ($password !== $confirmation) {
-            flash('error', 'A confirmacao da senha nao confere.');
+            flash('error', 'A confirmação da senha não confere.');
             $this->redirect('/perfil#seguranca');
         }
 

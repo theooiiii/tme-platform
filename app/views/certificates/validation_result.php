@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $isValid = $certificate && $certificate['validation_status'] === 'valido';
 ?>
@@ -10,10 +10,10 @@ $isValid = $certificate && $certificate['validation_status'] === 'valido';
         <h1><?= $isValid ? 'Certificado valido' : 'Certificado invalido' ?></h1>
 
         <?php if (! $certificate): ?>
-            <p class="muted">Nenhum certificado foi encontrado para o codigo <?= e($code) ?>.</p>
+            <p class="muted">Nenhum certificado foi encontrado para o código <?= e($code) ?>.</p>
         <?php else: ?>
             <div class="validation-result <?= $isValid ? 'valid' : 'invalid' ?>">
-                <span class="status-badge <?= e($certificate['validation_status']) ?>"><?= e($certificate['validation_status']) ?></span>
+                <span class="status-badge <?= e($certificate['validation_status']) ?>"><?= e(human_label($certificate['validation_status'])) ?></span>
                 <h2><?= e($certificate['student_name']) ?></h2>
                 <p><?= e($certificate['course_title'] ?: $certificate['title']) ?></p>
                 <div class="course-meta">
@@ -28,7 +28,7 @@ $isValid = $certificate && $certificate['validation_status'] === 'valido';
         <?php endif; ?>
 
         <div class="actions-row">
-            <a class="button large" href="<?= e(url('/certificados/validar')) ?>">Nova validacao</a>
+            <a class="button large" href="<?= e(url('/certificados/validar')) ?>">Nova validação</a>
             <a class="button ghost large" href="<?= e(url('/')) ?>">Voltar</a>
         </div>
     </div>

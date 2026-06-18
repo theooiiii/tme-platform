@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class DashboardController extends Controller
 {
@@ -14,13 +14,16 @@ class DashboardController extends Controller
         $analyticsModel = new Analytics();
         $period = $analyticsModel->periodFromRequest($_GET);
         $dashboardAnalytics = [];
+        $analyticsTtl = (int) config('app.cache.analytics_ttl', 90);
+        $adminOverview = [];
 
         if (in_array($user['role_slug'], ['administrador', 'supervisor'], true)) {
-            $dashboardAnalytics = $analyticsModel->admin($period);
+            $dashboardAnalytics = Cache::remember('analytics.admin.' . $period['days'], $analyticsTtl, fn () => $analyticsModel->admin($period));
+            $adminOverview = Cache::remember('admin.overview', $analyticsTtl, fn () => (new AdminRepository())->overview());
         } elseif ($user['role_slug'] === 'professor') {
-            $dashboardAnalytics = $analyticsModel->teacher((int) $user['id'], $period);
+            $dashboardAnalytics = Cache::remember('analytics.teacher.' . $user['id'] . '.' . $period['days'], $analyticsTtl, fn () => $analyticsModel->teacher((int) $user['id'], $period));
         } elseif ($user['role_slug'] === 'aluno') {
-            $dashboardAnalytics = $analyticsModel->student((int) $user['id'], $period);
+            $dashboardAnalytics = Cache::remember('analytics.student.' . $user['id'] . '.' . $period['days'], $analyticsTtl, fn () => $analyticsModel->student((int) $user['id'], $period));
         }
 
         $views = [
@@ -42,6 +45,7 @@ class DashboardController extends Controller
             'stats' => $users->profileStats((int) $user['id']),
             'badges' => $gamification->badgesForUser((int) $user['id'], 4),
             'dashboardAnalytics' => $dashboardAnalytics,
+            'adminOverview' => $adminOverview,
             'period' => $period,
             'usesCharts' => ! empty($dashboardAnalytics),
         ]);

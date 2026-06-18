@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class PortalController extends Controller
 {
@@ -51,7 +51,7 @@ class PortalController extends Controller
     public function settings(): void
     {
         $this->view('dashboard/settings', [
-            'title' => 'Configuracoes',
+            'title' => 'Configurações',
             'user' => current_user(),
             'settings' => current_settings(),
         ]);

@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $appName = config('app.name');
 $slogan = config('app.slogan');
@@ -33,7 +33,7 @@ $guestLinks = [
 ];
 
 $primaryLinks = [
-    '/portal' => 'Inicio',
+    '/portal' => 'Início',
     '/dashboard' => 'Dashboard',
 ];
 
@@ -58,7 +58,7 @@ if ($isLearner) {
         '/atividades' => 'Atividades',
         '/boletim' => 'Boletim',
         '/provas' => 'Provas',
-        '/minha-frequencia' => 'Frequencia',
+        '/minha-frequencia' => 'Frequência',
         '/certificados' => 'Certificados',
         '/turmas' => 'Turmas',
     ] + $moduleLinks;
@@ -66,8 +66,8 @@ if ($isLearner) {
 
 if ($role === 'professor') {
     $moduleLinks['/frequencia'] = 'Chamada';
-    $moduleLinks['/admin/provas'] = 'Gestao provas';
-    $moduleLinks['/admin/atividades'] = 'Gestao atividades';
+    $moduleLinks['/admin/provas'] = 'Gestão provas';
+    $moduleLinks['/admin/atividades'] = 'Gestão atividades';
     $moduleLinks['/admin/biblioteca'] = 'Biblioteca admin';
 }
 
@@ -75,13 +75,17 @@ $adminLinks = [];
 
 if ($isAdmin) {
     $adminLinks = [
-        '/admin/contas-pendentes' => 'Aprovacoes',
+        '/admin/contas-pendentes' => 'Aprovações',
+        '/admin/busca' => 'Busca global',
+        '/admin/usuarios' => 'Usuários',
+        '/admin/permissoes' => 'Permissões',
         '/analytics' => 'Analytics',
         '/admin/cursos' => 'Cursos',
+        '/admin/categorias' => 'Categorias',
         '/admin/planos' => 'Planos',
-        '/admin/matriculas' => 'Matriculas',
+        '/admin/matriculas' => 'Matrículas',
         '/admin/atividades' => 'Atividades',
-        '/frequencia' => 'Frequencia',
+        '/frequencia' => 'Frequência',
         '/admin/provas' => 'Provas',
         '/admin/biblioteca' => 'Biblioteca',
         '/admin/certificados' => 'Certificados',
@@ -89,6 +93,7 @@ if ($isAdmin) {
         '/admin/eventos' => 'Eventos',
         '/admin/turmas' => 'Turmas',
         '/admin/chat' => 'Chat auditoria',
+        '/admin/logs' => 'Logs',
     ];
 }
 
@@ -148,7 +153,7 @@ $isGroupActive = static function (array $links) use ($isActive): bool {
 
                 <?php if (! empty($moduleLinks)): ?>
                     <div class="nav-dropdown <?= $isGroupActive($moduleLinks) ? 'active' : '' ?>" data-dropdown>
-                        <button type="button" data-dropdown-toggle aria-expanded="false">Modulos</button>
+                        <button type="button" data-dropdown-toggle aria-expanded="false">Módulos</button>
                         <div class="nav-dropdown-panel" data-dropdown-panel>
                             <?php foreach ($moduleLinks as $href => $label): ?>
                                 <a class="<?= $isActive($href) ? 'active' : '' ?>" href="<?= e(url($href)) ?>"><?= e($label) ?></a>
@@ -159,7 +164,7 @@ $isGroupActive = static function (array $links) use ($isActive): bool {
 
                 <?php if (! empty($adminLinks)): ?>
                     <div class="nav-dropdown admin-dropdown <?= $isGroupActive($adminLinks) ? 'active' : '' ?>" data-dropdown>
-                        <button type="button" data-dropdown-toggle aria-expanded="false">Administracao</button>
+                        <button type="button" data-dropdown-toggle aria-expanded="false">Administração</button>
                         <div class="nav-dropdown-panel wide" data-dropdown-panel>
                             <?php foreach ($adminLinks as $href => $label): ?>
                                 <a class="<?= $isActive($href) ? 'active' : '' ?>" href="<?= e(url($href)) ?>"><?= e($label) ?></a>
@@ -176,9 +181,14 @@ $isGroupActive = static function (array $links) use ($isActive): bool {
 
         <div class="header-actions">
             <?php if ($isAuthenticated): ?>
-                <span class="user-chip">Ola, <?= e(explode(' ', trim($currentUser['full_name']))[0] ?: $currentUser['full_name']) ?></span>
+                <?php if ($isAdmin): ?>
+                    <form class="global-search" action="<?= e(url('/admin/busca')) ?>" method="get" role="search">
+                        <input type="search" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Buscar na TME">
+                    </form>
+                <?php endif; ?>
+                <span class="user-chip">Olá, <?= e(explode(' ', trim($currentUser['full_name']))[0] ?: $currentUser['full_name']) ?></span>
                 <div class="notification-menu" data-notification-menu>
-                    <button class="icon-button notification-button" type="button" data-notification-toggle aria-label="Abrir notificacoes">
+                    <button class="icon-button notification-button" type="button" data-notification-toggle aria-label="Abrir notificações">
                         <span>!</span>
                         <?php if ($unreadNotifications > 0): ?>
                             <strong><?= e($unreadNotifications > 99 ? '99+' : $unreadNotifications) ?></strong>
@@ -186,7 +196,7 @@ $isGroupActive = static function (array $links) use ($isActive): bool {
                     </button>
                     <div class="notification-dropdown" data-notification-dropdown>
                         <div class="notification-dropdown-header">
-                            <strong>Notificacoes</strong>
+                            <strong>Notificações</strong>
                             <?php if ($unreadNotifications > 0): ?>
                                 <form action="<?= e(url('/notificacoes/ler-todas')) ?>" method="post">
                                     <?= csrf_field() ?>
@@ -196,7 +206,7 @@ $isGroupActive = static function (array $links) use ($isActive): bool {
                             <?php endif; ?>
                         </div>
                         <?php if (empty($recentNotifications)): ?>
-                            <p class="notification-empty">Sem notificacoes recentes.</p>
+                            <p class="notification-empty">Sem notificações recentes.</p>
                         <?php else: ?>
                             <?php foreach ($recentNotifications as $notification): ?>
                                 <a class="notification-item <?= empty($notification['read_at']) ? 'unread' : '' ?>" href="<?= e(url($notification['action_url'] ?: '/notificacoes')) ?>">

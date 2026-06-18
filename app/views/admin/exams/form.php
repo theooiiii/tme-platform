@@ -1,9 +1,9 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell exams-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Avaliacao</span>
+            <span class="eyebrow">Avaliação</span>
             <h1><?= e($title) ?></h1>
             <p>Configure escopo, janela de realizacao, tentativas e status inicial.</p>
         </div>
@@ -15,11 +15,11 @@
 
         <div class="form-grid">
             <label class="full">
-                Titulo
+                Título
                 <input type="text" name="title" value="<?= e(old('title', $exam['title'] ?? '')) ?>" required>
             </label>
             <label class="full">
-                Descricao
+                Descrição
                 <textarea name="description" rows="4"><?= e(old('description', $exam['description'] ?? '')) ?></textarea>
             </label>
             <label>
@@ -60,7 +60,7 @@
                 <input type="number" min="0" name="time_limit_minutes" value="<?= e(old('time_limit_minutes', $exam['time_limit_minutes'] ?? 60)) ?>">
             </label>
             <label>
-                Inicio
+                Início
                 <input type="datetime-local" name="starts_at" value="<?= e(old('starts_at')) ?>">
             </label>
             <label>

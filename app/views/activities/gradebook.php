@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
@@ -20,7 +20,7 @@
                         <th>Curso</th>
                         <th>Atividades</th>
                         <th>Corrigidas</th>
-                        <th>Media</th>
+                        <th>Média</th>
                         <th>Total</th>
                     </tr>
                 </thead>

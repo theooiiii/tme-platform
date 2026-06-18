@@ -1,11 +1,11 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell exams-shell">
     <div class="admin-toolbar sticky-exam-header">
         <div class="dashboard-heading">
             <span class="eyebrow">Tentativa em andamento</span>
             <h1><?= e($attempt['title']) ?></h1>
-            <p>Responda as questoes e envie dentro do tempo limite.</p>
+            <p>Responda as questões e envie dentro do tempo limite.</p>
         </div>
         <?php if ($remainingSeconds !== null): ?>
             <div class="exam-timer" data-exam-timer="<?= e($remainingSeconds) ?>">
@@ -15,13 +15,13 @@
         <?php endif; ?>
     </div>
 
-    <form class="admin-form form exam-attempt-form" action="<?= e(url('/provas/tentativas/' . $attempt['id'] . '/enviar')) ?>" method="post" data-confirm="Enviar esta tentativa agora?">
+    <form class="admin-form form exam-attempt-form" action="<?= e(url('/provas/tentativas/' . $attempt['id'] . '/enviar')) ?>" method="post" data-confirm="Enviar está tentativa agora?">
         <?= csrf_field() ?>
         <div class="exam-question-list">
             <?php foreach ($questions as $question): ?>
                 <?php $alternatives = $examModel->decodeAlternatives($question['alternatives'] ?? null); ?>
                 <article class="exam-question-card">
-                    <span class="status-badge"><?= e($question['question_type']) ?></span>
+                    <span class="status-badge"><?= e(human_label($question['question_type'])) ?></span>
                     <h2><?= e($question['position']) ?>. <?= e($question['statement_text']) ?></h2>
                     <p><?= e(number_format((float) $question['exam_score'], 2, ',', '.')) ?> ponto(s)</p>
 

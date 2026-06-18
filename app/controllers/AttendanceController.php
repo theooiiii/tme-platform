@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class AttendanceController extends Controller
 {
@@ -20,7 +20,7 @@ class AttendanceController extends Controller
         $classId = (int) ($_GET['class_id'] ?? ($classes[0]['id'] ?? 0));
 
         if ($classId && ! $this->attendance->canManageClass($classId, $user)) {
-            flash('error', 'Turma indisponivel para seu perfil.');
+            flash('error', 'Turma indisponível para seu perfil.');
             $classId = 0;
         }
 
@@ -31,7 +31,7 @@ class AttendanceController extends Controller
         $records = ($classId && $subjectId) ? $this->attendance->recordsForSession($classId, $subjectId, $date) : [];
 
         $this->view('attendance/index', [
-            'title' => 'Frequencia',
+            'title' => 'Frequência',
             'classes' => $classes,
             'subjects' => $subjects,
             'students' => $students,
@@ -70,7 +70,7 @@ class AttendanceController extends Controller
         }
 
         if (! $entries) {
-            flash('error', 'A turma selecionada ainda nao possui alunos vinculados.');
+            flash('error', 'A turma selecionada ainda não possui alunos vinculados.');
             $this->redirect('/frequencia?class_id=' . $classId . '&subject_id=' . $subjectId . '&date=' . $date);
         }
 
@@ -96,7 +96,7 @@ class AttendanceController extends Controller
         ];
 
         $this->view('attendance/my', [
-            'title' => 'Minha frequencia',
+            'title' => 'Minha frequência',
             'classes' => $this->attendance->classesForStudent((int) $user['id']),
             'filters' => $filters,
             'records' => $this->attendance->historyForStudent((int) $user['id'], $filters),
@@ -126,7 +126,7 @@ class AttendanceController extends Controller
         }
 
         if ($filters['class_id'] && ! $this->attendance->canManageClass($filters['class_id'], $user)) {
-            flash('error', 'Turma indisponivel para relatorio.');
+            flash('error', 'Turma indisponível para relatório.');
             $this->redirect('/frequencia/relatorio');
         }
 
@@ -135,7 +135,7 @@ class AttendanceController extends Controller
             : [];
 
         $this->view('attendance/report', [
-            'title' => 'Relatorio de frequencia',
+            'title' => 'Relatório de frequência',
             'classes' => $classes,
             'subjects' => $subjects,
             'students' => $this->attendance->studentsWithAttendance(),

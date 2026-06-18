@@ -1,5 +1,5 @@
 <?php
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $typeLabels = [
     'duvida' => 'Duvida',
@@ -14,9 +14,9 @@ $typeLabels = [
 <section class="dashboard-shell community-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Comunidade academica</span>
+            <span class="eyebrow">Comunidade acadêmica</span>
             <h1>Feed TME</h1>
-            <p>Compartilhe duvidas, artigos, projetos, materiais, conquistas e avisos com moderacao academica.</p>
+            <p>Compartilhe dúvidas, artigos, projetos, materiais, conquistas e avisos com moderação acadêmica.</p>
         </div>
         <a class="button ghost large" href="<?= e(url('/perfil')) ?>">Meu perfil</a>
     </div>
@@ -33,21 +33,21 @@ $typeLabels = [
                 </select>
             </label>
             <label>
-                Titulo
+                Título
                 <input type="text" name="title" value="<?= e(old('title')) ?>" required>
             </label>
             <label>
-                Conteudo
+                Conteúdo
                 <textarea name="content" rows="5" required><?= e(old('content')) ?></textarea>
             </label>
-            <button class="button" type="submit">Publicar para moderacao</button>
+            <button class="button" type="submit">Publicar para moderação</button>
         </form>
 
         <div class="community-feed">
             <?php if (empty($posts)): ?>
                 <div class="empty-state">
-                    <h2>Feed em construcao</h2>
-                    <p>Posts aprovados pela moderacao aparecerao aqui.</p>
+                    <h2>Feed em construção</h2>
+                    <p>Posts aprovados pela moderação aparecerão aqui.</p>
                 </div>
             <?php else: ?>
                 <?php foreach ($posts as $post): ?>

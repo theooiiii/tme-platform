@@ -1,4 +1,4 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="detail-grid">
@@ -9,9 +9,9 @@
         <?php endif; ?>
 
         <div class="dashboard-heading">
-            <span class="eyebrow"><?= e($event['event_type']) ?></span>
+            <span class="eyebrow"><?= e(human_label($event['event_type'])) ?></span>
             <h1><?= e($event['title']) ?></h1>
-            <p><?= e($event['description'] ?: 'Evento academico TME.') ?></p>
+            <p><?= e($event['description'] ?: 'Evento acadêmico TME.') ?></p>
             <div class="course-meta spacious">
                 <span><?= e($event['starts_at'] ? date('d/m/Y H:i', strtotime($event['starts_at'])) : 'data a definir') ?></span>
                 <span><?= e($event['is_online'] ? 'Online' : ($event['location'] ?: 'Local a definir')) ?></span>
@@ -22,7 +22,7 @@
             <?php if (! $user): ?>
                 <a class="button large" href="<?= e(url('/login')) ?>">Entrar para se inscrever</a>
             <?php elseif ($event['viewer_registration_status']): ?>
-                <span class="status-badge <?= e($event['viewer_registration_status']) ?>">Inscricao <?= e($event['viewer_registration_status']) ?></span>
+                <span class="status-badge <?= e($event['viewer_registration_status']) ?>">Inscrição <?= e($event['viewer_registration_status']) ?></span>
             <?php else: ?>
                 <form action="<?= e(url('/eventos/' . $event['id'] . '/inscrever')) ?>" method="post">
                     <?= csrf_field() ?>

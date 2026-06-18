@@ -1,8 +1,8 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="dashboard-heading">
-        <span class="eyebrow">Configuracoes</span>
+        <span class="eyebrow">Configurações</span>
         <h1>Tema e identidade visual</h1>
         <p>Ajuste o modo claro/escuro e a cor principal da sua experiencia na TME.</p>
     </div>
@@ -25,7 +25,7 @@
         </label>
 
         <div class="actions-row">
-            <button class="button large" type="submit">Salvar preferencias</button>
+            <button class="button large" type="submit">Salvar preferências</button>
             <a class="button ghost large" href="<?= e(url('/portal')) ?>">Voltar ao portal</a>
         </div>
     </form>

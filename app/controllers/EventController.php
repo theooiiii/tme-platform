@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class EventController extends Controller
 {
@@ -32,7 +32,7 @@ class EventController extends Controller
         $event = $this->events->find((int) $id, $user ? (int) $user['id'] : null);
 
         if (! $event || ($event['status'] !== 'publicado' && ! $this->isAdmin($user))) {
-            flash('error', 'Evento nao encontrado.');
+            flash('error', 'Evento não encontrado.');
             $this->redirect('/eventos');
         }
 
@@ -50,7 +50,7 @@ class EventController extends Controller
         $event = $this->events->find((int) $id, (int) $user['id']);
 
         if (! $event || $event['status'] !== 'publicado') {
-            flash('error', 'Evento indisponivel para inscricao.');
+            flash('error', 'Evento indisponível para inscrição.');
             $this->redirect('/eventos');
         }
 
@@ -60,7 +60,7 @@ class EventController extends Controller
         }
 
         if ($this->events->registrationForUser((int) $event['id'], (int) $user['id'])) {
-            flash('info', 'Voce ja esta inscrito neste evento.');
+            flash('info', 'Você já está inscrito neste evento.');
             $this->redirect('/eventos/' . $id);
         }
 
@@ -68,7 +68,7 @@ class EventController extends Controller
         $this->logs->record((int) $user['id'], 'event.registered', ['event_id' => (int) $event['id'], 'registration_id' => $registrationId]);
         $this->notifications->eventRegistered((int) $user['id'], (int) $event['id'], (string) $event['title']);
 
-        flash('success', 'Inscricao realizada.');
+        flash('success', 'Inscrição realizada.');
         $this->redirect('/eventos/' . $id);
     }
 
@@ -116,7 +116,7 @@ class EventController extends Controller
         $event = $this->events->find((int) $id);
 
         if (! $event) {
-            flash('error', 'Evento nao encontrado.');
+            flash('error', 'Evento não encontrado.');
             $this->redirect('/admin/eventos');
         }
 
@@ -133,7 +133,7 @@ class EventController extends Controller
         $event = $this->events->find((int) $id);
 
         if (! $event) {
-            flash('error', 'Evento nao encontrado.');
+            flash('error', 'Evento não encontrado.');
             $this->redirect('/admin/eventos');
         }
 
@@ -157,7 +157,7 @@ class EventController extends Controller
         $registration = $this->events->findRegistration((int) $registrationId);
 
         if (! $registration) {
-            flash('error', 'Inscricao nao encontrada.');
+            flash('error', 'Inscrição não encontrada.');
             $this->redirect('/admin/eventos');
         }
 
@@ -168,7 +168,7 @@ class EventController extends Controller
             'user_id' => (int) $registration['user_id'],
         ]);
 
-        flash('success', 'Presenca confirmada.');
+        flash('success', 'Presença confirmada.');
         $this->redirect('/admin/eventos/' . $registration['event_id']);
     }
 
@@ -178,14 +178,14 @@ class EventController extends Controller
         $registration = $this->events->findRegistration((int) $registrationId);
 
         if (! $registration) {
-            flash('error', 'Inscricao nao encontrada.');
+            flash('error', 'Inscrição não encontrada.');
             $this->redirect('/admin/eventos');
         }
 
         $certificate = (new CertificateService())->issueForEventRegistration((int) $registration['id']);
 
         if (! $certificate) {
-            flash('error', 'Certificado disponivel apenas para evento encerrado, com presenca confirmada e certificado habilitado.');
+            flash('error', 'Certificado disponível apenas para evento encerrado, com presença confirmada e certificado habilitado.');
             $this->redirect('/admin/eventos/' . $registration['event_id']);
         }
 
@@ -195,7 +195,7 @@ class EventController extends Controller
             'certificate_id' => (int) $certificate['id'],
         ]);
 
-        flash('success', 'Certificado de participacao emitido.');
+        flash('success', 'Certificado de participação emitido.');
         $this->redirect('/admin/eventos/' . $registration['event_id']);
     }
 
@@ -223,7 +223,7 @@ class EventController extends Controller
         $errors = [];
 
         if (strlen($data['title']) < 4) {
-            $errors[] = 'Informe um titulo com pelo menos 4 caracteres.';
+            $errors[] = 'Informe um título com pelo menos 4 caracteres.';
         }
 
         if (! in_array($data['event_type'], ['palestra', 'workshop', 'aula_ao_vivo', 'simulado', 'olimpiada', 'hackathon'], true)) {

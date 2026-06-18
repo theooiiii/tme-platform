@@ -3,6 +3,15 @@
 defined('BASE_PATH') || exit('Acesso direto nao permitido.');
 
 return [
+    ['GET', '/api/v1/health', [ApiController::class, 'health']],
+    ['POST', '/api/v1/auth/token', [ApiController::class, 'token']],
+    ['GET', '/api/v1/me', [ApiController::class, 'me'], ['api']],
+    ['GET', '/api/v1/courses', [ApiController::class, 'courses']],
+    ['GET', '/api/v1/courses/{id}', [ApiController::class, 'course']],
+    ['GET', '/api/v1/plans', [ApiController::class, 'plans']],
+    ['GET', '/api/v1/ranking', [ApiController::class, 'ranking']],
+    ['GET', '/api/v1/certificates/{code}/validate', [ApiController::class, 'validateCertificate']],
+
     ['GET', '/', [PublicController::class, 'home']],
     ['GET', '/sobre', [PublicController::class, 'about']],
     ['GET', '/cursos', [PublicController::class, 'courses']],
@@ -90,6 +99,13 @@ return [
     ['POST', '/aluno/meus-cursos/{enrollmentId}/aulas/{lessonId}/concluir', [CourseCatalogController::class, 'completeLesson'], ['auth', 'role:aluno,professor']],
 
     ['GET', '/admin/contas-pendentes', [AdminController::class, 'pendingAccounts'], ['auth', 'role:administrador,supervisor']],
+    ['GET', '/admin/busca', [AdminController::class, 'search'], ['auth', 'role:administrador,supervisor']],
+    ['GET', '/admin/usuarios', [AdminController::class, 'users'], ['auth', 'role:administrador,supervisor']],
+    ['POST', '/admin/usuarios/{id}/atualizar', [AdminController::class, 'updateUser'], ['auth', 'role:administrador,supervisor']],
+    ['GET', '/admin/permissoes', [AdminController::class, 'permissions'], ['auth', 'role:administrador,supervisor']],
+    ['GET', '/admin/categorias', [AdminController::class, 'categories'], ['auth', 'role:administrador,supervisor']],
+    ['POST', '/admin/categorias/renomear', [AdminController::class, 'renameCategory'], ['auth', 'role:administrador,supervisor']],
+    ['GET', '/admin/logs', [AdminController::class, 'logs'], ['auth', 'role:administrador,supervisor']],
     ['POST', '/admin/contas/{id}/aprovar', [AdminController::class, 'approve'], ['auth', 'role:administrador,supervisor']],
     ['POST', '/admin/contas/{id}/recusar', [AdminController::class, 'reject'], ['auth', 'role:administrador,supervisor']],
     ['GET', '/admin/planos', [PlanController::class, 'adminIndex'], ['auth', 'role:administrador,supervisor']],

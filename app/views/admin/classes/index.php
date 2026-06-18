@@ -1,9 +1,9 @@
-<?php defined('BASE_PATH') || exit('Acesso direto nao permitido.'); ?>
+<?php defined('BASE_PATH') || exit('Acesso direto não permitido.'); ?>
 
 <section class="dashboard-shell">
     <div class="admin-toolbar">
         <div class="dashboard-heading">
-            <span class="eyebrow">Administracao</span>
+            <span class="eyebrow">Administração</span>
             <h1>Turmas e disciplinas</h1>
             <p>Gerencie turmas, disciplinas e vinculos de alunos/professores.</p>
         </div>
@@ -15,13 +15,13 @@
 
     <div class="table-wrap">
         <table>
-            <thead><tr><th>Turma</th><th>Instituicao</th><th>Status</th><th>Vinculos</th><th>Acoes</th></tr></thead>
+            <thead><tr><th>Turma</th><th>Instituição</th><th>Status</th><th>Vínculos</th><th>Ações</th></tr></thead>
             <tbody>
                 <?php foreach ($classes as $class): ?>
                     <tr>
-                        <td><strong><?= e($class['name']) ?></strong><span><?= e($class['period'] ?: 'periodo a definir') ?></span></td>
-                        <td><span><?= e($class['institution_name'] ?: 'sem instituicao') ?></span></td>
-                        <td><span class="status-badge <?= e($class['status']) ?>"><?= e($class['status']) ?></span></td>
+                        <td><strong><?= e($class['name']) ?></strong><span><?= e($class['period'] ?: 'período a definir') ?></span></td>
+                        <td><span><?= e($class['institution_name'] ?: 'sem instituição') ?></span></td>
+                        <td><span class="status-badge <?= e($class['status']) ?>"><?= e(human_label($class['status'])) ?></span></td>
                         <td><span><?= e((int) $class['students_count']) ?> alunos</span><span><?= e((int) $class['subjects_count']) ?> disciplinas</span></td>
                         <td class="actions-cell">
                             <a class="button small" href="<?= e(url('/admin/turmas/' . $class['id'])) ?>">Gerenciar</a>
@@ -39,17 +39,17 @@
 
     <div class="section-toolbar">
         <span class="eyebrow">Disciplinas</span>
-        <h2>Catalogo</h2>
+        <h2>Catálogo</h2>
     </div>
     <div class="module-grid">
         <?php foreach ($subjects as $subject): ?>
             <article class="module-card">
-                <span class="status-badge <?= e($subject['status'] ?? 'ativa') ?>"><?= e($subject['status'] ?? 'ativa') ?></span>
+                <span class="status-badge <?= e($subject['status'] ?? 'ativa') ?>"><?= e(human_label($subject['status'] ?? 'ativa')) ?></span>
                 <h2><?= e($subject['name']) ?></h2>
-                <p><?= e($subject['area'] ?: 'Area nao informada') ?> | <?= e((int) $subject['workload_hours']) ?>h</p>
+                <p><?= e($subject['area'] ?: 'Área não informada') ?> | <?= e((int) $subject['workload_hours']) ?>h</p>
                 <div class="inline-actions">
                     <a href="<?= e(url('/admin/disciplinas/' . $subject['id'] . '/editar')) ?>">Editar</a>
-                    <form action="<?= e(url('/admin/disciplinas/' . $subject['id'] . '/arquivar')) ?>" method="post" data-confirm="Arquivar esta disciplina?">
+                    <form action="<?= e(url('/admin/disciplinas/' . $subject['id'] . '/arquivar')) ?>" method="post" data-confirm="Arquivar está disciplina?">
                         <?= csrf_field() ?>
                         <button type="submit">Arquivar</button>
                     </form>

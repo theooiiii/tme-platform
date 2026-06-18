@@ -1,6 +1,6 @@
 <?php
 
-defined('BASE_PATH') || exit('Acesso direto nao permitido.');
+defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 class AdminClassController extends Controller
 {
@@ -239,7 +239,7 @@ class AdminClassController extends Controller
         $class = $this->classes->find($id);
 
         if (! $class) {
-            flash('error', 'Turma nao encontrada.');
+            flash('error', 'Turma não encontrada.');
             $this->redirect('/admin/turmas');
         }
 
@@ -251,7 +251,7 @@ class AdminClassController extends Controller
         $subject = $this->subjects->find($id);
 
         if (! $subject) {
-            flash('error', 'Disciplina nao encontrada.');
+            flash('error', 'Disciplina não encontrada.');
             $this->redirect('/admin/turmas');
         }
 
