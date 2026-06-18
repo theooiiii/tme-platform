@@ -588,3 +588,112 @@ td span {
 .chart-card.span-2 {
     grid-column: span 2;
 }
+
+.filter-bar {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) repeat(2, minmax(160px, 220px)) auto;
+    gap: 12px;
+    align-items: center;
+    margin: 0 0 18px;
+}
+
+.filter-bar.prominent {
+    grid-template-columns: minmax(240px, 1fr) auto;
+}
+
+.filter-bar input,
+.filter-bar select,
+.inline-admin-form input,
+.inline-admin-form select {
+    min-height: 44px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    padding: 0 12px;
+}
+
+.table-card {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-responsive th,
+.table-responsive td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.table-responsive th {
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+}
+
+.table-responsive td span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.inline-admin-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.button.small {
+    min-height: 40px;
+    padding: 0 12px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+    color: var(--muted);
+}
+
+.pagination a {
+    color: var(--accent);
+    font-weight: 850;
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.search-result-card {
+    align-content: start;
+}
+
+.search-result-item {
+    display: grid;
+    gap: 4px;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+}
+
+.search-result-item span {
+    color: var(--muted);
+    font-size: 0.9rem;
+}

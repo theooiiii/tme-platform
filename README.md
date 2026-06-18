@@ -14,6 +14,18 @@ A TME é uma base MVC própria em PHP para uma plataforma educacional moderna qu
 - Sessões PHP para autenticação
 - Estrutura reservada para módulos e integrações futuras em Python/IA
 
+## Documentação técnica
+
+- [INSTALL.md](INSTALL.md): instalação local e XAMPP.
+- [DEPLOY.md](DEPLOY.md): checklist de publicação e hardening.
+- [CHANGELOG.md](CHANGELOG.md): histórico de mudanças.
+- [VERCEL.md](VERCEL.md): deploy serverless na Vercel.
+- [docs/AUDIT_REPORT.md](docs/AUDIT_REPORT.md): auditoria técnica, riscos e roadmap.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): arquitetura atual e arquitetura alvo.
+- [docs/DATABASE.md](docs/DATABASE.md): documentação do banco e grupos de tabelas.
+- [docs/API.md](docs/API.md): plano da API REST.
+- [docs/openapi.yaml](docs/openapi.yaml): contrato OpenAPI inicial.
+
 ## Funcionalidades da primeira entrega
 
 - Home pública e páginas institucionais: Sobre, Cursos, Eventos, Biblioteca, Comunidade, Login e Cadastro.
@@ -309,7 +321,7 @@ Recursos disponiveis:
 - Eventos notificados: matrícula, curso concluído, certificado emitido, atividade corrigida, comentário em post, mensagem no chat, inscrição em evento, prova liberada e badge conquistada.
 - Logs de envio em `logs` pela ação `notification.sent`.
 
-## Analytics e dashboard avancado
+## Analytics e dashboard avançado
 
 Dashboards de aluno, professor e administrador agora exibem métricas reais e gráficos com Chart.js. Administradores e supervisores também acessam `/analytics`.
 
@@ -442,10 +454,14 @@ Para um ambiente mais limpo, crie um VirtualHost apontando o `DocumentRoot` para
 
 - Senhas com `password_hash` e verificação com `password_verify`.
 - Login com sessão e `session_regenerate_id`.
+- Sessão configurada com `HttpOnly`, `SameSite`, modo estrito e opção `Secure` para HTTPS.
+- Rate limit de login por IP/e-mail.
+- Headers HTTP básicos de segurança via `Security.php`.
 - Middleware de autenticação e middleware por role.
 - PDO configurado com exceptions, fetch associativo e prepared statements.
 - CSRF token nos formulários principais.
 - Validação básica de cadastro.
+- Proteção Apache contra execução de scripts em `public/uploads`.
 - `.env` fora do versionamento.
 - Arquivos internos ficam fora da pasta pública e possuem proteção contra acesso direto.
 

@@ -9,7 +9,7 @@ class PremiumMiddleware
         $user = current_user();
 
         if (! $user) {
-            flash('info', 'Faca login para acessar recursos premium.');
+            flash('info', 'Faça login para acessar recursos premium.');
             redirect_to('/login');
         }
 

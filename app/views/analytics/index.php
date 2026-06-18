@@ -31,7 +31,7 @@ $popularChart = [
     <div class="admin-toolbar">
         <div class="dashboard-heading">
             <span class="eyebrow">Analytics</span>
-            <h1>Dashboard avancado</h1>
+            <h1>Dashboard avançado</h1>
             <p>Indicadores reais integrados aos módulos de usuários, matrículas, certificados, logs e financeiro.</p>
         </div>
         <form class="filter-form compact-filter" method="get" action="<?= e(url('/analytics')) ?>">

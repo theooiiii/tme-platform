@@ -62,7 +62,7 @@ $teacherProgressChart = [
         <article class="module-card"><h2>Certificados</h2><p>Professores também recebem certificados ao concluir cursos.</p><a href="<?= e(url('/certificados')) ?>">Abrir certificados</a></article>
         <article class="module-card"><h2>Ranking</h2><p>Acompanhe XP, nível, moedas e badges.</p><a href="<?= e(url('/ranking')) ?>">Ver ranking</a></article>
         <article class="module-card"><h2>Publicações</h2><p>Posts e projetos podem alimentar a comunidade acadêmica.</p><a href="<?= e(url('/comunidade')) ?>">Comunidade</a></article>
-        <article class="module-card"><h2>Financeiro</h2><p>Carteira de creator preparada para monetizacao 80/20.</p><a href="<?= e(url('/financeiro')) ?>">Abrir financeiro</a></article>
+        <article class="module-card"><h2>Financeiro</h2><p>Carteira de creator preparada para monetização 80/20.</p><a href="<?= e(url('/financeiro')) ?>">Abrir financeiro</a></article>
         <article class="module-card"><h2>Notificações</h2><p>Acompanhe avisos de entregas, chat e comunidade.</p><a href="<?= e(url('/notificacoes')) ?>">Abrir central</a></article>
     </div>
 </section>

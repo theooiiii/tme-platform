@@ -586,3 +586,80 @@
     padding: 18px;
     border-top: 1px solid var(--border);
 }
+
+.chat-message-form div {
+    display: grid;
+    gap: 10px;
+}
+
+.message-attachment {
+    display: inline-flex;
+    margin-top: 10px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--accent);
+    font-weight: 850;
+}
+
+.lesson-player {
+    margin: 14px 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #000;
+}
+
+.lesson-player iframe,
+.lesson-player video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+}
+
+.lesson-notes {
+    margin-top: 12px;
+}
+
+.lesson-notes summary {
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 850;
+}
+
+.lesson-notes textarea {
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    padding: 12px;
+    resize: vertical;
+}
+
+.certificate-qr {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    margin: 28px auto 0;
+    max-width: 260px;
+    color: var(--muted);
+    text-align: center;
+    word-break: break-word;
+}
+
+.certificate-qr img {
+    width: 150px;
+    height: 150px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    padding: 8px;
+}
+
+.certificate-qr span {
+    color: var(--text);
+    font-weight: 900;
+}

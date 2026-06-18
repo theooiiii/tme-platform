@@ -4,6 +4,8 @@ defined('BASE_PATH') || exit('Acesso direto não permitido.');
 $isValid = $certificate['validation_status'] === 'valido';
 $issuedAt = $certificate['issued_at'] ? date('d/m/Y', strtotime($certificate['issued_at'])) : date('d/m/Y');
 $completedAt = $certificate['enrollment_completed_at'] ? date('d/m/Y', strtotime($certificate['enrollment_completed_at'])) : $issuedAt;
+$validationUrl = rtrim((string) config('app.url'), '/') . '/certificados/validar/' . rawurlencode($certificate['code']);
+$qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . rawurlencode($validationUrl);
 ?>
 
 <section class="dashboard-shell certificate-view">
@@ -11,7 +13,7 @@ $completedAt = $certificate['enrollment_completed_at'] ? date('d/m/Y', strtotime
         <div class="dashboard-heading">
             <span class="eyebrow">Certificado</span>
             <h1><?= e($certificate['code']) ?></h1>
-            <p>Visualização HTML pronta para impressao ou salvamento em PDF pelo navegador.</p>
+            <p>Visualização HTML pronta para impressão ou salvamento em PDF pelo navegador.</p>
         </div>
         <div class="actions-row">
             <button class="button large" type="button" onclick="window.print()">Imprimir/Salvar PDF</button>
@@ -31,12 +33,12 @@ $completedAt = $certificate['enrollment_completed_at'] ? date('d/m/Y', strtotime
                 <span class="brand-mark">TME</span>
                 <div>
                     <strong>Theo Mind Educacional</strong>
-                    <small>Tecnologia, ensino e evolucao em uma unica plataforma.</small>
+                    <small>Tecnologia, ensino e evolução em uma única plataforma.</small>
                 </div>
             </header>
 
             <div class="certificate-body">
-                <span class="eyebrow">Certificado de conclusao</span>
+                <span class="eyebrow">Certificado de conclusão</span>
                 <h2>Certificamos que</h2>
                 <h1><?= e($certificate['student_name']) ?></h1>
                 <p>concluiu com aproveitamento o curso</p>
@@ -55,11 +57,15 @@ $completedAt = $certificate['enrollment_completed_at'] ? date('d/m/Y', strtotime
                 </div>
                 <div>
                     <span>Status</span>
-                    <strong><?= e($isValid ? 'Valido' : 'Revogado') ?></strong>
+                    <strong><?= e($isValid ? 'Válido' : 'Revogado') ?></strong>
                 </div>
             </footer>
 
-            <div class="qr-placeholder">QR futuro</div>
+            <div class="certificate-qr">
+                <img src="<?= e($qrUrl) ?>" alt="QR Code de validação do certificado">
+                <span>Validação pública</span>
+                <small><?= e($validationUrl) ?></small>
+            </div>
         </div>
     </article>
 </section>

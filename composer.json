@@ -1,0 +1,17 @@
+{
+  "name": "theomind/tme-platform",
+  "description": "TME - Theo Mind Educacional platform",
+  "type": "project",
+  "require": {
+    "php": "^8.2"
+  },
+  "scripts": {
+    "vercel": [
+      "@php -v"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}

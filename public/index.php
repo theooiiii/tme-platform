@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 define('BASE_PATH', dirname(__DIR__));
 
-session_start();
-
 require BASE_PATH . '/app/core/Env.php';
 
 Env::load(BASE_PATH . '/.env');
@@ -13,8 +11,11 @@ Env::load(BASE_PATH . '/.env');
 spl_autoload_register(function (string $class): void {
     $directories = [
         'app/core',
+        'app/events',
         'app/controllers',
         'app/models',
+        'app/repositories',
+        'app/validators',
         'app/middleware',
         'app/services',
         'app/helpers',
@@ -33,6 +34,10 @@ spl_autoload_register(function (string $class): void {
 require BASE_PATH . '/app/helpers/functions.php';
 
 date_default_timezone_set((string) config('app.timezone', 'America/Sao_Paulo'));
+
+Security::configureSession();
+session_start();
+Security::sendHeaders();
 
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $isAssetRequest = isset($_GET['_asset']) || str_starts_with($requestPath, '/assets/');

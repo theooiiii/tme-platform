@@ -86,6 +86,11 @@ class Router
 
             if ($item === 'premium') {
                 PremiumMiddleware::handle();
+                continue;
+            }
+
+            if ($item === 'api') {
+                ApiAuthMiddleware::handle();
             }
         }
     }

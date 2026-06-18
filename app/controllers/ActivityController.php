@@ -64,7 +64,7 @@ class ActivityController extends Controller
         $isLate = $this->isLate($activity);
 
         if ($isLate && ! (bool) $activity['allow_late']) {
-            flash('error', 'O prazo desta atividade encerrou e envios atrasados não estao habilitados.');
+            flash('error', 'O prazo desta atividade encerrou e envios atrasados não estão habilitados.');
             $this->redirect('/atividades/' . $activity['id']);
         }
 

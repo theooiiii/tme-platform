@@ -10,7 +10,7 @@ class AuthMiddleware
             return;
         }
 
-        flash('info', 'Faça login para acessar está área.');
+        flash('info', 'Faça login para acessar esta área.');
         redirect_to('/login');
     }
 }

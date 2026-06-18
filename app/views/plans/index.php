@@ -8,7 +8,7 @@ $activePlanId = $currentSubscription['plan_id'] ?? null;
     <div class="dashboard-heading">
         <span class="eyebrow">Financeiro TME</span>
         <h1>Planos e assinaturas</h1>
-        <p>Escolha entre acesso gratuito e premium. Pagamentos PIX/cartão estao preparados para integração futura.</p>
+        <p>Escolha entre acesso gratuito e premium. Pagamentos PIX/cartão estão preparados para integração futura.</p>
     </div>
 
     <?php if ($currentSubscription): ?>

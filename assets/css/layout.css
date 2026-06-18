@@ -191,8 +191,16 @@
 }
 
 .section-heading,
-.dashboard-heading {
+.dashboard-heading,
+.page-header {
     margin-bottom: 28px;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
 }
 
 .hero h1,
@@ -293,4 +301,18 @@
     background: var(--surface);
     color: var(--muted);
     font-size: 0.9rem;
+}
+
+.global-search {
+    width: min(280px, 28vw);
+}
+
+.global-search input {
+    width: 100%;
+    min-height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+    color: var(--text);
+    padding: 0 14px;
 }

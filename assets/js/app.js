@@ -195,6 +195,14 @@
         }, Math.max(interval, 15000));
     }
 
+    document.querySelectorAll('[data-lesson-notes]').forEach(function (textarea) {
+        const key = 'tme:lesson-notes:' + textarea.dataset.lessonNotes;
+        textarea.value = window.localStorage.getItem(key) || '';
+        textarea.addEventListener('input', function () {
+            window.localStorage.setItem(key, textarea.value);
+        });
+    });
+
     function chartColors() {
         const styles = window.getComputedStyle(document.body);
         return {

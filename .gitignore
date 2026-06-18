@@ -12,6 +12,7 @@
 
 /public/uploads/*
 !/public/uploads/.gitkeep
+!/public/uploads/.htaccess
 !/public/uploads/course-images/
 !/public/uploads/course-images/.gitkeep
 !/public/uploads/materials/

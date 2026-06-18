@@ -3,6 +3,8 @@ defined('BASE_PATH') || exit('Acesso direto não permitido.');
 
 $lessonProgress = $progressMap[(int) $lesson['id']] ?? null;
 $isCompleted = $lessonProgress && $lessonProgress['status'] === 'concluida';
+$videoUrl = trim((string) ($lesson['video_url'] ?? ''));
+$embedUrl = media_embed_url($videoUrl);
 ?>
 
 <div class="lesson-row <?= $isCompleted ? 'completed' : '' ?>">
@@ -12,8 +14,18 @@ $isCompleted = $lessonProgress && $lessonProgress['status'] === 'concluida';
         <?php if (! empty($lesson['description'])): ?>
             <p><?= e($lesson['description']) ?></p>
         <?php endif; ?>
-        <?php if (! empty($lesson['video_url'])): ?>
-            <a href="<?= e($lesson['video_url']) ?>" target="_blank" rel="noopener">Abrir link da aula</a>
+        <?php if ($videoUrl !== ''): ?>
+            <div class="lesson-player">
+                <?php if ($embedUrl): ?>
+                    <iframe src="<?= e($embedUrl) ?>" title="Player da aula <?= e($lesson['title']) ?>" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <?php elseif (is_direct_video_url($videoUrl)): ?>
+                    <video controls preload="metadata" playsinline>
+                        <source src="<?= e($videoUrl) ?>">
+                    </video>
+                <?php else: ?>
+                    <a class="button ghost" href="<?= e($videoUrl) ?>" target="_blank" rel="noopener">Abrir link da aula</a>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
         <?php if (! empty($lesson['content'])): ?>
             <div class="lesson-content-preview"><?= nl2br(e($lesson['content'])) ?></div>
@@ -35,6 +47,10 @@ $isCompleted = $lessonProgress && $lessonProgress['status'] === 'concluida';
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        <details class="lesson-notes">
+            <summary>Anotações da aula</summary>
+            <textarea data-lesson-notes="<?= e($enrollment['id'] . ':' . $lesson['id']) ?>" rows="4" placeholder="Escreva suas anotações pessoais desta aula"></textarea>
+        </details>
     </div>
     <div class="inline-actions lesson-progress-actions">
         <?php if ($isCompleted): ?>

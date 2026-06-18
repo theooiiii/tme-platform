@@ -76,8 +76,12 @@ $adminLinks = [];
 if ($isAdmin) {
     $adminLinks = [
         '/admin/contas-pendentes' => 'Aprovações',
+        '/admin/busca' => 'Busca global',
+        '/admin/usuarios' => 'Usuários',
+        '/admin/permissoes' => 'Permissões',
         '/analytics' => 'Analytics',
         '/admin/cursos' => 'Cursos',
+        '/admin/categorias' => 'Categorias',
         '/admin/planos' => 'Planos',
         '/admin/matriculas' => 'Matrículas',
         '/admin/atividades' => 'Atividades',
@@ -89,6 +93,7 @@ if ($isAdmin) {
         '/admin/eventos' => 'Eventos',
         '/admin/turmas' => 'Turmas',
         '/admin/chat' => 'Chat auditoria',
+        '/admin/logs' => 'Logs',
     ];
 }
 
@@ -176,6 +181,11 @@ $isGroupActive = static function (array $links) use ($isActive): bool {
 
         <div class="header-actions">
             <?php if ($isAuthenticated): ?>
+                <?php if ($isAdmin): ?>
+                    <form class="global-search" action="<?= e(url('/admin/busca')) ?>" method="get" role="search">
+                        <input type="search" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Buscar na TME">
+                    </form>
+                <?php endif; ?>
                 <span class="user-chip">Olá, <?= e(explode(' ', trim($currentUser['full_name']))[0] ?: $currentUser['full_name']) ?></span>
                 <div class="notification-menu" data-notification-menu>
                     <button class="icon-button notification-button" type="button" data-notification-toggle aria-label="Abrir notificações">

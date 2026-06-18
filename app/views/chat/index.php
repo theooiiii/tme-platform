@@ -70,15 +70,25 @@
                                     <strong><?= e($message['sender_name']) ?></strong>
                                     <span><?= e(date('d/m H:i', strtotime($message['created_at']))) ?></span>
                                 </div>
-                                <p><?= nl2br(e($message['message'])) ?></p>
+                                <?php if (! empty($message['message'])): ?>
+                                    <p><?= nl2br(e($message['message'])) ?></p>
+                                <?php endif; ?>
+                                <?php if (! empty($message['attachment_path'])): ?>
+                                    <a class="message-attachment" href="<?= e(url('/' . $message['attachment_path'])) ?>" target="_blank" rel="noopener">
+                                        <?= e($message['attachment_name'] ?: 'Arquivo anexado') ?>
+                                    </a>
+                                <?php endif; ?>
                             </article>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 
-                <form class="chat-message-form" action="<?= e(url('/chat/' . $channel['id'] . '/enviar')) ?>" method="post">
+                <form class="chat-message-form" action="<?= e(url('/chat/' . $channel['id'] . '/enviar')) ?>" method="post" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-                    <textarea name="message" rows="3" placeholder="Escreva uma mensagem..." required></textarea>
+                    <div>
+                        <textarea name="message" rows="3" placeholder="Escreva uma mensagem..."></textarea>
+                        <input type="file" name="attachment" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.zip,.docx,.pptx">
+                    </div>
                     <button class="button" type="submit">Enviar</button>
                 </form>
             <?php endif; ?>

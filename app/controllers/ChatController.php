@@ -82,17 +82,44 @@ class ChatController extends Controller
         }
 
         $message = trim($_POST['message'] ?? '');
+        $attachment = null;
+        $hasAttachment = isset($_FILES['attachment']) && ($_FILES['attachment']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
 
-        if ($message === '') {
-            flash('error', 'Digite uma mensagem.');
+        if ($message === '' && ! $hasAttachment) {
+            flash('error', 'Digite uma mensagem ou envie um arquivo.');
             $this->redirect('/chat?canal=' . $channelId);
         }
 
         try {
-            $messageId = $this->chat->sendMessage((int) $channelId, (int) $user['id'], $message);
+            if ($hasAttachment) {
+                $path = (new UploadService())->storePublic(
+                    $_FILES['attachment'],
+                    'chat',
+                    [
+                        'application/pdf',
+                        'image/png',
+                        'image/jpeg',
+                        'image/webp',
+                        'text/plain',
+                        'application/zip',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    ],
+                    8 * 1024 * 1024
+                );
+                $attachment = [
+                    'path' => $path,
+                    'name' => $_FILES['attachment']['name'] ?? 'arquivo',
+                    'type' => $_FILES['attachment']['type'] ?? 'arquivo',
+                    'size' => (int) ($_FILES['attachment']['size'] ?? 0),
+                ];
+            }
+
+            $messageId = $this->chat->sendMessage((int) $channelId, (int) $user['id'], $message, $attachment);
             $this->logs->record((int) $user['id'], 'chat.message_sent', [
                 'channel_id' => (int) $channelId,
                 'message_id' => $messageId,
+                'has_attachment' => (bool) $attachment,
             ]);
             foreach ($this->chat->members((int) $channelId) as $member) {
                 if ((int) $member['id'] !== (int) $user['id']) {

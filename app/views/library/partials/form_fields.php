@@ -10,12 +10,12 @@
 
     <label>
         Categoria
-        <input type="text" name="category" value="<?= e($value('category')) ?>" placeholder="Ex.: Matematica aplicada">
+        <input type="text" name="category" value="<?= e($value('category')) ?>" placeholder="Ex.: Matemática aplicada">
     </label>
 
     <label>
         Disciplina
-        <input type="text" name="subject" value="<?= e($value('subject')) ?>" placeholder="Ex.: Algebra">
+        <input type="text" name="subject" value="<?= e($value('subject')) ?>" placeholder="Ex.: Álgebra">
     </label>
 
     <label>

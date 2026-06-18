@@ -76,7 +76,7 @@ if ($isAdmin) {
         ['title' => 'Frequência', 'text' => 'Registre chamadas e consulte relatórios por turma.', 'href' => '/frequencia', 'action' => 'Abrir'],
         ['title' => 'Provas admin', 'text' => 'Crie provas, acompanhe tentativas e corrija discursivas.', 'href' => '/admin/provas', 'action' => 'Gerenciar'],
         ['title' => 'Biblioteca admin', 'text' => 'Aprove, recuse e publique materiais educacionais.', 'href' => '/admin/biblioteca', 'action' => 'Moderar'],
-        ['title' => 'Certificados', 'text' => 'Liste certificados emitidos e revogue registros invalidos.', 'href' => '/admin/certificados', 'action' => 'Gerenciar'],
+        ['title' => 'Certificados', 'text' => 'Liste certificados emitidos e revogue registros inválidos.', 'href' => '/admin/certificados', 'action' => 'Gerenciar'],
         ['title' => 'Comunidade admin', 'text' => 'Modere posts acadêmicos, destaques e recusas.', 'href' => '/admin/comunidade', 'action' => 'Moderar'],
         ['title' => 'Eventos admin', 'text' => 'Crie eventos, confirme presença e emita certificados.', 'href' => '/admin/eventos', 'action' => 'Gerenciar'],
         ['title' => 'Turmas admin', 'text' => 'Gerencie turmas, disciplinas e vínculos acadêmicos.', 'href' => '/admin/turmas', 'action' => 'Gerenciar'],
@@ -114,7 +114,7 @@ if (! $cards) {
         <div>
             <span class="eyebrow">Portal TME</span>
             <h1>Olá, <?= e(explode(' ', trim($user['full_name']))[0] ?: $user['full_name']) ?>.</h1>
-            <p>Esta é sua central inicial autenticada para acessar aprendizagem, gestao, comunidade e atalhos do seu perfil.</p>
+            <p>Esta é sua central inicial autenticada para acessar aprendizagem, gestão, comunidade e atalhos do seu perfil.</p>
         </div>
         <div class="portal-actions">
             <a class="button large" href="<?= e(url('/dashboard')) ?>">Dashboard</a>

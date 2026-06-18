@@ -63,7 +63,7 @@ $dateValue = $value('due_at') ? date('Y-m-d\TH:i', strtotime($value('due_at'))) 
         <label>
             Tipo
             <select name="activity_type">
-                <?php foreach (['texto' => 'Texto', 'arquivo' => 'Arquivo', 'quiz' => 'Quiz futuro', 'tarefa_pratica' => 'Tarefa pratica', 'projeto' => 'Projeto'] as $option => $label): ?>
+                <?php foreach (['texto' => 'Texto', 'arquivo' => 'Arquivo', 'quiz' => 'Quiz futuro', 'tarefa_pratica' => 'Tarefa prática', 'projeto' => 'Projeto'] as $option => $label): ?>
                     <option value="<?= e($option) ?>" <?= $value('activity_type', 'texto') === $option ? 'selected' : '' ?>><?= e($label) ?></option>
                 <?php endforeach; ?>
             </select>

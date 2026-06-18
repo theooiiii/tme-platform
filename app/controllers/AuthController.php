@@ -69,9 +69,20 @@ class AuthController extends Controller
 
         $email = strtolower(trim($_POST['email'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
+        $limiter = new RateLimiter();
+        $limitKey = 'login:' . Security::clientIp() . ':' . sha1($email);
+        $maxAttempts = (int) config('app.rate_limits.login.max_attempts', 5);
+        $decaySeconds = (int) config('app.rate_limits.login.decay_seconds', 900);
+
+        if ($limiter->tooManyAttempts($limitKey, $maxAttempts, $decaySeconds)) {
+            flash('error', 'Muitas tentativas de login. Aguarde alguns minutos e tente novamente.');
+            $this->redirect('/login');
+        }
+
         $user = $this->users->findByEmail($email);
 
         if (! $user || ! password_verify($password, $user['password_hash'])) {
+            $limiter->hit($limitKey, $decaySeconds);
             flash('error', 'E-mail ou senha inválidos.');
             $this->redirect('/login');
         }
@@ -88,6 +99,7 @@ class AuthController extends Controller
         }
 
         session_regenerate_id(true);
+        $limiter->clear($limitKey);
         $_SESSION['user_id'] = (int) $user['id'];
         $this->users->markLastLogin((int) $user['id']);
         try {
